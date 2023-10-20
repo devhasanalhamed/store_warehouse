@@ -70,11 +70,11 @@ class HomePageState extends State<HomePage> {
               child: Directionality(
                 textDirection: TextDirection.rtl,
                 child: Container(
-                  width: 300,
-                  height: 450,
+                  width: 350,
+                  height: 350,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 8.0,
-                    vertical: 12.0,
+                    vertical: 16.0,
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -84,6 +84,10 @@ class HomePageState extends State<HomePage> {
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           hintText: 'أسم المنتج',
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: 8.0,
+                            vertical: 4.0,
+                          ),
                         ),
                         onChanged: (value) => title = value,
                       ),
@@ -91,6 +95,10 @@ class HomePageState extends State<HomePage> {
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           hintText: 'وصف المنتج',
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: 8.0,
+                            vertical: 4.0,
+                          ),
                         ),
                         onChanged: (value) => description = value,
                       ),
@@ -106,7 +114,12 @@ class HomePageState extends State<HomePage> {
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
                                 hintText: 'أسم المنتج',
+                                contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 8.0,
+                                  vertical: 4.0,
+                                ),
                               ),
+                              padding: EdgeInsets.zero,
                               items: unitList
                                   .map((e) => DropdownMenuItem(
                                         alignment: Alignment.centerRight,
@@ -129,7 +142,11 @@ class HomePageState extends State<HomePage> {
                             child: TextFormField(
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
-                                hintText: 'أدخل الكمية',
+                                hintText: 'أدخل الكمية بالحبة',
+                                contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 8.0,
+                                  vertical: 4.0,
+                                ),
                               ),
                               onChanged: (value) => quantity = int.parse(value),
                               keyboardType: TextInputType.number,
@@ -139,6 +156,10 @@ class HomePageState extends State<HomePage> {
                       ),
                       TextButton(
                         onPressed: () {},
+                        style: ButtonStyle(
+                          padding: MaterialStateProperty.all(EdgeInsets.zero),
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
                         child: const Text('إضافة وحدة جديدة'),
                       ),
                       ElevatedButton(
@@ -147,7 +168,7 @@ class HomePageState extends State<HomePage> {
                             .addProduct(
                                 title, description, unitPerPiece, quantity)
                             .then((value) => {Navigator.of(context).pop()}),
-                        child: const Text('data'),
+                        child: const Text('إضافة منتج جديد'),
                       ),
                     ],
                   ),
@@ -170,11 +191,11 @@ class HomePageState extends State<HomePage> {
               child: Directionality(
                 textDirection: TextDirection.rtl,
                 child: Container(
-                  width: 300,
-                  height: 300,
+                  width: 350,
+                  height: 200,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 8.0,
-                    vertical: 12.0,
+                    vertical: 16.0,
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -185,6 +206,10 @@ class HomePageState extends State<HomePage> {
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           hintText: 'أختر نوع المنتج',
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: 8.0,
+                            vertical: 4.0,
+                          ),
                         ),
                         items: productsList
                             .map((e) => DropdownMenuItem(
@@ -206,6 +231,10 @@ class HomePageState extends State<HomePage> {
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
                                 hintText: 'أدخل الكمية',
+                                contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 8.0,
+                                  vertical: 4.0,
+                                ),
                               ),
                               onChanged: (value) => quantity = int.parse(value),
                               keyboardType: TextInputType.number,
