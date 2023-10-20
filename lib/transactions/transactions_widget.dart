@@ -27,7 +27,7 @@ class TransactionsWidget extends StatelessWidget {
           ),
         ),
         trailing: Text(
-          DateFormat.yMd().format(transaction.date),
+          DateFormat('yyy-MM-dd HH:mmZ').format(transaction.date),
         ),
       ),
     );
