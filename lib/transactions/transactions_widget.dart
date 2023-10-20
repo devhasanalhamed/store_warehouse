@@ -13,21 +13,26 @@ class TransactionsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
-        leading: Text(Provider.of<ProductsProvider>(context, listen: false)
-            .products
-            .firstWhere((element) => element.id == transaction.productId)
-            .title),
+        leading: Text(
+          Provider.of<ProductsProvider>(context, listen: false)
+              .products
+              .firstWhere((element) => element.id == transaction.productId)
+              .title,
+        ),
         title: RichText(
           text: TextSpan(
             text: transaction.quantity.toString(),
-            style: const TextStyle(color: Colors.black),
+            style: const TextStyle(color: Colors.black, fontFamily: 'Cairo'),
             children: const [
-              TextSpan(text: 'حبة'),
+              TextSpan(
+                text: 'حبة',
+                style: TextStyle(color: Colors.black, fontFamily: 'Cairo'),
+              ),
             ],
           ),
         ),
         trailing: Text(
-          DateFormat('yyy-MM-dd HH:mmZ').format(transaction.date),
+          DateFormat('hh:mm | yyyy-MM-dd').format(transaction.date),
         ),
       ),
     );
