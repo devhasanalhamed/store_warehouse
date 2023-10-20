@@ -5,7 +5,7 @@ class ProductModel extends Product {
     required super.id,
     required super.title,
     required super.category,
-    required super.unit,
+    required super.unitId,
     required super.quantity,
   });
 }
