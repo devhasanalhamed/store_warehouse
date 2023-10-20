@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:store_warehouse/transactions/domain/entity/uint.dart';
 
 class Product extends Equatable {
   final int id;
