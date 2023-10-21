@@ -257,6 +257,7 @@ class HomePageState extends State<HomePage> {
             ),
           );
         },
+        backgroundColor: const Color.fromARGB(255, 12, 70, 117),
         child: const Icon(Icons.addchart),
       ),
     ];
