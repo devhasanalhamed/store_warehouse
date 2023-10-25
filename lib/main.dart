@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:store_warehouse/core/shared/products_transactions_provider.dart';
+import 'package:store_warehouse/core/shared/datasource/local_database.dart';
+import 'package:store_warehouse/core/shared/models/products_transactions_provider.dart';
+import 'package:store_warehouse/core/shared/models/unit_provider.dart';
 import 'package:store_warehouse/products/view/products_screen.dart';
-import 'package:store_warehouse/core/shared/unit_provider.dart';
 import 'package:store_warehouse/transactions/view/transactions_screen.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  LocalDatabase().init();
   runApp(const MyApp());
 }
 
@@ -90,7 +93,7 @@ class HomePageState extends State<HomePage> {
                           hintText: 'أسم المنتج',
                           contentPadding: EdgeInsets.symmetric(
                             horizontal: 8.0,
-                            vertical: 4.0,
+                            vertical: 12.0,
                           ),
                         ),
                         onChanged: (value) => title = value,
