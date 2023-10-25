@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:store_warehouse/core/shared/products_transactions_provider.dart';
+import 'package:store_warehouse/core/shared/models/products_transactions_provider.dart';
 import 'package:store_warehouse/products/view/product_widget.dart';
 
 class ProductsScreen extends StatefulWidget {
