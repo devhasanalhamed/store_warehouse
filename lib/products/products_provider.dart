@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:store_warehouse/transactions/data/model/product_model.dart';
+import 'package:store_warehouse/products/product_model.dart';
 
 class ProductsProvider extends ChangeNotifier {
   List<ProductModel> products = [];

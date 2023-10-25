@@ -1,4 +1,4 @@
-import 'package:store_warehouse/transactions/domain/entity/product.dart';
+import 'package:store_warehouse/products/product.dart';
 
 class ProductModel extends Product {
   const ProductModel({

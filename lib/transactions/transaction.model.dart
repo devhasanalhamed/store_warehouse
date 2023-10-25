@@ -1,4 +1,4 @@
-import 'package:store_warehouse/transactions/domain/entity/transaction.dart';
+import 'package:store_warehouse/transactions/transaction.dart';
 
 class TransactionModel extends TransAction {
   const TransactionModel({

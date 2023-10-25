@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:store_warehouse/products/products_provider.dart';
-import 'package:store_warehouse/transactions/data/model/transaction.model.dart';
+import 'package:store_warehouse/transactions/transaction.model.dart';
 
 class TransactionsWidget extends StatelessWidget {
   final TransactionModel transaction;

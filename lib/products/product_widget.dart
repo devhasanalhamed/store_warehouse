@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_warehouse/shared/unit_provider.dart';
-import 'package:store_warehouse/transactions/data/model/product_model.dart';
+import 'package:store_warehouse/products/product_model.dart';
 
 class ProductWidget extends StatelessWidget {
   final ProductModel product;

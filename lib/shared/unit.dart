@@ -12,5 +12,5 @@ class Unit extends Equatable {
   });
 
   @override
-  List<Object> get props => [id, title, unitPerPiece];
+  List<Object?> get props => [id, title, unitPerPiece];
 }

@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:store_warehouse/transactions/domain/entity/uint.dart';
+import 'package:store_warehouse/shared/unit.dart';
 
 class UnitProvider extends ChangeNotifier {
   final List<Unit> list = [
