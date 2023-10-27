@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:store_warehouse/core/shared/models/products_transactions_provider.dart';
+import 'package:store_warehouse/products/model/product.dart';
 import 'package:store_warehouse/transactions/model/transaction.dart';
 
 class TransactionsWidget extends StatelessWidget {
@@ -13,11 +14,22 @@ class TransactionsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
-        leading: Text(
-          Provider.of<ProductsTransactionsProvider>(context, listen: false)
-              .products
-              .firstWhere((element) => element.id == transaction.productId)
-              .title,
+        leading: Consumer<ProductsTransactionsProvider>(
+          builder: (context, value, child) => FutureBuilder<List<Product>>(
+            future: value.getProduct(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Text(
+                  snapshot.data!
+                      .firstWhere(
+                          (element) => element.id == transaction.productId)
+                      .title,
+                );
+              } else {
+                return const Text('');
+              }
+            },
+          ),
         ),
         title: RichText(
           text: TextSpan(
@@ -32,7 +44,7 @@ class TransactionsWidget extends StatelessWidget {
           ),
         ),
         trailing: Text(
-          DateFormat('hh:mm | yyyy-MM-dd').format(transaction.date),
+          DateFormat('hh:mm | yyyy-MM-dd').format(transaction.createdAt),
         ),
       ),
     );
