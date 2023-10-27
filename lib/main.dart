@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:store_warehouse/core/shared/datasource/local_database.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:store_warehouse/core/shared/models/products_transactions_provider.dart';
 import 'package:store_warehouse/core/shared/models/unit_provider.dart';
+import 'package:store_warehouse/products/model/product.dart';
 import 'package:store_warehouse/products/view/products_screen.dart';
 import 'package:store_warehouse/transactions/view/transactions_screen.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  LocalDatabase().init();
+  // await deleteDatabase('inventory');
   runApp(const MyApp());
 }
 
@@ -183,9 +184,9 @@ class HomePageState extends State<HomePage> {
         onPressed: () {
           int productId = 0;
           int quantity = 0;
-          final productsList =
+          final x =
               Provider.of<ProductsTransactionsProvider>(context, listen: false)
-                  .products;
+                  .getProduct();
           showDialog(
             context: context,
             builder: (s) => Dialog(
@@ -202,24 +203,35 @@ class HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      DropdownButtonFormField(
-                        value: null,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'أختر نوع المنتج',
-                          contentPadding: EdgeInsets.symmetric(
-                            horizontal: 8.0,
-                            vertical: 4.0,
-                          ),
-                        ),
-                        items: productsList
-                            .map((e) => DropdownMenuItem(
-                                  alignment: Alignment.centerRight,
-                                  value: e.id,
-                                  child: Text(e.title),
-                                ))
-                            .toList(),
-                        onChanged: (value) => productId = value!,
+                      FutureBuilder<List<Product>>(
+                        future: x,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return DropdownButtonFormField(
+                              value: null,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                hintText: 'أختر نوع المنتج',
+                                contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 8.0,
+                                  vertical: 4.0,
+                                ),
+                              ),
+                              items: snapshot.data!
+                                  .map((e) => DropdownMenuItem(
+                                        alignment: Alignment.centerRight,
+                                        value: e.id,
+                                        child: Text(e.title),
+                                      ))
+                                  .toList(),
+                              onChanged: (value) => productId = value!,
+                            );
+                          } else {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                        },
                       ),
                       Row(
                         children: [
@@ -307,6 +319,7 @@ class HomePageState extends State<HomePage> {
                                     onChanged: (value) => unitTitle = value,
                                   ),
                                   TextFormField(
+                                    keyboardType: TextInputType.number,
                                     decoration: const InputDecoration(
                                       border: OutlineInputBorder(),
                                       hintText: 'العدد بالحبة',
