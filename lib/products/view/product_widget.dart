@@ -40,9 +40,9 @@ class ProductWidget extends StatelessWidget {
               trailing: IconButton(
                 icon: const Icon(Icons.delete),
                 onPressed: () {
-                  Provider.of<ProductsTransactionsProvider>(context,
-                          listen: false)
-                      .deleteProduct(product.id);
+                  // Provider.of<ProductsTransactionsProvider>(context,
+                  //         listen: false)
+                  //     .deleteProduct(product.id);
                 },
               ),
             ),
