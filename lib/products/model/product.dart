@@ -1,4 +1,3 @@
-
 class Product {
   final int id;
   final String title;
@@ -15,4 +14,13 @@ class Product {
     required this.quantity,
     required this.totalAmount,
   });
+
+  factory Product.fromSQL(Map<String, dynamic> record) => Product(
+        id: record['id'],
+        title: record['title'],
+        description: record['description'],
+        unitId: record['unitId'] as int,
+        quantity: record['quantity'] as int,
+        totalAmount: record['totalAmount'] as int,
+      );
 }
