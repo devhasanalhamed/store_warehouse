@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:store_warehouse/products/products_provider.dart';
-import 'package:store_warehouse/products/products_screen.dart';
-import 'package:store_warehouse/shared/unit_provider.dart';
-import 'package:store_warehouse/transactions/transactions_provider.dart';
-import 'package:store_warehouse/transactions/transactions_screen.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:store_warehouse/core/shared/models/products_transactions_provider.dart';
+import 'package:store_warehouse/core/shared/models/unit_provider.dart';
+import 'package:store_warehouse/products/model/product.dart';
+import 'package:store_warehouse/products/view/products_screen.dart';
+import 'package:store_warehouse/transactions/view/transactions_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // await deleteDatabase('inventory');
   runApp(const MyApp());
 }
 
@@ -24,13 +27,18 @@ class MyApp extends StatelessWidget {
       home: MultiProvider(
         providers: [
           ChangeNotifierProvider(
-            create: (context) => ProductsProvider(),
-          ),
-          ChangeNotifierProvider(
-            create: (context) => TransactionsProvider(),
-          ),
-          ChangeNotifierProvider(
             create: (context) => UnitProvider(),
+          ),
+          ChangeNotifierProxyProvider<UnitProvider,
+              ProductsTransactionsProvider>(
+            create: (context) => ProductsTransactionsProvider(unitList: []),
+            update: (context, value, previous) {
+              if (value.list.length != previous!.unitList.length) {
+                return ProductsTransactionsProvider(unitList: value.list);
+              } else {
+                return previous;
+              }
+            },
           ),
         ],
         child: const HomePage(),
@@ -86,7 +94,7 @@ class HomePageState extends State<HomePage> {
                           hintText: 'أسم المنتج',
                           contentPadding: EdgeInsets.symmetric(
                             horizontal: 8.0,
-                            vertical: 4.0,
+                            vertical: 12.0,
                           ),
                         ),
                         onChanged: (value) => title = value,
@@ -113,7 +121,7 @@ class HomePageState extends State<HomePage> {
                               value: null,
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
-                                hintText: 'أسم المنتج',
+                                hintText: 'أختر نوع الوحدة',
                                 contentPadding: EdgeInsets.symmetric(
                                   horizontal: 8.0,
                                   vertical: 4.0,
@@ -154,20 +162,13 @@ class HomePageState extends State<HomePage> {
                           ),
                         ],
                       ),
-                      TextButton(
-                        onPressed: () {},
-                        style: ButtonStyle(
-                          padding: MaterialStateProperty.all(EdgeInsets.zero),
-                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        ),
-                        child: const Text('إضافة وحدة جديدة'),
-                      ),
                       ElevatedButton(
-                        onPressed: () => Provider.of<ProductsProvider>(context,
-                                listen: false)
-                            .addProduct(
-                                title, description, unitPerPiece, quantity)
-                            .then((value) => {Navigator.of(context).pop()}),
+                        onPressed: () =>
+                            Provider.of<ProductsTransactionsProvider>(context,
+                                    listen: false)
+                                .addProduct(
+                                    title, description, unitPerPiece, quantity)
+                                .then((value) => {Navigator.of(context).pop()}),
                         child: const Text('إضافة منتج جديد'),
                       ),
                     ],
@@ -183,8 +184,9 @@ class HomePageState extends State<HomePage> {
         onPressed: () {
           int productId = 0;
           int quantity = 0;
-          final productsList =
-              Provider.of<ProductsProvider>(context, listen: false).products;
+          final x =
+              Provider.of<ProductsTransactionsProvider>(context, listen: false)
+                  .getProduct();
           showDialog(
             context: context,
             builder: (s) => Dialog(
@@ -201,24 +203,35 @@ class HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      DropdownButtonFormField(
-                        value: null,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'أختر نوع المنتج',
-                          contentPadding: EdgeInsets.symmetric(
-                            horizontal: 8.0,
-                            vertical: 4.0,
-                          ),
-                        ),
-                        items: productsList
-                            .map((e) => DropdownMenuItem(
-                                  alignment: Alignment.centerRight,
-                                  value: e.id,
-                                  child: Text(e.title),
-                                ))
-                            .toList(),
-                        onChanged: (value) => productId = value!,
+                      FutureBuilder<List<Product>>(
+                        future: x,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return DropdownButtonFormField(
+                              value: null,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                hintText: 'أختر نوع المنتج',
+                                contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 8.0,
+                                  vertical: 4.0,
+                                ),
+                              ),
+                              items: snapshot.data!
+                                  .map((e) => DropdownMenuItem(
+                                        alignment: Alignment.centerRight,
+                                        value: e.id,
+                                        child: Text(e.title),
+                                      ))
+                                  .toList(),
+                              onChanged: (value) => productId = value!,
+                            );
+                          } else {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                        },
                       ),
                       Row(
                         children: [
@@ -243,11 +256,11 @@ class HomePageState extends State<HomePage> {
                         ],
                       ),
                       ElevatedButton(
-                        onPressed: () => Provider.of<TransactionsProvider>(
-                                context,
-                                listen: false)
-                            .addTransaction(productId, quantity)
-                            .then((value) => {Navigator.of(context).pop()}),
+                        onPressed: () =>
+                            Provider.of<ProductsTransactionsProvider>(context,
+                                    listen: false)
+                                .addTransaction(productId, quantity)
+                                .then((value) => {Navigator.of(context).pop()}),
                         child: const Text('إضافة عملية'),
                       ),
                     ],
@@ -264,11 +277,92 @@ class HomePageState extends State<HomePage> {
 
     return Directionality(
       textDirection: TextDirection.rtl,
-      child: Consumer<TransactionsProvider>(
+      child: Consumer<ProductsTransactionsProvider>(
         builder: (context, value, child) => Scaffold(
           drawer: Drawer(
             child: Container(
               color: Theme.of(context).colorScheme.primary,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Divider(color: Colors.white),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      String unitTitle = '';
+                      int unitPerPiece = 0;
+                      showDialog(
+                        context: context,
+                        builder: (s) => Dialog(
+                          child: Directionality(
+                            textDirection: TextDirection.rtl,
+                            child: Container(
+                              height: 350,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8.0,
+                                vertical: 16.0,
+                              ),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  TextFormField(
+                                    decoration: const InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      hintText: 'أسم الوحدة',
+                                      contentPadding: EdgeInsets.symmetric(
+                                        horizontal: 8.0,
+                                        vertical: 4.0,
+                                      ),
+                                    ),
+                                    onChanged: (value) => unitTitle = value,
+                                  ),
+                                  TextFormField(
+                                    keyboardType: TextInputType.number,
+                                    decoration: const InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      hintText: 'العدد بالحبة',
+                                      contentPadding: EdgeInsets.symmetric(
+                                        horizontal: 8.0,
+                                        vertical: 4.0,
+                                      ),
+                                    ),
+                                    onChanged: (value) =>
+                                        unitPerPiece = int.parse(value),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () => Provider.of<UnitProvider>(
+                                            context,
+                                            listen: false)
+                                        .addUnit(unitTitle, unitPerPiece)
+                                        .then(
+                                          (value) =>
+                                              {Navigator.of(context).pop()},
+                                        ),
+                                    child: const Text('إضافة وحدة جديد'),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                    style: ButtonStyle(
+                      padding: MaterialStateProperty.all(EdgeInsets.zero),
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
+                    child: const Text(
+                      'إضافة وحدة جديدة',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  const Divider(color: Colors.white),
+                ],
+              ),
             ),
           ),
           appBar: AppBar(

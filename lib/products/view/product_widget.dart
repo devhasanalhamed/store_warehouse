@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:store_warehouse/shared/unit_provider.dart';
-import 'package:store_warehouse/transactions/data/model/product_model.dart';
+import 'package:store_warehouse/core/shared/models/products_transactions_provider.dart';
+import 'package:store_warehouse/core/shared/models/unit_provider.dart';
+import 'package:store_warehouse/products/model/product.dart';
+import 'package:store_warehouse/transactions/model/transaction.dart';
 
 class ProductWidget extends StatelessWidget {
-  final ProductModel product;
+  final Product product;
   const ProductWidget({
     Key? key,
     required this.product,
@@ -12,6 +14,8 @@ class ProductWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final transactions = Provider.of<ProductsTransactionsProvider>(context)
+        .getProductTransactions(product.id);
     return Card(
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -32,8 +36,15 @@ class ProductWidget extends StatelessWidget {
                 ),
               ),
               title: Text(product.title),
-              subtitle: Text(product.category),
-              trailing: const Icon(Icons.delete),
+              subtitle: Text(product.description),
+              trailing: IconButton(
+                icon: const Icon(Icons.delete),
+                onPressed: () {
+                  // Provider.of<ProductsTransactionsProvider>(context,
+                  //         listen: false)
+                  //     .deleteProduct(product.id);
+                },
+              ),
             ),
             Table(
               children: [
@@ -62,16 +73,18 @@ class ProductWidget extends StatelessWidget {
                       product.quantity.toString(),
                     ),
                     Text(
-                      (product.quantity *
-                              Provider.of<UnitProvider>(context, listen: false)
-                                  .list
-                                  .firstWhere(
-                                      (element) => element.id == product.unitId)
-                                  .unitPerPiece)
-                          .toString(),
+                      (product.totalAmount).toString(),
                     ),
                   ],
                 ),
+              ],
+            ),
+            Column(
+              children: [
+                for (TransAction i in transactions)
+                  Text(
+                    i.quantity.toString(),
+                  ),
               ],
             ),
           ],

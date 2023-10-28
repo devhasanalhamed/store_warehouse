@@ -1,0 +1,99 @@
+import 'dart:developer';
+import 'package:sqflite/sqflite.dart';
+
+class SQLHelper {
+  static Future<void> createTables(Database database) async {
+    await database.execute("""
+    CREATE TABLE items(
+      id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+      title TEXT,
+      description TEXT,
+      unitId int,
+      quantity int,
+      totalAmount int,
+      createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)
+      """);
+
+    await database.execute("""
+      CREATE TABLE units(
+      id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+      title TEXT,
+      unitPerPiece int,
+      createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)
+      """);
+
+    await database.execute("""
+      CREATE TABLE transactions(
+      id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+      productId int,
+      quantity int,
+      createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)
+      """);
+  }
+
+  static Future<Database> db() async {
+    return openDatabase('inventory', version: 1,
+        onCreate: (Database database, int version) async {
+      log('message');
+      await createTables(database);
+    });
+  }
+
+  static Future<int> createItem(String title, String description, int unitId,
+      int quantity, int totalAmount) async {
+    final db = await SQLHelper.db();
+
+    final data = {
+      "title": title,
+      "description": description,
+      "unitId": unitId,
+      "quantity": quantity,
+      "totalAmount": totalAmount
+    };
+
+    final id = await db.insert('items', data,
+        conflictAlgorithm: ConflictAlgorithm.replace);
+    return id;
+  }
+
+  static Future<int> createTransaction(int productId, int quantity) async {
+    final db = await SQLHelper.db();
+
+    final data = {
+      "productId": productId,
+      "quantity": quantity,
+    };
+
+    final id = await db.insert('transactions', data,
+        conflictAlgorithm: ConflictAlgorithm.replace);
+    return id;
+  }
+
+  static Future<int> createUnit(String title, int unitPerPiece) async {
+    final db = await SQLHelper.db();
+
+    final data = {
+      "title": title,
+      "unitPerPiece": unitPerPiece,
+    };
+
+    final id = await db.insert('units', data,
+        conflictAlgorithm: ConflictAlgorithm.replace);
+    return id;
+  }
+
+  static Future<List<Map<String, dynamic>>> getUnits() async {
+    final db = await SQLHelper.db();
+    return db.query('units', orderBy: 'id');
+  }
+
+  static Future<List<Map<String, dynamic>>> getItems() async {
+    final db = await SQLHelper.db();
+    return db.query('items', orderBy: 'id');
+  }
+
+  static Future<List<Map<String, dynamic>>> getTransactions() async {
+    final db = await SQLHelper.db();
+    return db.query('transactions', orderBy: 'id');
+  }
+}
