@@ -1,6 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:store_warehouse/core/shared/models/unit.dart';
-import 'package:store_warehouse/core/sql_helper.dart';
+import 'package:store_warehouse/core/utils/sql_helper.dart';
 import 'package:store_warehouse/products/model/product.dart';
 import 'package:store_warehouse/transactions/model/transaction.dart';
 
@@ -10,8 +12,6 @@ class ProductsTransactionsProvider extends ChangeNotifier {
   });
 
   final List<Unit> unitList;
-
-
 
   Future<List<Product>> getProduct() async {
     final dbList = await SQLHelper.getItems();
@@ -24,20 +24,19 @@ class ProductsTransactionsProvider extends ChangeNotifier {
     return [..._transactions];
   }
 
+  Future<Product> getProductById(int id) async {
+    final dbList = await SQLHelper.getItemById(id);
+    return dbList.map((e) => Product.fromSQL(e)).first;
+  }
+
   int getPiecePerUnit(int unitId) {
     return unitList.firstWhere((element) => element.id == unitId).unitPerPiece;
   }
 
   Future<void> addProduct(
       String title, String description, int unitId, int quantity) async {
-    final state = await SQLHelper.createItem(
-      title,
-      description,
-      unitId,
-      quantity,
-      (quantity * getPiecePerUnit(unitId)),
-    );
-    print(state);
+    await SQLHelper.createItem(title, description, unitId, quantity,
+        (quantity * getPiecePerUnit(unitId)));
     notifyListeners();
   }
 
@@ -79,7 +78,14 @@ class ProductsTransactionsProvider extends ChangeNotifier {
   // }
 
   Future<void> addTransaction(int productId, int subQuantity) async {
-    SQLHelper.createTransaction(productId, subQuantity);
+    final product = await getProductById(productId);
+    final total = product.totalAmount;
+    if (total >= subQuantity) {
+      log('dd');
+      SQLHelper.createTransaction(productId, subQuantity);
+      final newTotal = total - subQuantity;
+      SQLHelper.updateSubQuantity(productId, newTotal);
+    }
     // final product = _products.firstWhere((element) => element.id == productId);
     // if (product.totalAmount >= subQuantity) {
     //   log('is ok');
@@ -108,6 +114,12 @@ class ProductsTransactionsProvider extends ChangeNotifier {
     // }
 
     notifyListeners();
+  }
+
+  Future<void> updateAddQuantity(int productId, int addQuantity) async {
+    final product = await getProductById(productId);
+    final totalAmount = product.totalAmount + addQuantity;
+    SQLHelper.updateSubQuantity(productId, totalAmount);
   }
 
   Future<List<TransAction>> getTransactions() async {
