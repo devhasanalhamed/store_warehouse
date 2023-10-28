@@ -1,5 +1,3 @@
-import 'package:intl/intl.dart';
-
 class TransAction {
   final int id;
   final int quantity;
