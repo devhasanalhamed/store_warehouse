@@ -77,11 +77,27 @@ class ProductsTransactionsProvider extends ChangeNotifier {
   //   }
   // }
 
+  Future<Map<String, List<TransAction>>> getFilteredList() async {
+    final transactions = await getTransactions();
+    Map<String, List<TransAction>> temp = {};
+    for (var item in transactions) {
+      var x = item.createdAt;
+      final trans = temp['mark'] ?? [];
+      print(trans.toString());
+      print(trans.length);
+      var mark = '${x.month}|${x.day}|${x.year}';
+      temp.addAll({
+        mark: [...trans, item],
+      });
+      log(temp.toString());
+    }
+    return temp;
+  }
+
   Future<void> addTransaction(int productId, int subQuantity) async {
     final product = await getProductById(productId);
     final total = product.totalAmount;
     if (total >= subQuantity) {
-      log('dd');
       SQLHelper.createTransaction(productId, subQuantity);
       final newTotal = total - subQuantity;
       SQLHelper.updateSubQuantity(productId, newTotal);
