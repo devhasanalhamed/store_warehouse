@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:store_warehouse/core/shared/models/unit.dart';
-import 'package:store_warehouse/core/sql_helper.dart';
+import 'package:store_warehouse/core/utils/sql_helper.dart';
 
 class UnitProvider extends ChangeNotifier {
   List<Unit> list = [
