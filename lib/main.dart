@@ -149,7 +149,7 @@ class HomePageState extends State<HomePage> {
                             child: TextFormField(
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
-                                hintText: 'أدخل الكمية بالحبة',
+                                hintText: 'أدخل الكمية بالوحدة المختارة',
                                 contentPadding: EdgeInsets.symmetric(
                                   horizontal: 8.0,
                                   vertical: 4.0,
