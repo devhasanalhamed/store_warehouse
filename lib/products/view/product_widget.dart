@@ -87,6 +87,96 @@ class ProductWidget extends StatelessWidget {
                   ),
               ],
             ),
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                ElevatedButton.icon(
+                  icon: const Icon(Icons.add),
+                  onPressed: () {
+                    int quantity = 0;
+                    final value = Provider.of<ProductsTransactionsProvider>(
+                        context,
+                        listen: false);
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (context) => Directionality(
+                        textDirection: TextDirection.rtl,
+                        child: Container(
+                          width: 350,
+                          height: 350,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8.0,
+                            vertical: 16.0,
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Row(
+                                children: [
+                                  const Text(
+                                    'نوع الوحدة',
+                                  ),
+                                  const SizedBox(width: 12.0),
+                                  Expanded(
+                                    child: DropdownButtonFormField(
+                                      value: null,
+                                      decoration: InputDecoration(
+                                        border: const OutlineInputBorder(),
+                                        hintText: product.unitId.toString(),
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                          horizontal: 8.0,
+                                          vertical: 4.0,
+                                        ),
+                                      ),
+                                      padding: EdgeInsets.zero,
+                                      items: const [],
+                                      onChanged: null,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  const Text(
+                                    'الكمية',
+                                  ),
+                                  const SizedBox(width: 12.0),
+                                  Expanded(
+                                    child: TextFormField(
+                                      decoration: const InputDecoration(
+                                        border: OutlineInputBorder(),
+                                        hintText: 'أدخل الكمية بالحبة',
+                                        contentPadding: EdgeInsets.symmetric(
+                                          horizontal: 8.0,
+                                          vertical: 4.0,
+                                        ),
+                                      ),
+                                      onChanged: (value) =>
+                                          quantity = int.parse(value),
+                                      keyboardType: TextInputType.number,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              ElevatedButton(
+                                onPressed: () => value
+                                    .updateAddQuantity(product.id, quantity)
+                                    .then((value) => Navigator.pop(context)),
+                                child: const Text('إضافة كمية جديدة'),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                  label: const Text('كمية جديدة'),
+                ),
+              ],
+              
+            ),
           ],
         ),
       ),
