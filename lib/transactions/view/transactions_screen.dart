@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_warehouse/core/shared/models/products_transactions_provider.dart';
@@ -14,21 +16,40 @@ class TransactionsScreen extends StatefulWidget {
 class TransactionsScreenState extends State<TransactionsScreen> {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<TransAction>>(
+    return FutureBuilder<Map<String, List<TransAction>>>(
       future:
-          Provider.of<ProductsTransactionsProvider>(context).getTransactions(),
+          Provider.of<ProductsTransactionsProvider>(context).getFilteredList(),
       builder: (context, snapshot) {
+        log('the fuck');
         if (snapshot.hasData) {
+          log(snapshot.data.toString());
           return ListView.builder(
             itemCount: snapshot.data!.length,
-            itemBuilder: (context, index) => TransactionsWidget(
-              transaction: snapshot.data![index],
-            ),
+            itemBuilder: (context, index) => testOnly(snapshot.data!),
           );
         } else {
           return const Center(child: CircularProgressIndicator());
         }
       },
+    );
+  }
+
+  Widget testOnly(Map<String, List<TransAction>> map) {
+    log(map.toString());
+    print('testOnly');
+    print(map.values.length);
+    return Column(
+      children: [
+        Text(map.keys.first),
+        // Expanded(
+        //   child: ListView.builder(
+        //     itemCount: map['transactions']length,
+        //     itemBuilder: (context, index) => TransactionsWidget(
+        //       transaction: map['transaction']![index],
+        //     ),
+        //   ),
+        // ),
+      ],
     );
   }
 }
