@@ -35,21 +35,18 @@ class TransactionsScreenState extends State<TransactionsScreen> {
   }
 
   Widget testOnly(Map<String, List<TransAction>> map) {
-    log(map.toString());
+    log(map['10|28|2023']!.length.toString());
     print('testOnly');
     print(map.values.length);
-    return Column(
-      children: [
-        Text(map.keys.first),
-        // Expanded(
-        //   child: ListView.builder(
-        //     itemCount: map['transactions']length,
-        //     itemBuilder: (context, index) => TransactionsWidget(
-        //       transaction: map['transaction']![index],
-        //     ),
-        //   ),
-        // ),
-      ],
+    return Expanded(
+      child: Column(
+        children: [
+          for (var i in map['10|28|2023']!)
+            TransactionsWidget(
+              transaction: i,
+            ),
+        ],
+      ),
     );
   }
 }
