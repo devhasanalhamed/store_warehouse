@@ -20,12 +20,20 @@ class TransactionsScreenState extends State<TransactionsScreen> {
       future:
           Provider.of<ProductsTransactionsProvider>(context).getFilteredList(),
       builder: (context, snapshot) {
-        log('the fuck');
         if (snapshot.hasData) {
-          log(snapshot.data.toString());
-          return ListView.builder(
-            itemCount: snapshot.data!.length,
-            itemBuilder: (context, index) => testOnly(snapshot.data!),
+          return Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
+            child: ListView(
+              children: [
+                Column(
+                  children: [
+                    for (var i in snapshot.data!.keys)
+                      testOnly(snapshot.data![i]!, i),
+                  ],
+                ),
+              ],
+            ),
           );
         } else {
           return const Center(child: CircularProgressIndicator());
@@ -34,19 +42,20 @@ class TransactionsScreenState extends State<TransactionsScreen> {
     );
   }
 
-  Widget testOnly(Map<String, List<TransAction>> map) {
-    log(map['10|28|2023']!.length.toString());
-    print('testOnly');
-    print(map.values.length);
-    return Expanded(
-      child: Column(
-        children: [
-          for (var i in map['10|28|2023']!)
-            TransactionsWidget(
-              transaction: i,
-            ),
-        ],
-      ),
+  Widget testOnly(List<TransAction> map, String title) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(title,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 14.0,
+            )),
+        for (var i in map)
+          TransactionsWidget(
+            transaction: i,
+          ),
+      ],
     );
   }
 }
