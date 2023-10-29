@@ -37,7 +37,7 @@ class TransactionsWidget extends StatelessWidget {
             style: const TextStyle(color: Colors.black, fontFamily: 'Cairo'),
             children: const [
               TextSpan(
-                text: 'حبة',
+                text: ' حبة',
                 style: TextStyle(color: Colors.black, fontFamily: 'Cairo'),
               ),
             ],
