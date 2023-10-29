@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:store_warehouse/core/shared/models/unit.dart';
 import 'package:store_warehouse/core/utils/sql_helper.dart';
@@ -75,19 +77,33 @@ class ProductsTransactionsProvider extends ChangeNotifier {
   //   }
   // }
 
+  String dater(DateTime date) {
+    final today = DateTime.now();
+    final difference = today.difference(date).inDays;
+    switch (difference) {
+      case 0:
+        return 'اليوم';
+      case 1:
+        return 'بالأمس';
+      case 2:
+        return 'قبل يومين';
+      default:
+        return 'قبل $difference أيام';
+    }
+  }
+
   Future<Map<String, List<TransAction>>> getFilteredList() async {
     final transactions = await getTransactions();
     Map<String, List<TransAction>> temp = {};
     final trans = [];
     for (var item in transactions) {
-      trans.add(item);
-      var mark =
-          '${item.createdAt.month}|${item.createdAt.day}|${item.createdAt.year}';
+      var mark = dater(item.createdAt);
       temp.addAll({
         mark: [...trans, item],
       });
-      print('len len len${trans.length}');
+      trans.add(item);
     }
+    log(temp.values.toString());
     return temp;
   }
 
