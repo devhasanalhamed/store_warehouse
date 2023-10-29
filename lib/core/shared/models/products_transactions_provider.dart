@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:store_warehouse/core/shared/models/unit.dart';
 import 'package:store_warehouse/core/utils/sql_helper.dart';
@@ -80,16 +78,15 @@ class ProductsTransactionsProvider extends ChangeNotifier {
   Future<Map<String, List<TransAction>>> getFilteredList() async {
     final transactions = await getTransactions();
     Map<String, List<TransAction>> temp = {};
+    final trans = [];
     for (var item in transactions) {
-      var x = item.createdAt;
-      final trans = temp['mark'] ?? [];
-      print(trans.toString());
-      print(trans.length);
-      var mark = '${x.month}|${x.day}|${x.year}';
+      trans.add(item);
+      var mark =
+          '${item.createdAt.month}|${item.createdAt.day}|${item.createdAt.year}';
       temp.addAll({
         mark: [...trans, item],
       });
-      log(temp.toString());
+      print('len len len${trans.length}');
     }
     return temp;
   }
