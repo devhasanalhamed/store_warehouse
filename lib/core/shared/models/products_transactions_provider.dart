@@ -40,11 +40,6 @@ class ProductsTransactionsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Future<void> deleteProduct(int productId) async {
-  //   _products.removeWhere((element) => element.id == productId);
-  //   notifyListeners();
-  // }
-
   List<TransAction> getProductTransactions(int productId) {
     List<TransAction> temp = [];
     for (var element in _transactions) {
@@ -55,27 +50,6 @@ class ProductsTransactionsProvider extends ChangeNotifier {
 
     return temp;
   }
-
-  // Future<bool> updateTransaction(int productId, int subQuantity) async {
-  //   final product = _products.firstWhere((element) => element.id == productId);
-  //   if (product.totalAmount >= subQuantity) {
-  //     final newTotal = product.totalAmount - subQuantity;
-  //     _products.removeWhere((element) => element.id == productId);
-  //     _products.add(
-  //       Product(
-  //         id: product.id,
-  //         title: product.title,
-  //         description: product.description,
-  //         unitId: product.unitId,
-  //         quantity: product.quantity,
-  //         totalAmount: newTotal,
-  //       ),
-  //     );
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
 
   String dater(DateTime date) {
     final today = DateTime.now();
@@ -98,6 +72,7 @@ class ProductsTransactionsProvider extends ChangeNotifier {
     final trans = [];
     for (var item in transactions) {
       var mark = dater(item.createdAt);
+
       temp.addAll({
         mark: [...trans, item],
       });
@@ -115,33 +90,6 @@ class ProductsTransactionsProvider extends ChangeNotifier {
       final newTotal = total - subQuantity;
       SQLHelper.updateSubQuantity(productId, newTotal);
     }
-    // final product = _products.firstWhere((element) => element.id == productId);
-    // if (product.totalAmount >= subQuantity) {
-    //   log('is ok');
-    //   final newTotal = product.totalAmount - subQuantity;
-    //   log('$newTotal       ${product.totalAmount}   $subQuantity');
-    //   _products.removeWhere((element) => element.id == productId);
-    //   _products.add(
-    //     Product(
-    //       id: product.id,
-    //       title: product.title,
-    //       description: product.description,
-    //       unitId: product.unitId,
-    //       quantity: product.quantity,
-    //       totalAmount: newTotal,
-    //     ),
-    //   );
-
-    //   _transactions.add(
-    //     TransAction(
-    //       id: math.Random().nextInt(5000),
-    //       quantity: subQuantity,
-    //       productId: productId,
-    //       createdAt: DateTime.now(),
-    //     ),
-    //   );
-    // }
-
     notifyListeners();
   }
 
