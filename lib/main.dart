@@ -278,6 +278,7 @@ class HomePageState extends State<HomePage> {
       textDirection: TextDirection.rtl,
       child: Consumer<ProductsTransactionsProvider>(
         builder: (context, value, child) => Scaffold(
+          resizeToAvoidBottomInset: true,
           drawer: Drawer(
             child: Container(
               color: Theme.of(context).colorScheme.primary,
