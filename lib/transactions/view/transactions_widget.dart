@@ -17,22 +17,26 @@ class TransactionsWidget extends StatelessWidget {
         children: [
           Expanded(
             child: ListTile(
-              leading: Consumer<ProductsTransactionsProvider>(
-                builder: (context, value, child) =>
-                    FutureBuilder<List<Product>>(
-                  future: value.getProduct(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return Text(
-                        snapshot.data!
-                            .firstWhere((element) =>
-                                element.id == transaction.productId)
-                            .title,
-                      );
-                    } else {
-                      return const Text('');
-                    }
-                  },
+              leading: SizedBox(
+                width: 110,
+                child: Consumer<ProductsTransactionsProvider>(
+                  builder: (context, value, child) =>
+                      FutureBuilder<List<Product>>(
+                    future: value.getProduct(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Text(
+                          snapshot.data!
+                              .firstWhere((element) =>
+                                  element.id == transaction.productId)
+                              .title,
+                          overflow: TextOverflow.clip,
+                        );
+                      } else {
+                        return const Text('');
+                      }
+                    },
+                  ),
                 ),
               ),
               title: RichText(
