@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_warehouse/core/shared/models/products_transactions_provider.dart';
-import 'package:store_warehouse/core/shared/models/unit.dart';
 import 'package:store_warehouse/core/shared/models/unit_provider.dart';
 import 'package:store_warehouse/products/model/product.dart';
 import 'package:store_warehouse/transactions/model/transaction.dart';
