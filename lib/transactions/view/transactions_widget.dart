@@ -13,39 +13,56 @@ class TransactionsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: ListTile(
-        leading: Consumer<ProductsTransactionsProvider>(
-          builder: (context, value, child) => FutureBuilder<List<Product>>(
-            future: value.getProduct(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return Text(
-                  snapshot.data!
-                      .firstWhere(
-                          (element) => element.id == transaction.productId)
-                      .title,
-                );
-              } else {
-                return const Text('');
-              }
-            },
-          ),
-        ),
-        title: RichText(
-          text: TextSpan(
-            text: transaction.quantity.toString(),
-            style: const TextStyle(color: Colors.black, fontFamily: 'Cairo'),
-            children: const [
-              TextSpan(
-                text: ' حبة',
-                style: TextStyle(color: Colors.black, fontFamily: 'Cairo'),
+      child: Row(
+        children: [
+          Expanded(
+            child: ListTile(
+              leading: Consumer<ProductsTransactionsProvider>(
+                builder: (context, value, child) =>
+                    FutureBuilder<List<Product>>(
+                  future: value.getProduct(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Text(
+                        snapshot.data!
+                            .firstWhere((element) =>
+                                element.id == transaction.productId)
+                            .title,
+                      );
+                    } else {
+                      return const Text('');
+                    }
+                  },
+                ),
               ),
-            ],
+              title: RichText(
+                text: TextSpan(
+                  text: transaction.quantity.toString(),
+                  style:
+                      const TextStyle(color: Colors.black, fontFamily: 'Cairo'),
+                  children: const [
+                    TextSpan(
+                      text: ' حبة',
+                      style:
+                          TextStyle(color: Colors.black, fontFamily: 'Cairo'),
+                    ),
+                  ],
+                ),
+              ),
+              trailing: Text(
+                DateFormat('hh:mm | yyyy-MM-dd').format(transaction.createdAt),
+              ),
+            ),
           ),
-        ),
-        trailing: Text(
-          DateFormat('hh:mm | yyyy-MM-dd').format(transaction.createdAt),
-        ),
+          Container(
+            height: 2,
+            width: 16,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(4),
+              color: Colors.red,
+            ),
+          ),
+        ],
       ),
     );
   }
