@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:sqflite/sqflite.dart';
+import 'package:store_warehouse/products/model/product.dart';
 
 class SQLHelper {
   static Future<void> createTables(Database database) async {
@@ -89,6 +90,16 @@ class SQLHelper {
 
     final result =
         await db.update('items', data, where: 'id = ?', whereArgs: [productId]);
+    return result;
+  }
+
+   static Future<int> editProduct(Product product, int totalAmount) async {
+    final db = await SQLHelper.db();
+
+    final data = {"totalAmount": totalAmount};
+
+    final result =
+        await db.update('items', data, where: 'id = ?', whereArgs: [product.id]);
     return result;
   }
 
