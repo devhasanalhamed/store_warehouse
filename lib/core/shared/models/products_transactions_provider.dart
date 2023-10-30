@@ -99,6 +99,15 @@ class ProductsTransactionsProvider extends ChangeNotifier {
     SQLHelper.updateSubQuantity(productId, totalAmount);
   }
 
+  Future<void> editProduct(
+    int productId,
+    String title,
+    String description,
+    int unitId,
+  ) async {
+    SQLHelper.editProduct(productId, title, description, unitId);
+  }
+
   Future<List<TransAction>> getTransactions() async {
     final dbList = await SQLHelper.getTransactions();
     return dbList.map((e) => TransAction.fromSQL(e)).toList();
