@@ -195,8 +195,8 @@ class ProductWidget extends StatelessWidget {
                   const SizedBox(width: 16.0),
                   ElevatedButton.icon(
                     onPressed: () {
-                      String title = '';
-                      String description = '';
+                      String title = product.title;
+                      String description = product.description;
                       int unitId = product.unitId;
                       final provider =
                           Provider.of<ProductsTransactionsProvider>(context,
@@ -230,7 +230,6 @@ class ProductWidget extends StatelessWidget {
                                     ),
                                   ),
                                   onChanged: (value) => title = value,
-                                  keyboardType: TextInputType.number,
                                 ),
                                 TextFormField(
                                   initialValue: product.description,
@@ -241,8 +240,7 @@ class ProductWidget extends StatelessWidget {
                                       vertical: 4.0,
                                     ),
                                   ),
-                                  onChanged: (value) => title = value,
-                                  keyboardType: TextInputType.number,
+                                  onChanged: (value) => description = value,
                                 ),
                                 Row(
                                   children: [
@@ -281,7 +279,14 @@ class ProductWidget extends StatelessWidget {
                                   ),
                                 ),
                                 ElevatedButton(
-                                  onPressed: () => (),
+                                  onPressed: () => provider
+                                      .editProduct(
+                                        product.id,
+                                        title,
+                                        description,
+                                        unitId,
+                                      )
+                                      .then((value) => Navigator.pop(context)),
                                   child: const Text(
                                     'تعديل معلومات المنتج',
                                   ),
