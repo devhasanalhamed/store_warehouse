@@ -74,7 +74,7 @@ class ProductsTransactionsProvider extends ChangeNotifier {
       var mark = dater(item.createdAt);
 
       temp.addAll({
-        mark: [...trans, item],
+        mark: [...(temp['mark'] as List), item],
       });
       trans.add(item);
     }
