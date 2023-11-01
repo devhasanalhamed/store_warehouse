@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_warehouse/core/shared/models/products_transactions_provider.dart';
 import 'package:store_warehouse/core/shared/models/unit_provider.dart';
+import 'package:store_warehouse/core/utils/sql_helper.dart';
 import 'package:store_warehouse/products/model/product.dart';
-import 'package:store_warehouse/products/view/products_screen.dart';
+import 'package:store_warehouse/products/view/screen/add_product_screen.dart';
+import 'package:store_warehouse/products/view/screen/products_screen.dart';
 import 'package:store_warehouse/transactions/view/transactions_screen.dart';
 
 void main() async {
@@ -17,30 +19,31 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Warehouse',
-      theme: ThemeData(
-        fontFamily: 'Cairo',
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: MultiProvider(
-        providers: [
-          ChangeNotifierProvider(
-            create: (context) => UnitProvider(),
-          ),
-          ChangeNotifierProxyProvider<UnitProvider,
-              ProductsTransactionsProvider>(
-            create: (context) => ProductsTransactionsProvider(unitList: []),
-            update: (context, value, previous) {
-              if (value.list.length != previous!.unitList.length) {
-                return ProductsTransactionsProvider(unitList: value.list);
-              } else {
-                return previous;
-              }
-            },
-          ),
-        ],
-        child: const HomePage(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => UnitProvider(),
+        ),
+        ChangeNotifierProxyProvider<UnitProvider, ProductsTransactionsProvider>(
+          create: (context) => ProductsTransactionsProvider(unitList: []),
+          update: (context, value, previous) {
+            if (value.list.length != previous!.unitList.length) {
+              return ProductsTransactionsProvider(unitList: value.list);
+            } else {
+              return previous;
+            }
+          },
+        ),
+      ],
+      child: MaterialApp(
+        title: 'مستودعي',
+        theme: ThemeData(
+          fontFamily: 'Cairo',
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        ),
+        home: Consumer<ProductsTransactionsProvider>(
+          builder: (context, value, child) => const HomePage(),
+        ),
       ),
     );
   }
@@ -65,117 +68,123 @@ class HomePageState extends State<HomePage> {
     List<FloatingActionButton> floatingActionButton = [
       FloatingActionButton(
         onPressed: () {
-          String title = '';
-          String description = '';
-          int quantity = 0;
-          int unitPerPiece = 0;
-          final unitList =
-              Provider.of<UnitProvider>(context, listen: false).list;
-          showDialog(
-            context: context,
-            builder: (s) => Dialog(
-              child: Directionality(
-                textDirection: TextDirection.rtl,
-                child: Container(
-                  width: 350,
-                  height: 350,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8.0,
-                    vertical: 16.0,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      TextFormField(
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'أسم المنتج',
-                          contentPadding: EdgeInsets.symmetric(
-                            horizontal: 8.0,
-                            vertical: 12.0,
-                          ),
-                        ),
-                        onChanged: (value) => title = value,
-                      ),
-                      TextFormField(
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'وصف المنتج',
-                          contentPadding: EdgeInsets.symmetric(
-                            horizontal: 8.0,
-                            vertical: 4.0,
-                          ),
-                        ),
-                        onChanged: (value) => description = value,
-                      ),
-                      Row(
-                        children: [
-                          const Text(
-                            'نوع الوحدة',
-                          ),
-                          const SizedBox(width: 12.0),
-                          Expanded(
-                            child: DropdownButtonFormField(
-                              value: null,
-                              decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
-                                hintText: 'أختر نوع الوحدة',
-                                contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 8.0,
-                                  vertical: 4.0,
-                                ),
-                              ),
-                              padding: EdgeInsets.zero,
-                              items: unitList
-                                  .map((e) => DropdownMenuItem(
-                                        alignment: Alignment.centerRight,
-                                        value: e.id,
-                                        child: Text(e.title),
-                                      ))
-                                  .toList(),
-                              onChanged: (value) => unitPerPiece = value!,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          const Text(
-                            'الكمية',
-                          ),
-                          const SizedBox(width: 12.0),
-                          Expanded(
-                            child: TextFormField(
-                              decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
-                                hintText: 'أدخل الكمية بالوحدة المختارة',
-                                contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 8.0,
-                                  vertical: 4.0,
-                                ),
-                              ),
-                              onChanged: (value) => quantity = int.parse(value),
-                              keyboardType: TextInputType.number,
-                            ),
-                          ),
-                        ],
-                      ),
-                      ElevatedButton(
-                        onPressed: () =>
-                            Provider.of<ProductsTransactionsProvider>(context,
-                                    listen: false)
-                                .addProduct(
-                                    title, description, unitPerPiece, quantity)
-                                .then((value) => {Navigator.of(context).pop()}),
-                        child: const Text('إضافة منتج جديد'),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AddProductScreen(),
             ),
           );
+          // String title = '';
+          // String description = '';
+          // int quantity = 0;
+          // int unitPerPiece = 0;
+          // final unitList =
+          //     Provider.of<UnitProvider>(context, listen: false).list;
+          // showDialog(
+          //   context: context,
+          //   builder: (s) => Dialog(
+          //     child: Directionality(
+          //       textDirection: TextDirection.rtl,
+          //       child: Container(
+          //         width: 350,
+          //         height: 350,
+          //         padding: const EdgeInsets.symmetric(
+          //           horizontal: 8.0,
+          //           vertical: 16.0,
+          //         ),
+          //         child: Column(
+          //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //           crossAxisAlignment: CrossAxisAlignment.center,
+          //           children: [
+          //             TextFormField(
+          //               decoration: const InputDecoration(
+          //                 border: OutlineInputBorder(),
+          //                 hintText: 'أسم المنتج',
+          //                 contentPadding: EdgeInsets.symmetric(
+          //                   horizontal: 8.0,
+          //                   vertical: 12.0,
+          //                 ),
+          //               ),
+          //               onChanged: (value) => title = value,
+          //             ),
+          //             TextFormField(
+          //               decoration: const InputDecoration(
+          //                 border: OutlineInputBorder(),
+          //                 hintText: 'وصف المنتج',
+          //                 contentPadding: EdgeInsets.symmetric(
+          //                   horizontal: 8.0,
+          //                   vertical: 4.0,
+          //                 ),
+          //               ),
+          //               onChanged: (value) => description = value,
+          //             ),
+          //             Row(
+          //               children: [
+          //                 const Text(
+          //                   'نوع الوحدة',
+          //                 ),
+          //                 const SizedBox(width: 12.0),
+          //                 Expanded(
+          //                   child: DropdownButtonFormField(
+          //                     value: null,
+          //                     decoration: const InputDecoration(
+          //                       border: OutlineInputBorder(),
+          //                       hintText: 'أختر نوع الوحدة',
+          //                       contentPadding: EdgeInsets.symmetric(
+          //                         horizontal: 8.0,
+          //                         vertical: 4.0,
+          //                       ),
+          //                     ),
+          //                     padding: EdgeInsets.zero,
+          //                     items: unitList
+          //                         .map((e) => DropdownMenuItem(
+          //                               alignment: Alignment.centerRight,
+          //                               value: e.id,
+          //                               child: Text(e.title),
+          //                             ))
+          //                         .toList(),
+          //                     onChanged: (value) => unitPerPiece = value!,
+          //                   ),
+          //                 ),
+          //               ],
+          //             ),
+          //             Row(
+          //               children: [
+          //                 const Text(
+          //                   'الكمية',
+          //                 ),
+          //                 const SizedBox(width: 12.0),
+          //                 Expanded(
+          //                   child: TextFormField(
+          //                     decoration: const InputDecoration(
+          //                       border: OutlineInputBorder(),
+          //                       hintText: 'أدخل الكمية بالوحدة المختارة',
+          //                       contentPadding: EdgeInsets.symmetric(
+          //                         horizontal: 8.0,
+          //                         vertical: 4.0,
+          //                       ),
+          //                     ),
+          //                     onChanged: (value) => quantity = int.parse(value),
+          //                     keyboardType: TextInputType.number,
+          //                   ),
+          //                 ),
+          //               ],
+          //             ),
+          //             ElevatedButton(
+          //               onPressed: () =>
+          //                   Provider.of<ProductsTransactionsProvider>(context,
+          //                           listen: false)
+          //                       .addProduct(
+          //                           title, description, unitPerPiece, quantity)
+          //                       .then((value) => {Navigator.of(context).pop()}),
+          //               child: const Text('إضافة منتج جديد'),
+          //             ),
+          //           ],
+          //         ),
+          //       ),
+          //     ),
+          //   ),
+          // );
         },
         child: const Icon(Icons.add_box),
       ),
@@ -281,11 +290,11 @@ class HomePageState extends State<HomePage> {
           resizeToAvoidBottomInset: true,
           drawer: Drawer(
             child: Container(
-              color: Theme.of(context).colorScheme.primary,
+              color: const Color(0xFFFEFEFE),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Divider(color: Colors.white),
+                  const Divider(color: Colors.deepPurple),
                   TextButton(
                     onPressed: () {
                       Navigator.pop(context);
@@ -356,38 +365,50 @@ class HomePageState extends State<HomePage> {
                     child: const Text(
                       'إضافة وحدة جديدة',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Colors.deepPurple,
                       ),
                     ),
                   ),
-                  const Divider(color: Colors.white),
+                  const Divider(color: Colors.deepPurple),
                   TextButton(
                     onPressed: () {},
                     child: const Text(
-                      'تصدير إلى csv',
+                      'تصدير إلى csv(SOON)',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Colors.deepPurple,
                       ),
                     ),
                   ),
-                  const Divider(color: Colors.white),
+                  const Divider(color: Colors.deepPurple),
                   TextButton(
                     onPressed: () {},
                     child: const Text(
-                      'إستيراد إلى csv',
+                      'إستيراد إلى csv(SOON)',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Colors.deepPurple,
                       ),
                     ),
                   ),
-                  const Divider(color: Colors.white),
+                  const Divider(color: Colors.deepPurple),
+                  TextButton(
+                    onPressed: () {
+                      SQLHelper.deleteDB();
+                    },
+                    child: const Text(
+                      'حذف قاعدة البيانات',
+                      style: TextStyle(
+                        color: Colors.deepPurple,
+                      ),
+                    ),
+                  ),
+                  const Divider(color: Colors.deepPurple),
                 ],
               ),
             ),
           ),
           appBar: AppBar(
             title: const Text(
-              'warehouse',
+              'معملي',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
