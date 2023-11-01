@@ -39,6 +39,10 @@ class SQLHelper {
     });
   }
 
+  static Future<void> deleteDB() async {
+    deleteDatabase('inventory');
+  }
+
   static Future<int> createItem(String title, String description, int unitId,
       int quantity, int totalAmount) async {
     final db = await SQLHelper.db();
