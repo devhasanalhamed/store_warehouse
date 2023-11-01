@@ -8,6 +8,7 @@ class SQLHelper {
       id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
       title TEXT,
       description TEXT,
+      image TEXT,
       unitId int,
       quantity int,
       totalAmount int,
@@ -43,13 +44,14 @@ class SQLHelper {
     deleteDatabase('inventory');
   }
 
-  static Future<int> createItem(String title, String description, int unitId,
-      int quantity, int totalAmount) async {
+  static Future<int> createItem(String title, String description,
+      String imagePath, int unitId, int quantity, int totalAmount) async {
     final db = await SQLHelper.db();
 
     final data = {
       "title": title,
       "description": description,
+      "image": imagePath,
       "unitId": unitId,
       "quantity": quantity,
       "totalAmount": totalAmount
