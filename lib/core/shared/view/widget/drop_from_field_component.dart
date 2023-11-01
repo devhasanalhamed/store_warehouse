@@ -4,11 +4,13 @@ class DropDownButtonFormFieldComponent extends StatelessWidget {
   final String label;
   final List<DropdownMenuItem> dropList;
   final ValueChanged<dynamic> onChanged;
+  final FormFieldValidator<dynamic>? validator;
   const DropDownButtonFormFieldComponent({
     Key? key,
     required this.label,
     required this.dropList,
     required this.onChanged,
+    this.validator,
   }) : super(key: key);
 
   @override
@@ -24,6 +26,7 @@ class DropDownButtonFormFieldComponent extends StatelessWidget {
         label: Text(label),
         isDense: true,
       ),
+      validator: validator,
       padding: EdgeInsets.zero,
       items: dropList,
       onChanged: onChanged,
