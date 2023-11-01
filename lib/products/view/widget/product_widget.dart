@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -33,6 +34,12 @@ class ProductWidget extends StatelessWidget {
               leading: Container(
                 width: 56,
                 decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: FileImage(
+                      File(
+                          '/data/user/0/com.example.store_warehouse/cache/04b6b441-ed2b-4f91-b14b-edc93e0b28318755170657779818533.jpg'),
+                    ),
+                  ),
                   borderRadius: BorderRadius.circular(4),
                   color: Theme.of(context).colorScheme.primary,
                 ),
