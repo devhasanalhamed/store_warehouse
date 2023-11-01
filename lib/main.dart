@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:store_warehouse/core/shared/models/products_transactions_provider.dart';
 import 'package:store_warehouse/core/shared/models/unit_provider.dart';
 import 'package:store_warehouse/core/utils/sql_helper.dart';
+import 'package:store_warehouse/products/controller/product_controller.dart';
 import 'package:store_warehouse/products/model/product.dart';
 import 'package:store_warehouse/products/view/screen/add_product_screen.dart';
 import 'package:store_warehouse/products/view/screen/products_screen.dart';
@@ -33,6 +34,9 @@ class MyApp extends StatelessWidget {
               return previous;
             }
           },
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ProductController(),
         ),
       ],
       child: MaterialApp(
@@ -74,117 +78,6 @@ class HomePageState extends State<HomePage> {
               builder: (context) => AddProductScreen(),
             ),
           );
-          // String title = '';
-          // String description = '';
-          // int quantity = 0;
-          // int unitPerPiece = 0;
-          // final unitList =
-          //     Provider.of<UnitProvider>(context, listen: false).list;
-          // showDialog(
-          //   context: context,
-          //   builder: (s) => Dialog(
-          //     child: Directionality(
-          //       textDirection: TextDirection.rtl,
-          //       child: Container(
-          //         width: 350,
-          //         height: 350,
-          //         padding: const EdgeInsets.symmetric(
-          //           horizontal: 8.0,
-          //           vertical: 16.0,
-          //         ),
-          //         child: Column(
-          //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //           crossAxisAlignment: CrossAxisAlignment.center,
-          //           children: [
-          //             TextFormField(
-          //               decoration: const InputDecoration(
-          //                 border: OutlineInputBorder(),
-          //                 hintText: 'أسم المنتج',
-          //                 contentPadding: EdgeInsets.symmetric(
-          //                   horizontal: 8.0,
-          //                   vertical: 12.0,
-          //                 ),
-          //               ),
-          //               onChanged: (value) => title = value,
-          //             ),
-          //             TextFormField(
-          //               decoration: const InputDecoration(
-          //                 border: OutlineInputBorder(),
-          //                 hintText: 'وصف المنتج',
-          //                 contentPadding: EdgeInsets.symmetric(
-          //                   horizontal: 8.0,
-          //                   vertical: 4.0,
-          //                 ),
-          //               ),
-          //               onChanged: (value) => description = value,
-          //             ),
-          //             Row(
-          //               children: [
-          //                 const Text(
-          //                   'نوع الوحدة',
-          //                 ),
-          //                 const SizedBox(width: 12.0),
-          //                 Expanded(
-          //                   child: DropdownButtonFormField(
-          //                     value: null,
-          //                     decoration: const InputDecoration(
-          //                       border: OutlineInputBorder(),
-          //                       hintText: 'أختر نوع الوحدة',
-          //                       contentPadding: EdgeInsets.symmetric(
-          //                         horizontal: 8.0,
-          //                         vertical: 4.0,
-          //                       ),
-          //                     ),
-          //                     padding: EdgeInsets.zero,
-          //                     items: unitList
-          //                         .map((e) => DropdownMenuItem(
-          //                               alignment: Alignment.centerRight,
-          //                               value: e.id,
-          //                               child: Text(e.title),
-          //                             ))
-          //                         .toList(),
-          //                     onChanged: (value) => unitPerPiece = value!,
-          //                   ),
-          //                 ),
-          //               ],
-          //             ),
-          //             Row(
-          //               children: [
-          //                 const Text(
-          //                   'الكمية',
-          //                 ),
-          //                 const SizedBox(width: 12.0),
-          //                 Expanded(
-          //                   child: TextFormField(
-          //                     decoration: const InputDecoration(
-          //                       border: OutlineInputBorder(),
-          //                       hintText: 'أدخل الكمية بالوحدة المختارة',
-          //                       contentPadding: EdgeInsets.symmetric(
-          //                         horizontal: 8.0,
-          //                         vertical: 4.0,
-          //                       ),
-          //                     ),
-          //                     onChanged: (value) => quantity = int.parse(value),
-          //                     keyboardType: TextInputType.number,
-          //                   ),
-          //                 ),
-          //               ],
-          //             ),
-          //             ElevatedButton(
-          //               onPressed: () =>
-          //                   Provider.of<ProductsTransactionsProvider>(context,
-          //                           listen: false)
-          //                       .addProduct(
-          //                           title, description, unitPerPiece, quantity)
-          //                       .then((value) => {Navigator.of(context).pop()}),
-          //               child: const Text('إضافة منتج جديد'),
-          //             ),
-          //           ],
-          //         ),
-          //       ),
-          //     ),
-          //   ),
-          // );
         },
         child: const Icon(Icons.add_box),
       ),
