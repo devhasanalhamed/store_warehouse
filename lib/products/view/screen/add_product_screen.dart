@@ -20,22 +20,26 @@ class AddProductScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int? unitController;
+    final provider = Provider.of<ProductController>(context, listen: false);
+    provider.removeCurrentImage();
 
     void validate() {
       final isValid = formKey.currentState!.validate();
       if (isValid) {
         log('Product information is valid, calling provider...');
-        Provider.of<ProductsTransactionsProvider>(context, listen: false)
-            .addProduct(
-              titleController.text,
-              descriptionController.text,
-              Provider.of<ProductController>(context, listen: false)
-                  .imagePicker!
-                  .path,
-              unitController!,
-              int.parse(quantityController.text),
-            )
-            .then((value) => Navigator.pop(context));
+        provider.saveImage().then((value) =>
+            Provider.of<ProductsTransactionsProvider>(context, listen: false)
+                .addProduct(
+                  titleController.text,
+                  descriptionController.text,
+                  value.path,
+                  unitController!,
+                  int.parse(quantityController.text),
+                )
+                .then((value) => Navigator.pop(context)));
+      } else if (provider.imagePicker == null) {
+        log('image is null');
+        provider.showImageErrorMessage();
       } else {
         log('not valid');
       }
@@ -60,9 +64,24 @@ class AddProductScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     Consumer<ProductController>(
-                      builder: (context, value, child) => ProductImagePicker(
-                        onTap: value.pickImage,
-                        photo: value.imagePicker,
+                      builder: (context, value, child) => Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ProductImagePicker(
+                            onTap: value.pickImage,
+                            photo: value.imagePicker,
+                          ),
+                          if (value.showImageError)
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: Text(
+                                'الرجاء اختيار صورة',
+                                style: TextStyle(
+                                  color: Theme.of(context).colorScheme.error,
+                                ),
+                              ),
+                            ),
+                        ],
                       ),
                     ),
                     const SizedBox(height: 16.0),
