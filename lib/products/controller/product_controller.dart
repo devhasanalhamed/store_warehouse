@@ -31,7 +31,7 @@ class ProductController extends ChangeNotifier {
       imagePicker = File(pickedImage.path);
       showImageError = false;
     } on PlatformException catch (e) {
-      print('Failed to pick image: $e');
+      log('Failed to pick image: $e');
     }
     notifyListeners();
   }
