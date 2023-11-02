@@ -13,7 +13,7 @@ class UnitProvider extends ChangeNotifier {
     return await SQLHelper.createUnit(title, unitPerPiece);
   }
 
-  Future<void> getUnits() async {
+  Future<List<Unit>> getUnits() async {
     List<Unit> temp = [];
     final dbList = await SQLHelper.getUnits();
     for (var element in dbList) {
@@ -27,5 +27,6 @@ class UnitProvider extends ChangeNotifier {
       list = temp;
     }
     notifyListeners();
+    return temp;
   }
 }
