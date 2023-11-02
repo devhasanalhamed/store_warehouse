@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_warehouse/core/shared/models/products_transactions_provider.dart';
+import 'package:store_warehouse/core/shared/models/unit.dart';
 
 import 'package:store_warehouse/core/shared/models/unit_provider.dart';
 import 'package:store_warehouse/core/shared/view/widget/drop_from_field_component.dart';
@@ -25,7 +26,7 @@ class AddProductScreen extends StatelessWidget {
 
     void validate() {
       final isValid = formKey.currentState!.validate();
-      if (isValid) {
+      if (isValid && provider.imagePicker != null) {
         log('Product information is valid, calling provider...');
         provider.saveImage().then((value) =>
             Provider.of<ProductsTransactionsProvider>(context, listen: false)
@@ -109,35 +110,52 @@ class AddProductScreen extends StatelessWidget {
                       maxLines: 2,
                     ),
                     const SizedBox(height: 16.0),
-                    Consumer<UnitProvider>(
-                      builder: (context, value, child) =>
-                          DropDownButtonFormFieldComponent(
-                        label: 'أختر نوع الوحدة',
-                        onChanged: (value) =>
-                            unitController = int.parse('$value'),
-                        validator: (value) {
-                          if (unitController == null) {
-                            return 'الرجاء اختيار الوحدة';
-                          }
-                          return null;
-                        },
-                        dropList: [
-                          for (var unit in value.list)
-                            DropdownMenuItem(
-                              value: unit.id,
-                              alignment: Alignment.centerRight,
-                              child: Text(unit.title),
-                            ),
-                        ],
-                      ),
-                    ),
+                    Consumer<UnitProvider>(builder: (context, value, child) {
+                      return FutureBuilder<List<Unit>>(
+                          future: value.getUnits(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return DropDownButtonFormFieldComponent(
+                                label: 'أختر نوع الوحدة',
+                                onChanged: (value) =>
+                                    unitController = int.parse('$value'),
+                                validator: (value) {
+                                  if (unitController == null) {
+                                    return 'الرجاء اختيار الوحدة';
+                                  }
+                                  return null;
+                                },
+                                dropList: [
+                                  for (var unit in snapshot.data!)
+                                    DropdownMenuItem(
+                                      value: unit.id,
+                                      alignment: Alignment.centerRight,
+                                      child: Text(unit.title),
+                                    ),
+                                ],
+                              );
+                            } else {
+                              return DropDownButtonFormFieldComponent(
+                                label: 'جاري جلب قائمة الوحدات...',
+                                dropList: const [],
+                                onChanged: (_) {},
+                              );
+                            }
+                          });
+                    }),
                     const SizedBox(height: 4.0),
                     Row(
                       children: [
                         Expanded(
                           child: TextButton(
-                            onPressed: () => addUnit(context),
-                            child: const Text('إضافة وحدة جديدة'),
+                            onPressed: () => addUnitDialog(context),
+                            child: const Text(
+                              'إضافة وحدة جديدة',
+                              style: TextStyle(
+                                decoration: TextDecoration.underline,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
                         ),
                       ],
@@ -161,7 +179,7 @@ class AddProductScreen extends StatelessWidget {
                         Expanded(
                           child: ElevatedButtonComponent(
                             onPressed: () => validate(),
-                            child: const Text('إضافة منتج جديد'),
+                            title: 'إضافة منتج جديد',
                           ),
                         ),
                       ],
@@ -176,57 +194,77 @@ class AddProductScreen extends StatelessWidget {
     );
   }
 
-  addUnit(BuildContext context) {
+  addUnitDialog(BuildContext context) {
     String unitTitle = '';
     int unitPerPiece = 0;
     showDialog(
       context: context,
-      builder: (s) => Dialog(
-        child: Directionality(
-          textDirection: TextDirection.rtl,
-          child: Container(
-            height: 350,
-            padding: const EdgeInsets.symmetric(
-              horizontal: 8.0,
-              vertical: 16.0,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                TextFormField(
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'أسم الوحدة',
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: 8.0,
-                      vertical: 4.0,
+      builder: (s) => ClipRRect(
+        child: Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          child: Directionality(
+            textDirection: TextDirection.rtl,
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 8.0,
+                vertical: 16.0,
+              ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text(
+                    'إضافة وحدة جديدة',
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                  onChanged: (value) => unitTitle = value,
-                ),
-                TextFormField(
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'العدد بالحبة',
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: 8.0,
-                      vertical: 4.0,
+                  const SizedBox(height: 16.0),
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      label: Text('أسم الوحدة'),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(15.0),
+                        ),
+                      ),
+                      isDense: true,
                     ),
+                    onChanged: (value) => unitTitle = value,
                   ),
-                  onChanged: (value) => unitPerPiece = int.parse(value),
-                ),
-                ElevatedButton(
-                  onPressed: () =>
-                      Provider.of<UnitProvider>(context, listen: false)
-                          .addUnit(unitTitle, unitPerPiece)
-                          .then(
-                            (value) => {Navigator.of(context).pop()},
-                          ),
-                  child: const Text('إضافة وحدة جديد'),
-                ),
-              ],
+                  const SizedBox(height: 16.0),
+                  TextFormField(
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(
+                      label: Text('العدد بالحبة'),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(15.0),
+                        ),
+                      ),
+                      isDense: true,
+                    ),
+                    onChanged: (value) => unitPerPiece = int.parse(value),
+                  ),
+                  const SizedBox(height: 16.0),
+                  ElevatedButtonComponent(
+                    title: 'إضافة وحدة جديد',
+                    onPressed: () =>
+                        Provider.of<UnitProvider>(context, listen: false)
+                            .addUnit(unitTitle, unitPerPiece)
+                            .then(
+                              (value) => {Navigator.of(context).pop()},
+                            ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
