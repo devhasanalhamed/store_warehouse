@@ -22,7 +22,7 @@ class ProductImagePicker extends StatelessWidget {
                 Image.asset(
                   'assets/images/image.png',
                   width: double.infinity,
-                  height: 150,
+                  height: 200,
                 ),
                 BackdropFilter(
                   filter: ImageFilter.blur(
@@ -30,7 +30,7 @@ class ProductImagePicker extends StatelessWidget {
                     sigmaY: 2.0,
                   ),
                   child: Container(
-                    height: 150,
+                    height: 200,
                     width: double.infinity,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
@@ -45,19 +45,25 @@ class ProductImagePicker extends StatelessWidget {
                 const Padding(
                   padding: EdgeInsets.all(16.0),
                   child: Icon(
-                    Icons.camera,
+                    Icons.add_a_photo,
                     color: Colors.deepPurple,
                   ),
                 ),
               ],
             )
           : Container(
-              height: 150,
+              height: 200,
               width: double.infinity,
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: FileImage(photo!),
-                  fit: BoxFit.contain,
+                  fit: BoxFit.fitWidth,
+                ),
+                borderRadius: BorderRadius.circular(15),
+                color: Colors.white.withOpacity(0.4),
+                border: Border.all(
+                  color: Colors.grey,
+                  width: 1.0,
                 ),
               ),
             ),
