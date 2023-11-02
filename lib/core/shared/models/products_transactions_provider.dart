@@ -33,10 +33,21 @@ class ProductsTransactionsProvider extends ChangeNotifier {
     return unitList.firstWhere((element) => element.id == unitId).unitPerPiece;
   }
 
-  Future<void> addProduct(String title, String description, String imagePath,
-      int unitId, int quantity) async {
-    await SQLHelper.createItem(title, description, imagePath, unitId, quantity,
-        (quantity * getPiecePerUnit(unitId)));
+  Future<void> addProduct(
+    String title,
+    String description,
+    String imagePath,
+    int unitId,
+    int quantity,
+  ) async {
+    await SQLHelper.createItem(
+      title,
+      description,
+      imagePath,
+      unitId,
+      quantity,
+      (quantity * getPiecePerUnit(unitId)),
+    );
     notifyListeners();
   }
 
