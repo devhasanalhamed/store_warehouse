@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_warehouse/core/shared/models/products_transactions_provider.dart';
 import 'package:store_warehouse/core/shared/models/unit_provider.dart';
+import 'package:store_warehouse/products/controller/product_controller.dart';
 import 'package:store_warehouse/products/model/product.dart';
 import 'package:store_warehouse/transactions/model/transaction.dart';
 
@@ -19,6 +20,7 @@ class ProductWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final transactions = Provider.of<ProductsTransactionsProvider>(context)
         .getProductTransactions(product.id);
+    File imagePath = File(product.imagePath);
     return Card(
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -26,22 +28,46 @@ class ProductWidget extends StatelessWidget {
           border: Border.all(
             color: Colors.grey,
           ),
-          borderRadius: BorderRadius.circular(4),
+          borderRadius: BorderRadius.circular(15),
         ),
         child: Column(
           children: [
             ListTile(
-              leading: Container(
-                width: 56,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: FileImage(
-                      File(
-                          '/data/user/0/com.example.store_warehouse/cache/04b6b441-ed2b-4f91-b14b-edc93e0b28318755170657779818533.jpg'),
+              leading: InkWell(
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) => Dialog(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15)),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(15),
+                              child: Image.file(
+                                imagePath,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    const Text('خطأ'),
+                              ),
+                            ),
+                          ));
+                },
+                child: Container(
+                  width: 56,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      fit: BoxFit.fitWidth,
+                      image: FileImage(imagePath),
+                      onError: (exception, stackTrace) => const Center(
+                        child: Text(
+                          'خطأ',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
                     ),
+                    borderRadius: BorderRadius.circular(15),
+                    color: Theme.of(context).colorScheme.primary,
                   ),
-                  borderRadius: BorderRadius.circular(4),
-                  color: Theme.of(context).colorScheme.primary,
                 ),
               ),
               title: Text(product.title),
@@ -50,9 +76,8 @@ class ProductWidget extends StatelessWidget {
                 icon: const Icon(Icons.delete),
                 color: const Color.fromARGB(255, 235, 102, 92),
                 onPressed: () {
-                  // Provider.of<ProductsTransactionsProvider>(context,
-                  //         listen: false)
-                  //     .deleteProduct(product.id);
+                  Provider.of<ProductController>(context, listen: false)
+                      .deleteProduct(product);
                 },
               ),
             ),
