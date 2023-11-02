@@ -19,20 +19,35 @@ class TransactionsScreenState extends State<TransactionsScreen> {
           Provider.of<ProductsTransactionsProvider>(context).getFilteredList(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
-            child: ListView(
+          if (snapshot.data!.isNotEmpty) {
+            return Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
+              child: ListView(
+                children: [
+                  Column(
+                    children: [
+                      for (var i in snapshot.data!.keys)
+                        testOnly(snapshot.data![i]!, i),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          } else {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Column(
-                  children: [
-                    for (var i in snapshot.data!.keys)
-                      testOnly(snapshot.data![i]!, i),
-                  ],
+                Image.asset(
+                  'assets/images/no_transactions.png',
+                  width: 250,
+                ),
+                const Center(
+                  child: Text('لا توجد عمليات بعد'),
                 ),
               ],
-            ),
-          );
+            );
+          }
         } else {
           return const Center(child: CircularProgressIndicator());
         }
