@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:store_warehouse/core/shared/models/products_transactions_provider.dart';
-import 'package:store_warehouse/core/shared/models/unit_provider.dart';
+import 'package:store_warehouse/products/controller/product_controller.dart';
 import 'package:store_warehouse/products/model/product.dart';
 import 'package:store_warehouse/products/view/widget/product_widget.dart';
 
@@ -15,9 +14,8 @@ class ProductsScreen extends StatefulWidget {
 class ProductsScreenState extends State<ProductsScreen> {
   @override
   Widget build(BuildContext context) {
-    Provider.of<UnitProvider>(context).getUnits();
     return FutureBuilder<List<Product>>(
-      future: Provider.of<ProductsTransactionsProvider>(context).getProduct(),
+      future: Provider.of<ProductController>(context).getProduct(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           if (snapshot.data!.isNotEmpty) {
