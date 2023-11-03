@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:store_warehouse/core/shared/models/products_transactions_provider.dart';
+import 'package:store_warehouse/products/controller/product_controller.dart';
 import 'package:store_warehouse/products/model/product.dart';
 import 'package:store_warehouse/transactions/model/transaction.dart';
 
@@ -19,7 +19,7 @@ class TransactionsWidget extends StatelessWidget {
             child: ListTile(
               leading: SizedBox(
                 width: 110,
-                child: Consumer<ProductsTransactionsProvider>(
+                child: Consumer<ProductController>(
                   builder: (context, value, child) =>
                       FutureBuilder<List<Product>>(
                     future: value.getProduct(),
