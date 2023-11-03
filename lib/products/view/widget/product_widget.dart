@@ -2,9 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:store_warehouse/core/shared/models/products_transactions_provider.dart';
-import 'package:store_warehouse/core/shared/models/unit.dart';
+import 'package:store_warehouse/core/mvc/models/unit.dart';
 import 'package:store_warehouse/products/controller/product_controller.dart';
 import 'package:store_warehouse/products/model/product.dart';
 import 'package:store_warehouse/transactions/controller/transaction_controller.dart';
@@ -135,14 +133,14 @@ class ProductWidget extends StatelessWidget {
                 ),
               ],
             ),
-            FutureBuilder<List<TransAction>>(
+            FutureBuilder<List<Transaction>>(
               future: Provider.of<TransactionController>(context)
                   .getProductTransactions(product.id),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return Column(
                     children: [
-                      for (TransAction i in snapshot.data!)
+                      for (Transaction i in snapshot.data!)
                         Text(
                           i.quantity.toString(),
                         ),
