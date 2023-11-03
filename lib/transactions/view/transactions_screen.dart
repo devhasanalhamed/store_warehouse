@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_warehouse/core/shared/models/products_transactions_provider.dart';
+import 'package:store_warehouse/transactions/controller/transaction_controller.dart';
 import 'package:store_warehouse/transactions/model/transaction.dart';
 import 'package:store_warehouse/transactions/view/transactions_widget.dart';
 
@@ -15,8 +16,7 @@ class TransactionsScreenState extends State<TransactionsScreen> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Map<String, List<TransAction>>>(
-      future:
-          Provider.of<ProductsTransactionsProvider>(context).getFilteredList(),
+      future: Provider.of<TransactionController>(context).getFilteredList(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           if (snapshot.data!.isNotEmpty) {
