@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:image/image.dart' as img;
-import 'package:store_warehouse/core/shared/models/unit.dart';
+import 'package:store_warehouse/core/mvc/models/unit.dart';
 import 'package:store_warehouse/core/utils/sql_helper.dart';
 import 'package:store_warehouse/products/model/product.dart';
 
