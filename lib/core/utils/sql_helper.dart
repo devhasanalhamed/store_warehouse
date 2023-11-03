@@ -94,10 +94,10 @@ class SQLHelper {
     return id;
   }
 
-  static Future<int> updateSubQuantity(int productId, int totalAmount) async {
+  static Future<int> updateSubQuantity(
+      int productId, int totalAmount, int totalPerUnit) async {
     final db = await SQLHelper.db();
-
-    final data = {"totalAmount": totalAmount};
+    final data = {"totalAmount": totalAmount, "quantity": totalPerUnit};
 
     final result =
         await db.update('items', data, where: 'id = ?', whereArgs: [productId]);
@@ -129,19 +129,25 @@ class SQLHelper {
   //   return result;
   // }
 
-  static Future<int> updateAddQuantity(int productId, int totalAmount) async {
-    final db = await SQLHelper.db();
+  // static Future<int> updateAddQuantity(int productId, int totalAmount) async {
+  //   final db = await SQLHelper.db();
 
-    final data = {"totalAmount": totalAmount};
+  //   final data = {"totalAmount": totalAmount};
 
-    final result =
-        await db.update('items', data, where: 'id = ?', whereArgs: [productId]);
-    return result;
-  }
+  //   final result =
+  //       await db.update('items', data, where: 'id = ?', whereArgs: [productId]);
+  //   return result;
+  // }
 
   static Future<List<Map<String, dynamic>>> getUnits() async {
     final db = await SQLHelper.db();
     return db.query('units', orderBy: 'id');
+  }
+
+  static Future<List<Map<String, dynamic>>> getUnitById(int unitId) async {
+    final db = await SQLHelper.db();
+    return db.query('units',
+        orderBy: 'id', limit: 1, where: 'id = ?', whereArgs: [unitId]);
   }
 
   static Future<List<Map<String, dynamic>>> getItems() async {
