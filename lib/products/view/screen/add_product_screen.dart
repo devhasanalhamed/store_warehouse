@@ -5,9 +5,10 @@ import 'package:store_warehouse/core/shared/models/products_transactions_provide
 import 'package:store_warehouse/core/shared/models/unit.dart';
 
 import 'package:store_warehouse/core/shared/models/unit_provider.dart';
-import 'package:store_warehouse/core/shared/view/widget/drop_from_field_component.dart';
-import 'package:store_warehouse/core/shared/view/widget/elevated_button_component.dart';
-import 'package:store_warehouse/core/shared/view/widget/text_form_field_component.dart';
+import 'package:store_warehouse/core/shared/view/functions/add_unit_dialog.dart';
+import 'package:store_warehouse/core/shared/view/widgets/drop_from_field_component.dart';
+import 'package:store_warehouse/core/shared/view/widgets/elevated_button_component.dart';
+import 'package:store_warehouse/core/shared/view/widgets/text_form_field_component.dart';
 import 'package:store_warehouse/products/controller/product_controller.dart';
 import 'package:store_warehouse/products/view/widget/product_image_picker.dart';
 
@@ -28,8 +29,8 @@ class AddProductScreen extends StatelessWidget {
       final isValid = formKey.currentState!.validate();
       if (isValid && provider.imagePicker != null) {
         log('Product information is valid, calling provider...');
-        provider.saveImage().then((value) =>
-            Provider.of<ProductsTransactionsProvider>(context, listen: false)
+        provider.saveImage().then(
+            (value) => Provider.of<ProductController>(context, listen: false)
                 .addProduct(
                   titleController.text,
                   descriptionController.text,
@@ -189,84 +190,6 @@ class AddProductScreen extends StatelessWidget {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  addUnitDialog(BuildContext context) {
-    String unitTitle = '';
-    int unitPerPiece = 0;
-    showDialog(
-      context: context,
-      builder: (s) => ClipRRect(
-        child: Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
-          ),
-          child: Directionality(
-            textDirection: TextDirection.rtl,
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 8.0,
-                vertical: 16.0,
-              ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text(
-                    'إضافة وحدة جديدة',
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 16.0),
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      label: Text('أسم الوحدة'),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(15.0),
-                        ),
-                      ),
-                      isDense: true,
-                    ),
-                    onChanged: (value) => unitTitle = value,
-                  ),
-                  const SizedBox(height: 16.0),
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                      label: Text('العدد بالحبة'),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(15.0),
-                        ),
-                      ),
-                      isDense: true,
-                    ),
-                    onChanged: (value) => unitPerPiece = int.parse(value),
-                  ),
-                  const SizedBox(height: 16.0),
-                  ElevatedButtonComponent(
-                    title: 'إضافة وحدة جديد',
-                    onPressed: () =>
-                        Provider.of<UnitProvider>(context, listen: false)
-                            .addUnit(unitTitle, unitPerPiece)
-                            .then(
-                              (value) => {Navigator.of(context).pop()},
-                            ),
-                  ),
-                ],
-              ),
-            ),
-          ),
         ),
       ),
     );
