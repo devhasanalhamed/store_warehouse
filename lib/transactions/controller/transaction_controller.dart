@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:store_warehouse/core/shared/models/unit.dart';
+import 'package:store_warehouse/core/mvc/models/unit.dart';
 import 'package:store_warehouse/core/utils/sql_helper.dart';
 import 'package:store_warehouse/products/model/product.dart';
 import 'package:store_warehouse/transactions/model/transaction.dart';
@@ -20,15 +20,15 @@ class TransactionController with ChangeNotifier {
     return dbList.map((e) => Product.fromSQL(e)).first;
   }
 
-  Future<List<TransAction>> getTransactions() async {
+  Future<List<Transaction>> getTransactions() async {
     log('Function: getTransactions');
     final dbList = await SQLHelper.getTransactions();
-    return dbList.map((e) => TransAction.fromSQL(e)).toList();
+    return dbList.map((e) => Transaction.fromSQL(e)).toList();
   }
 
-  Future<List<TransAction>> getProductTransactions(int productId) async {
+  Future<List<Transaction>> getProductTransactions(int productId) async {
     log('Function: getProductTransactions');
-    List<TransAction> temp = await getTransactions();
+    List<Transaction> temp = await getTransactions();
     return temp.where((element) => element.productId == productId).toList();
   }
 
@@ -47,10 +47,10 @@ class TransactionController with ChangeNotifier {
     }
   }
 
-  Future<Map<String, List<TransAction>>> getFilteredList() async {
+  Future<Map<String, List<Transaction>>> getFilteredList() async {
     log('Function: getFilteredList');
     final transactions = await getTransactions();
-    Map<String, List<TransAction>> temp = {};
+    Map<String, List<Transaction>> temp = {};
     final trans = [];
     for (var item in transactions) {
       var mark = dater(item.createdAt);
