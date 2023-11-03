@@ -64,7 +64,9 @@ class AddProductScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     Consumer<ProductController>(
-                      builder: (context, value, child) => Column(
+                        builder: (context, value, child) {
+                      log('build: product consumer in add product screen has built');
+                      return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ProductImagePicker(
@@ -82,8 +84,8 @@ class AddProductScreen extends StatelessWidget {
                               ),
                             ),
                         ],
-                      ),
-                    ),
+                      );
+                    }),
                     const SizedBox(height: 16.0),
                     TextFormFieldComponent(
                       controller: titleController,
@@ -110,6 +112,7 @@ class AddProductScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 16.0),
                     Consumer<UnitProvider>(builder: (context, value, child) {
+                      log('build: unit consumer in add product screen has built');
                       return FutureBuilder<List<Unit>>(
                           future: value.getUnits(),
                           builder: (context, snapshot) {
