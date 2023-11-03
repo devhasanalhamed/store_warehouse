@@ -65,10 +65,8 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                             Column(
                               children: [
                                 Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(product!.unitId.toString()),
+                                    const Text('العدد المتبقي: '),
                                     Text(product!.totalAmount.toString()),
                                   ],
                                 ),
@@ -76,17 +74,19 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                                   Column(
                                     children: [
                                       TextFormFieldComponent(
-                                        validator: (value) {
-                                          if (value!.isEmpty) {
-                                            return 'error';
-                                          }
-                                          return null;
-                                        },
-                                        label: 'أدخل الكمية',
-                                        keyboardType: TextInputType.number,
-                                        onChanged: (value) =>
-                                            quantity = int.parse(value),
-                                      ),
+                                          validator: (value) {
+                                            if (value!.isEmpty) {
+                                              return 'error';
+                                            }
+                                            return null;
+                                          },
+                                          label: 'أدخل الكمية',
+                                          keyboardType: TextInputType.number,
+                                          onChanged: (value) {
+                                            if (value.isNotEmpty) {
+                                              quantity = int.parse(value);
+                                            }
+                                          }),
                                       const SizedBox(height: 16.0),
                                       ElevatedButtonComponent(
                                         onPressed: () =>
