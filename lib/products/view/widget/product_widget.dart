@@ -1,12 +1,13 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:store_warehouse/core/shared/models/products_transactions_provider.dart';
-import 'package:store_warehouse/core/shared/models/unit_provider.dart';
+import 'package:store_warehouse/core/shared/models/unit.dart';
 import 'package:store_warehouse/products/controller/product_controller.dart';
 import 'package:store_warehouse/products/model/product.dart';
+import 'package:store_warehouse/transactions/controller/transaction_controller.dart';
 import 'package:store_warehouse/transactions/model/transaction.dart';
 
 class ProductWidget extends StatelessWidget {
@@ -18,8 +19,6 @@ class ProductWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final transactions = Provider.of<ProductsTransactionsProvider>(context)
-        .getProductTransactions(product.id);
     File imagePath = File(product.imagePath);
     return Card(
       child: Container(
@@ -106,12 +105,23 @@ class ProductWidget extends StatelessWidget {
                 ),
                 TableRow(
                   children: [
-                    Text(
-                      Provider.of<UnitProvider>(context, listen: false)
-                          .list
-                          .firstWhere((element) => element.id == product.unitId)
-                          .title,
-                      textAlign: TextAlign.center,
+                    FutureBuilder<Unit>(
+                      future:
+                          Provider.of<ProductController>(context, listen: false)
+                              .getUnitById(product.unitId),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return Text(
+                            snapshot.data!.title,
+                            textAlign: TextAlign.center,
+                          );
+                        } else {
+                          return const Text(
+                            'يتم جلب الوحدة',
+                            textAlign: TextAlign.center,
+                          );
+                        }
+                      },
                     ),
                     Text(
                       product.quantity.toString(),
@@ -125,13 +135,22 @@ class ProductWidget extends StatelessWidget {
                 ),
               ],
             ),
-            Column(
-              children: [
-                for (TransAction i in transactions)
-                  Text(
-                    i.quantity.toString(),
-                  ),
-              ],
+            FutureBuilder<List<TransAction>>(
+              future: Provider.of<TransactionController>(context)
+                  .getProductTransactions(product.id),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Column(
+                    children: [
+                      for (TransAction i in snapshot.data!)
+                        Text(
+                          i.quantity.toString(),
+                        ),
+                    ],
+                  );
+                }
+                return const Text('العمليات الحديثة');
+              },
             ),
             const SizedBox(height: 8),
             Padding(
@@ -142,8 +161,7 @@ class ProductWidget extends StatelessWidget {
                     icon: const Icon(Icons.add),
                     onPressed: () {
                       int quantity = 0;
-                      final value = Provider.of<ProductsTransactionsProvider>(
-                          context,
+                      final value = Provider.of<ProductController>(context,
                           listen: false);
                       showModalBottomSheet(
                         context: context,
@@ -227,107 +245,107 @@ class ProductWidget extends StatelessWidget {
                   const SizedBox(width: 16.0),
                   ElevatedButton.icon(
                     onPressed: () {
-                      String title = product.title;
-                      String description = product.description;
-                      int unitId = product.unitId;
-                      final provider =
-                          Provider.of<ProductsTransactionsProvider>(context,
-                              listen: false);
-                      final unitList =
-                          Provider.of<UnitProvider>(context, listen: false)
-                              .list;
-                      log(unitList.length.toString());
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (context) => Directionality(
-                          textDirection: TextDirection.rtl,
-                          child: Container(
-                            width: 350,
-                            height: 350,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0,
-                              vertical: 16.0,
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                TextFormField(
-                                  initialValue: product.title,
-                                  decoration: const InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    contentPadding: EdgeInsets.symmetric(
-                                      horizontal: 8.0,
-                                      vertical: 4.0,
-                                    ),
-                                  ),
-                                  onChanged: (value) => title = value,
-                                ),
-                                TextFormField(
-                                  initialValue: product.description,
-                                  decoration: const InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    contentPadding: EdgeInsets.symmetric(
-                                      horizontal: 8.0,
-                                      vertical: 4.0,
-                                    ),
-                                  ),
-                                  onChanged: (value) => description = value,
-                                ),
-                                Row(
-                                  children: [
-                                    const Text(
-                                      'نوع الوحدة',
-                                    ),
-                                    const SizedBox(width: 12.0),
-                                    Expanded(
-                                      child: DropdownButtonFormField(
-                                        value: product.unitId,
-                                        decoration: const InputDecoration(
-                                          border: OutlineInputBorder(),
-                                          contentPadding: EdgeInsets.symmetric(
-                                            horizontal: 8.0,
-                                            vertical: 4.0,
-                                          ),
-                                        ),
-                                        padding: EdgeInsets.zero,
-                                        items: [
-                                          for (var item in unitList)
-                                            DropdownMenuItem(
-                                              value: item.id,
-                                              alignment: Alignment.centerRight,
-                                              child: Text(item.title),
-                                            ),
-                                        ],
-                                        onChanged: (value) => unitId = value!,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const Text(
-                                  'سيتم تعديل المعلومات على جميع العمليات السابقة',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                ElevatedButton(
-                                  onPressed: () => provider
-                                      .editProduct(
-                                        product.id,
-                                        title,
-                                        description,
-                                        unitId,
-                                      )
-                                      .then((value) => Navigator.pop(context)),
-                                  child: const Text(
-                                    'تعديل معلومات المنتج',
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
+                      // String title = product.title;
+                      // String description = product.description;
+                      // int unitId = product.unitId;
+                      // final provider =
+                      //     Provider.of<ProductsTransactionsProvider>(context,
+                      //         listen: false);
+                      // final unitList =
+                      //     Provider.of<UnitProvider>(context, listen: false)
+                      //         .list;
+                      // log(unitList.length.toString());
+                      // showModalBottomSheet(
+                      //   context: context,
+                      //   builder: (context) => Directionality(
+                      //     textDirection: TextDirection.rtl,
+                      //     child: Container(
+                      //       width: 350,
+                      //       height: 350,
+                      //       padding: const EdgeInsets.symmetric(
+                      //         horizontal: 8.0,
+                      //         vertical: 16.0,
+                      //       ),
+                      //       child: Column(
+                      //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //         crossAxisAlignment: CrossAxisAlignment.center,
+                      //         children: [
+                      //           TextFormField(
+                      //             initialValue: product.title,
+                      //             decoration: const InputDecoration(
+                      //               border: OutlineInputBorder(),
+                      //               contentPadding: EdgeInsets.symmetric(
+                      //                 horizontal: 8.0,
+                      //                 vertical: 4.0,
+                      //               ),
+                      //             ),
+                      //             onChanged: (value) => title = value,
+                      //           ),
+                      //           TextFormField(
+                      //             initialValue: product.description,
+                      //             decoration: const InputDecoration(
+                      //               border: OutlineInputBorder(),
+                      //               contentPadding: EdgeInsets.symmetric(
+                      //                 horizontal: 8.0,
+                      //                 vertical: 4.0,
+                      //               ),
+                      //             ),
+                      //             onChanged: (value) => description = value,
+                      //           ),
+                      //           Row(
+                      //             children: [
+                      //               const Text(
+                      //                 'نوع الوحدة',
+                      //               ),
+                      //               const SizedBox(width: 12.0),
+                      //               Expanded(
+                      //                 child: DropdownButtonFormField(
+                      //                   value: product.unitId,
+                      //                   decoration: const InputDecoration(
+                      //                     border: OutlineInputBorder(),
+                      //                     contentPadding: EdgeInsets.symmetric(
+                      //                       horizontal: 8.0,
+                      //                       vertical: 4.0,
+                      //                     ),
+                      //                   ),
+                      //                   padding: EdgeInsets.zero,
+                      //                   items: [
+                      //                     for (var item in unitList)
+                      //                       DropdownMenuItem(
+                      //                         value: item.id,
+                      //                         alignment: Alignment.centerRight,
+                      //                         child: Text(item.title),
+                      //                       ),
+                      //                   ],
+                      //                   onChanged: (value) => unitId = value!,
+                      //                 ),
+                      //               ),
+                      //             ],
+                      //           ),
+                      //           const Text(
+                      //             'سيتم تعديل المعلومات على جميع العمليات السابقة',
+                      //             style: TextStyle(
+                      //               fontWeight: FontWeight.bold,
+                      //             ),
+                      //           ),
+                      //           ElevatedButton(
+                      //             onPressed: () => provider
+                      //                 .editProduct(
+                      //                   product.id,
+                      //                   title,
+                      //                   description,
+                      //                   unitId,
+                      //                 )
+                      //                 .then((value) => Navigator.pop(context)),
+                      //             child: const Text(
+                      //               'تعديل معلومات المنتج',
+                      //             ),
+                      //           ),
+                      //         ],
+                      //       ),
+                      //     ),
+                      //   ),
+                      // );
                     },
                     style: const ButtonStyle(
                       foregroundColor: MaterialStatePropertyAll(Colors.green),
