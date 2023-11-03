@@ -1,14 +1,12 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:store_warehouse/core/shared/models/products_transactions_provider.dart';
-import 'package:store_warehouse/core/shared/models/unit.dart';
-
-import 'package:store_warehouse/core/shared/models/unit_provider.dart';
-import 'package:store_warehouse/core/shared/view/functions/add_unit_dialog.dart';
-import 'package:store_warehouse/core/shared/view/widgets/drop_from_field_component.dart';
-import 'package:store_warehouse/core/shared/view/widgets/elevated_button_component.dart';
-import 'package:store_warehouse/core/shared/view/widgets/text_form_field_component.dart';
+import 'package:store_warehouse/core/mvc/controller/unit_provider.dart';
+import 'package:store_warehouse/core/mvc/models/unit.dart';
+import 'package:store_warehouse/core/mvc/view/functions/add_unit_dialog.dart';
+import 'package:store_warehouse/core/mvc/view/widgets/drop_from_field_component.dart';
+import 'package:store_warehouse/core/mvc/view/widgets/elevated_button_component.dart';
+import 'package:store_warehouse/core/mvc/view/widgets/text_form_field_component.dart';
 import 'package:store_warehouse/products/controller/product_controller.dart';
 import 'package:store_warehouse/products/view/widget/product_image_picker.dart';
 
