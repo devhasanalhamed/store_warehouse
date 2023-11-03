@@ -5,8 +5,6 @@ import 'package:provider/provider.dart';
 import 'package:store_warehouse/core/mvc/models/unit.dart';
 import 'package:store_warehouse/products/controller/product_controller.dart';
 import 'package:store_warehouse/products/model/product.dart';
-import 'package:store_warehouse/transactions/controller/transaction_controller.dart';
-import 'package:store_warehouse/transactions/model/transaction.dart';
 
 class ProductWidget extends StatelessWidget {
   final Product product;
@@ -133,27 +131,11 @@ class ProductWidget extends StatelessWidget {
                 ),
               ],
             ),
-            FutureBuilder<List<Transaction>>(
-              future: Provider.of<TransactionController>(context)
-                  .getProductTransactions(product.id),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return Column(
-                    children: [
-                      for (Transaction i in snapshot.data!)
-                        Text(
-                          i.quantity.toString(),
-                        ),
-                    ],
-                  );
-                }
-                return const Text('العمليات الحديثة');
-              },
-            ),
             const SizedBox(height: 8),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   ElevatedButton.icon(
                     icon: const Icon(Icons.add),
@@ -239,8 +221,12 @@ class ProductWidget extends StatelessWidget {
                       );
                     },
                     label: const Text('كمية جديدة'),
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                    ),
                   ),
-                  const SizedBox(width: 16.0),
                   ElevatedButton.icon(
                     onPressed: () {
                       // String title = product.title;
@@ -345,12 +331,28 @@ class ProductWidget extends StatelessWidget {
                       //   ),
                       // );
                     },
-                    style: const ButtonStyle(
-                      foregroundColor: MaterialStatePropertyAll(Colors.green),
-                      backgroundColor: MaterialStatePropertyAll(Colors.white),
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.green,
+                      backgroundColor: Colors.white,
+                      side: const BorderSide(color: Colors.green, width: 1),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
                     ),
                     icon: const Icon(Icons.edit),
                     label: const Text('تعديل'),
+                  ),
+                  ElevatedButton.icon(
+                    onPressed: () {},
+                    icon: const Icon(Icons.history),
+                    label: const Text('العمليات'),
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.teal,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                    ),
                   ),
                 ],
               ),
