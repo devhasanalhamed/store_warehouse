@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_warehouse/products/controller/product_controller.dart';
@@ -17,6 +19,7 @@ class ProductsScreenState extends State<ProductsScreen> {
     return FutureBuilder<List<Product>>(
       future: Provider.of<ProductController>(context).getProduct(),
       builder: (context, snapshot) {
+        log('build: future product screen has built');
         if (snapshot.hasData) {
           if (snapshot.data!.isNotEmpty) {
             return Column(
