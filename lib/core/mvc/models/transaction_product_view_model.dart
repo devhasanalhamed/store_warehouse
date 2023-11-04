@@ -21,7 +21,7 @@ class ProductTransactionViewModel {
         productId: record['productId'],
         productName: record['title'],
         productImagePath: record['imagePath'],
-        createdAt: record['createdAt'],
+        createdAt: DateTime.parse(record['createdAt']),
         quantity: record['quantity'],
       );
 }
