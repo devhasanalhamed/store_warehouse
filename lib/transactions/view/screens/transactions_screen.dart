@@ -20,14 +20,11 @@ class TransactionsScreenState extends State<TransactionsScreen> {
     log('build: transaction screen has been built');
     return FutureBuilder<List<ProductTransactionViewModel>>(
       future: Provider.of<TransactionController>(context, listen: false)
-          .geeeeeeet(),
+          .getTransactionsViewModel(),
       builder: (context, snapshot) {
         //! Build
-        log('build: future in transaction screen has been built');
         if (snapshot.hasData) {
-          log('nnnnnnnnnnnnnnnnnnnnnnnnfsdffdgfdgdsfgfvdsvdfvsegedfs');
           if (snapshot.data!.isNotEmpty) {
-            log('fsdfsdsfsdfsdfsdfdsfsdffdgfdgdsfgfvdsvdfvsegedfs');
             return Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
@@ -35,10 +32,30 @@ class TransactionsScreenState extends State<TransactionsScreen> {
                 children: [
                   Column(
                     children: [
+                      const Row(
+                        children: [
+                          Text(
+                            'العمليات الأخيرة',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
                       for (var i in snapshot.data!)
                         TransactionsWidget(
                           transaction: i,
                         ),
+                      ElevatedButton.icon(
+                        icon: const Icon(Icons.history),
+                        onPressed: () {},
+                        label: const Text('عرض جميع العمليات'),
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.deepPurple,
+                          backgroundColor: Colors.white,
+                          elevation: 0.0,
+                        ),
+                      ),
                     ],
                   ),
                 ],
