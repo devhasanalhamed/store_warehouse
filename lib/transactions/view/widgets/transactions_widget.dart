@@ -1,14 +1,8 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
-import 'package:store_warehouse/products/controller/product_controller.dart';
-import 'package:store_warehouse/products/model/product.dart';
-import 'package:store_warehouse/transactions/model/transaction.dart';
+import 'package:store_warehouse/core/mvc/models/transaction_product_view_model.dart';
 
 class TransactionsWidget extends StatelessWidget {
-  final Transaction transaction;
+  final ProductTransactionViewModel transaction;
   const TransactionsWidget({Key? key, required this.transaction})
       : super(key: key);
 
@@ -21,28 +15,7 @@ class TransactionsWidget extends StatelessWidget {
             child: ListTile(
               leading: SizedBox(
                 width: 110,
-                child: Consumer<ProductController>(
-                  builder: (context, value, child) {
-                    log('build: consumer in transaction widget has been built');
-                    return FutureBuilder<List<Product>>(
-                      future: value.getProduct(),
-                      builder: (context, snapshot) {
-                        log('build: future in transaction widget has been built');
-                        if (snapshot.hasData) {
-                          return Text(
-                            snapshot.data!
-                                .firstWhere((element) =>
-                                    element.id == transaction.productId)
-                                .title,
-                            overflow: TextOverflow.clip,
-                          );
-                        } else {
-                          return const Text('');
-                        }
-                      },
-                    );
-                  },
-                ),
+                child: Text(transaction.productName),
               ),
               title: RichText(
                 text: TextSpan(
@@ -57,9 +30,6 @@ class TransactionsWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-              ),
-              trailing: Text(
-                DateFormat('hh:mm | yyyy-MM-dd').format(transaction.createdAt),
               ),
             ),
           ),
