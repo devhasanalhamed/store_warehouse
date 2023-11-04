@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:store_warehouse/core/mvc/models/transaction_product_view_model.dart';
 import 'package:store_warehouse/core/mvc/models/unit.dart';
 import 'package:store_warehouse/core/utils/sql_helper.dart';
 import 'package:store_warehouse/products/model/product.dart';
@@ -24,6 +25,12 @@ class TransactionController with ChangeNotifier {
     log('Function: getTransactions');
     final dbList = await SQLHelper.getTransactions();
     return dbList.map((e) => Transaction.fromSQL(e)).toList();
+  }
+
+  Future<List<ProductTransactionViewModel>> geeeeeeet() async {
+    final dbList = await SQLHelper.productTransactionViewModel();
+    log(dbList.toString());
+    return dbList.map((e) => ProductTransactionViewModel.fromSQL(e)).toList();
   }
 
   Future<List<Transaction>> getProductTransactions(int productId) async {
