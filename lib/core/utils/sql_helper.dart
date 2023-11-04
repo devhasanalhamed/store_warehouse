@@ -165,6 +165,16 @@ class SQLHelper {
     return db.query('transactions', orderBy: 'id');
   }
 
+  static Future<List<Map<String, dynamic>>>
+      productTransactionViewModel() async {
+    final db = await SQLHelper.db();
+    return db.rawQuery("""
+    SELECT * FROM transactions  as t
+    INNER JOIN items  as s
+    ON t.id = s.id  
+    """);
+  }
+
   static Future<void> deleteProduct(int productId) async {
     final db = await SQLHelper.db();
     db.rawDelete('DELETE FROM transactions WHERE productId = ?', [productId]);
