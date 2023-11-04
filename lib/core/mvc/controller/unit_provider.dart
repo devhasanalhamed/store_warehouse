@@ -22,4 +22,9 @@ class UnitProvider extends ChangeNotifier {
     }
     return temp;
   }
+
+  Future<int> deleteDB(String title, int unitPerPiece) async {
+    notifyListeners();
+    return await SQLHelper.createUnit(title, unitPerPiece);
+  }
 }
