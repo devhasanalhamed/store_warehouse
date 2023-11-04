@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_warehouse/core/mvc/controller/unit_provider.dart';
-import 'package:store_warehouse/core/utils/sql_helper.dart';
 import 'package:store_warehouse/products/controller/product_controller.dart';
 import 'package:store_warehouse/products/view/screen/add_product_screen.dart';
 import 'package:store_warehouse/products/view/screen/products_screen.dart';
@@ -76,7 +75,7 @@ class HomePageState extends State<HomePage> {
         onPressed: () => Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => AddTransactionScreen(),
+            builder: (context) => const AddTransactionScreen(),
           ),
         ),
         backgroundColor: const Color.fromARGB(255, 12, 70, 117),
@@ -191,7 +190,7 @@ class HomePageState extends State<HomePage> {
                 const Divider(color: Colors.deepPurple),
                 TextButton(
                   onPressed: () {
-                    SQLHelper.deleteDB();
+                    Provider.of<UnitProvider>(context, listen: false).deleteDB;
                   },
                   child: const Text(
                     'حذف قاعدة البيانات',
