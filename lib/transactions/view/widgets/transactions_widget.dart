@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:store_warehouse/core/mvc/models/transaction_product_view_model.dart';
 
@@ -8,40 +10,62 @@ class TransactionsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Row(
-        children: [
-          Expanded(
-            child: ListTile(
-              leading: SizedBox(
-                width: 110,
-                child: Text(transaction.productName),
+    return Dismissible(
+      key: UniqueKey(),
+      background: Container(
+        color: Colors.red,
+        width: 200,
+        height: 200,
+        child: const Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Icon(
+              Icons.delete,
+              color: Colors.white,
+            )
+          ],
+        ),
+      ),
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: const Color.fromARGB(255, 235, 232, 232),
+            ),
+            borderRadius: BorderRadius.circular(15),
+          ),
+          child: ListTile(
+            leading: CircleAvatar(
+              backgroundImage: FileImage(
+                File(transaction.productImagePath),
               ),
-              title: RichText(
-                text: TextSpan(
-                  text: transaction.quantity.toString(),
-                  style:
-                      const TextStyle(color: Colors.black, fontFamily: 'Cairo'),
-                  children: const [
-                    TextSpan(
-                      text: ' حبة',
-                      style:
-                          TextStyle(color: Colors.black, fontFamily: 'Cairo'),
-                    ),
-                  ],
+            ),
+            title: Text(transaction.productName),
+            subtitle: Text(transaction.createdAt.toString().substring(0, 10)),
+            trailing: Container(
+              width: 60,
+              height: 30,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  shape: BoxShape.rectangle,
+                  color: Colors.white,
+                  border: Border.all(
+                    color: Colors.red,
+                  )),
+              child: Center(
+                child: Text(
+                  'حبة ${transaction.quantity}',
+                  style: const TextStyle(
+                    color: Colors.red,
+                  ),
                 ),
               ),
             ),
           ),
-          Container(
-            height: 2,
-            width: 16,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(4),
-              color: Colors.red,
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
