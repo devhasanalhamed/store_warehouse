@@ -135,9 +135,7 @@ class ProductController extends ChangeNotifier {
   }
 
   Future<void> deleteProduct(Product product) async {
-    log('Function: deleteProduct');
-    File file = File(product.imagePath);
-    file.delete();
-    SQLHelper.deleteProduct(product.id);
+    SQLHelper.deleteDB();
+    notifyListeners();
   }
 }
