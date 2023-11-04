@@ -229,6 +229,14 @@ class ProductWidget extends StatelessWidget {
                   ),
                   ElevatedButton.icon(
                     onPressed: () {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (context) => const Column(
+                          children: [
+                            Text('soon'),
+                          ],
+                        ),
+                      );
                       // String title = product.title;
                       // String description = product.description;
                       // int unitId = product.unitId;
@@ -343,7 +351,16 @@ class ProductWidget extends StatelessWidget {
                     label: const Text('تعديل'),
                   ),
                   ElevatedButton.icon(
-                    onPressed: () {},
+                    onPressed: () {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (context) => const Column(
+                          children: [
+                            Text('soon'),
+                          ],
+                        ),
+                      );
+                    },
                     icon: const Icon(Icons.history),
                     label: const Text('العمليات'),
                     style: ElevatedButton.styleFrom(
