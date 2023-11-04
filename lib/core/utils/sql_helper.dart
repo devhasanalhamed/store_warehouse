@@ -4,18 +4,6 @@ import 'package:sqflite/sqflite.dart';
 class SQLHelper {
   static Future<void> createTables(Database database) async {
     await database.execute("""
-    CREATE TABLE items(
-      id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-      title TEXT,
-      description TEXT,
-      imagePath TEXT,
-      unitId int,
-      quantity int,
-      totalAmount int,
-      createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)
-      """);
-
-    await database.execute("""
       CREATE TABLE units(
       id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
       title TEXT,
@@ -24,11 +12,26 @@ class SQLHelper {
       """);
 
     await database.execute("""
+
+    CREATE TABLE items(
+      id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+      title TEXT,
+      description TEXT,
+      imagePath TEXT,
+      unitId int,
+      quantity int,
+      totalAmount int,
+      createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY(unitId) REFERENCES units(id))
+      """);
+
+    await database.execute("""
       CREATE TABLE transactions(
       id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
       productId int,
       quantity int,
-      createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)
+      createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY(productId) REFERENCES items(id))
       """);
   }
 
@@ -169,11 +172,13 @@ class SQLHelper {
       productTransactionViewModel() async {
     final db = await SQLHelper.db();
     return db.rawQuery("""
-    SELECT * FROM transactions  as t
-    INNER JOIN items  as s
-    ON t.id = s.id  
+    SELECT t.id, t.quantity, t.createdAt, s.title, s.id as productId, s.imagePath FROM transactions as t
+    JOIN items as s
+    ON t.productId = s.id  
     """);
   }
+
+  ///SELECT n.firstname, l.latitude, l.longitude FROM Names n JOIN Location l ON n.id = l.id WHERE n.id=12
 
   static Future<void> deleteProduct(int productId) async {
     final db = await SQLHelper.db();
