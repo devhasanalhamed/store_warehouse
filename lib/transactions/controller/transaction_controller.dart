@@ -27,9 +27,8 @@ class TransactionController with ChangeNotifier {
     return dbList.map((e) => Transaction.fromSQL(e)).toList();
   }
 
-  Future<List<ProductTransactionViewModel>> geeeeeeet() async {
+  Future<List<ProductTransactionViewModel>> getTransactionsViewModel() async {
     final dbList = await SQLHelper.productTransactionViewModel();
-    log(dbList.toString());
     return dbList.map((e) => ProductTransactionViewModel.fromSQL(e)).toList();
   }
 
