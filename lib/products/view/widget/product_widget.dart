@@ -17,6 +17,9 @@ class ProductWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     File imagePath = File(product.imagePath);
     return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         decoration: BoxDecoration(
