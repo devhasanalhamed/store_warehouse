@@ -6,7 +6,7 @@ import 'package:store_warehouse/core/mvc/view/widgets/drop_from_field_component.
 import 'package:store_warehouse/core/mvc/view/widgets/elevated_button_component.dart';
 import 'package:store_warehouse/core/mvc/view/widgets/text_form_field_component.dart';
 import 'package:store_warehouse/products/controller/product_controller.dart';
-import 'package:store_warehouse/products/model/product.dart';
+import 'package:store_warehouse/products/model/product_model.dart';
 import 'package:store_warehouse/transactions/controller/transaction_controller.dart';
 
 class AddTransactionScreen extends StatefulWidget {
@@ -17,7 +17,7 @@ class AddTransactionScreen extends StatefulWidget {
 }
 
 class _AddTransactionScreenState extends State<AddTransactionScreen> {
-  Product? product;
+  ProductModel? product;
   int? quantity;
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
             children: [
               Consumer<ProductController>(builder: (context, provider, child) {
                 log('build: consumer in add transaction has been built');
-                return FutureBuilder<List<Product>>(
+                return FutureBuilder<List<ProductModel>>(
                   future: provider.getProduct(),
                   builder: (context, snapshot) {
                     log('build: future in add transaction has been built');
