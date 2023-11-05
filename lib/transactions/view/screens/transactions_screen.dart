@@ -2,8 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:store_warehouse/core/mvc/models/transaction_product_view_model.dart';
+import 'package:store_warehouse/transactions/model/transaction_model.dart';
 import 'package:store_warehouse/transactions/controller/transaction_controller.dart';
+import 'package:store_warehouse/transactions/view/screens/all_transactions_screen.dart';
 import 'package:store_warehouse/transactions/view/widgets/transactions_widget.dart';
 
 class TransactionsScreen extends StatefulWidget {
@@ -18,9 +19,8 @@ class TransactionsScreenState extends State<TransactionsScreen> {
   Widget build(BuildContext context) {
     //! Build
     log('build: transaction screen has been built');
-    return FutureBuilder<List<ProductTransactionViewModel>>(
-      future: Provider.of<TransactionController>(context, listen: false)
-          .getTransactionsViewModel(),
+    return FutureBuilder<List<TransactionModel>>(
+      future: Provider.of<TransactionController>(context).getTransactions(),
       builder: (context, snapshot) {
         //! Build
         if (snapshot.hasData) {
@@ -48,7 +48,12 @@ class TransactionsScreenState extends State<TransactionsScreen> {
                         ),
                       ElevatedButton.icon(
                         icon: const Icon(Icons.history),
-                        onPressed: () {},
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const AllTransactionsScreen(),
+                          ),
+                        ),
                         label: const Text('عرض جميع العمليات'),
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.deepPurple,
