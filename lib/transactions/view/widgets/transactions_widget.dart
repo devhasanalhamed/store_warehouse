@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:store_warehouse/core/mvc/models/transaction_product_view_model.dart';
+import 'package:store_warehouse/transactions/model/transaction_model.dart';
 
 class TransactionsWidget extends StatelessWidget {
-  final ProductTransactionViewModel transaction;
+  final TransactionModel transaction;
   const TransactionsWidget({Key? key, required this.transaction})
       : super(key: key);
 
