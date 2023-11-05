@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:store_warehouse/core/mvc/controller/unit_provider.dart';
 import 'package:store_warehouse/products/controller/product_controller.dart';
 import 'package:store_warehouse/products/view/screen/add_product_screen.dart';
@@ -191,7 +190,8 @@ class HomePageState extends State<HomePage> {
                 const Divider(color: Colors.deepPurple),
                 TextButton(
                   onPressed: () {
-                    Provider.of<UnitProvider>(context, listen: false).deleteDB;
+                    Provider.of<UnitProvider>(context, listen: false)
+                        .deleteDatabase();
                   },
                   child: const Text(
                     'حذف قاعدة البيانات',
