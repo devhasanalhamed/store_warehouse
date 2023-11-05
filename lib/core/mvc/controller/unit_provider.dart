@@ -23,7 +23,8 @@ class UnitProvider extends ChangeNotifier {
     return temp;
   }
 
-  Future<void> deleteDB(String title, int unitPerPiece) async {
+  Future<void> deleteDatabase() async {
     SQLHelper.deleteDB();
+    notifyListeners();
   }
 }
