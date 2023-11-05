@@ -1,13 +1,11 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:store_warehouse/core/mvc/models/unit.dart';
 import 'package:store_warehouse/products/controller/product_controller.dart';
-import 'package:store_warehouse/products/model/product.dart';
+import 'package:store_warehouse/products/model/product_model.dart';
 
 class ProductWidget extends StatelessWidget {
-  final Product product;
+  final ProductModel product;
   const ProductWidget({
     Key? key,
     required this.product,
@@ -104,23 +102,9 @@ class ProductWidget extends StatelessWidget {
                 ),
                 TableRow(
                   children: [
-                    FutureBuilder<Unit>(
-                      future:
-                          Provider.of<ProductController>(context, listen: false)
-                              .getUnitById(product.unitId),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          return Text(
-                            snapshot.data!.title,
-                            textAlign: TextAlign.center,
-                          );
-                        } else {
-                          return const Text(
-                            'يتم جلب الوحدة',
-                            textAlign: TextAlign.center,
-                          );
-                        }
-                      },
+                    Text(
+                      product.unitTitle,
+                      textAlign: TextAlign.center,
                     ),
                     Text(
                       product.quantity.toString(),
