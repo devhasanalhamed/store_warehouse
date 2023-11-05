@@ -1,11 +1,10 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:store_warehouse/core/mvc/models/transaction_product_view_model.dart';
+import 'package:store_warehouse/transactions/model/transaction_model.dart';
 import 'package:store_warehouse/core/mvc/models/unit.dart';
 import 'package:store_warehouse/core/utils/sql_helper.dart';
-import 'package:store_warehouse/products/model/product.dart';
-import 'package:store_warehouse/transactions/model/transaction.dart';
+import 'package:store_warehouse/products/model/product_model.dart';
 
 class TransactionController with ChangeNotifier {
   Future<Unit> getUnitById(int unitId) async {
@@ -15,26 +14,26 @@ class TransactionController with ChangeNotifier {
     return unit.first;
   }
 
-  Future<Product> getProductById(int id) async {
+  Future<ProductModel> getProductById(int id) async {
     log('Function: getProductById');
     final dbList = await SQLHelper.getItemById(id);
-    return dbList.map((e) => Product.fromSQL(e)).first;
+    return dbList.map((e) => ProductModel.fromSQL(e)).first;
   }
 
-  Future<List<Transaction>> getTransactions() async {
-    log('Function: getTransactions');
-    final dbList = await SQLHelper.getTransactions();
-    return dbList.map((e) => Transaction.fromSQL(e)).toList();
-  }
+  // Future<List<TransactionModel>> getTransactions() async {
+  //   log('Function: getTransactions');
+  //   final dbList = await SQLHelper.getTransactions();
+  //   return dbList.map((e) => TransactionModel.fromSQL(e)).toList();
+  // }
 
-  Future<List<ProductTransactionViewModel>> getTransactionsViewModel() async {
+  Future<List<TransactionModel>> getTransactions() async {
     final dbList = await SQLHelper.productTransactionViewModel();
-    return dbList.map((e) => ProductTransactionViewModel.fromSQL(e)).toList();
+    return dbList.map((e) => TransactionModel.fromSQL(e)).toList();
   }
 
-  Future<List<Transaction>> getProductTransactions(int productId) async {
+  Future<List<TransactionModel>> getProductTransactions(int productId) async {
     log('Function: getProductTransactions');
-    List<Transaction> temp = await getTransactions();
+    List<TransactionModel> temp = await getTransactions();
     return temp.where((element) => element.productId == productId).toList();
   }
 
@@ -53,10 +52,10 @@ class TransactionController with ChangeNotifier {
     }
   }
 
-  Future<Map<String, List<Transaction>>> getFilteredList() async {
+  Future<Map<String, List<TransactionModel>>> getFilteredList() async {
     log('Function: getFilteredList');
     final transactions = await getTransactions();
-    Map<String, List<Transaction>> temp = {};
+    Map<String, List<TransactionModel>> temp = {};
     final trans = [];
     for (var item in transactions) {
       var mark = dater(item.createdAt);
