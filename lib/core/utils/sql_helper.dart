@@ -155,12 +155,23 @@ class SQLHelper {
 
   static Future<List<Map<String, dynamic>>> getItems() async {
     final db = await SQLHelper.db();
-    return db.query('items', orderBy: 'id');
+    return db.rawQuery("""
+    SELECT p.id, p.title, p.description, 
+    p.imagePath, p.unitId, p.totalAmount, p.quantity,
+    u.title as unitTitle FROM items as p JOIN units as u
+    ON p.unitId = u.id
+    """);
   }
 
   static Future<List<Map<String, dynamic>>> getItemById(int id) async {
     final db = await SQLHelper.db();
-    return await db.query('items', where: 'id = ?', whereArgs: [id], limit: 1);
+    return await db.rawQuery("""
+    SELECT p.id, p.title, p.description, 
+    p.imagePath, p.unitId, p.totalAmount, p.quantity,
+    u.title as unitTitle FROM items as p JOIN units as u
+    ON p.unitId = u.id
+    WHERE P.id = ?
+    """, [id]);
   }
 
   static Future<List<Map<String, dynamic>>> getTransactions() async {
@@ -172,7 +183,9 @@ class SQLHelper {
       productTransactionViewModel() async {
     final db = await SQLHelper.db();
     return db.rawQuery("""
-    SELECT t.id, t.quantity, t.createdAt, s.title, s.id as productId, s.imagePath FROM transactions as t
+    SELECT t.id, t.quantity, t.createdAt, 
+    s.title, s.id as productId, 
+    s.imagePath FROM transactions as t
     JOIN items as s
     ON t.productId = s.id  
     """);
