@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_warehouse/products/controller/product_controller.dart';
-import 'package:store_warehouse/products/model/product.dart';
+import 'package:store_warehouse/products/model/product_model.dart';
 import 'package:store_warehouse/products/view/widget/product_widget.dart';
 
 class ProductsScreen extends StatefulWidget {
@@ -16,7 +16,7 @@ class ProductsScreen extends StatefulWidget {
 class ProductsScreenState extends State<ProductsScreen> {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Product>>(
+    return FutureBuilder<List<ProductModel>>(
       future: Provider.of<ProductController>(context).getProduct(),
       builder: (context, snapshot) {
         log('build: future product screen has built');
