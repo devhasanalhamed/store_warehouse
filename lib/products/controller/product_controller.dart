@@ -8,16 +8,16 @@ import 'package:path_provider/path_provider.dart';
 import 'package:image/image.dart' as img;
 import 'package:store_warehouse/core/mvc/models/unit.dart';
 import 'package:store_warehouse/core/utils/sql_helper.dart';
-import 'package:store_warehouse/products/model/product.dart';
+import 'package:store_warehouse/products/model/product_model.dart';
 
 class ProductController extends ChangeNotifier {
   File? imagePicker;
   bool showImageError = false;
 
-  Future<List<Product>> getProduct() async {
+  Future<List<ProductModel>> getProduct() async {
     log('Function: getProduct');
     final dbList = await SQLHelper.getItems();
-    return dbList.map((e) => Product.fromSQL(e)).toList();
+    return dbList.map((e) => ProductModel.fromSQL(e)).toList();
   }
 
   Future<Unit> getUnitById(int unitId) async {
@@ -27,30 +27,19 @@ class ProductController extends ChangeNotifier {
     return unit.first;
   }
 
-  Future<void> addProduct(
-    String title,
-    String description,
-    String imagePath,
-    int unitId,
-    int quantity,
-  ) async {
+  Future<void> addProduct(String title, String description, String imagePath,
+      int unitId, int quantity) async {
     log('Function: addProduct');
     final unit = await getUnitById(unitId);
-    await SQLHelper.createItem(
-      title,
-      description,
-      imagePath,
-      unitId,
-      quantity,
-      (quantity * unit.unitPerPiece),
-    );
+    await SQLHelper.createItem(title, description, imagePath, unitId, quantity,
+        (quantity * unit.unitPerPiece));
     notifyListeners();
   }
 
-  Future<Product> getProductById(int id) async {
+  Future<ProductModel> getProductById(int id) async {
     log('Function: getProductById');
     final dbList = await SQLHelper.getItemById(id);
-    return dbList.map((e) => Product.fromSQL(e)).first;
+    return dbList.map((e) => ProductModel.fromSQL(e)).first;
   }
 
   Future<void> updateAddQuantity(int productId, int addQuantity) async {
@@ -134,8 +123,8 @@ class ProductController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> deleteProduct(Product product) async {
-    SQLHelper.deleteDB();
+  Future<void> deleteProduct(ProductModel product) async {
+    SQLHelper.deleteProduct(product.id);
     notifyListeners();
   }
 }
