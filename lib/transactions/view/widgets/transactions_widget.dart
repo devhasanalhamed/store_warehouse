@@ -44,7 +44,8 @@ class TransactionsWidget extends StatelessWidget {
               ),
             ),
             title: Text(transaction.productName),
-            subtitle: Text(transaction.createdAt.toString().substring(0, 10)),
+            subtitle: Text(
+                '${transaction.createdAt.toString().substring(0, 10)} | ${TimeOfDay.fromDateTime(transaction.createdAt).format(context)}'),
             trailing: Container(
               width: 60,
               height: 30,
@@ -53,13 +54,17 @@ class TransactionsWidget extends StatelessWidget {
                   shape: BoxShape.rectangle,
                   color: Colors.white,
                   border: Border.all(
-                    color: Colors.red,
+                    color: transaction.transactionTypeId == 0
+                        ? Colors.red
+                        : Colors.green,
                   )),
               child: Center(
                 child: Text(
                   'حبة ${transaction.quantity}',
-                  style: const TextStyle(
-                    color: Colors.red,
+                  style: TextStyle(
+                    color: transaction.transactionTypeId == 0
+                        ? Colors.red
+                        : Colors.green,
                   ),
                 ),
               ),
