@@ -10,30 +10,34 @@ class TransactionsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Dismissible(
-      key: UniqueKey(),
-      background: Container(
-        color: Colors.red,
-        width: 200,
-        height: 200,
-        child: const Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Icon(
-              Icons.delete,
-              color: Colors.white,
-            )
-          ],
-        ),
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
       ),
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
+      child: Dismissible(
+        key: UniqueKey(),
+        background: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            border: Border.all(
+              color: const Color.fromARGB(255, 235, 232, 232),
+            ),
+          ),
+          child: const Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Icon(
+                Icons.delete,
+                color: Colors.red,
+              )
+            ],
+          ),
         ),
         child: Container(
           decoration: BoxDecoration(
             border: Border.all(
-              color: const Color.fromARGB(255, 235, 232, 232),
+              color: const Color.fromARGB(255, 200, 200, 200),
             ),
             borderRadius: BorderRadius.circular(15),
           ),
@@ -46,27 +50,39 @@ class TransactionsWidget extends StatelessWidget {
             title: Text(transaction.productName),
             subtitle: Text(
                 '${transaction.createdAt.toString().substring(0, 10)} | ${TimeOfDay.fromDateTime(transaction.createdAt).format(context)}'),
-            trailing: Container(
-              width: 60,
-              height: 30,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  shape: BoxShape.rectangle,
-                  color: Colors.white,
-                  border: Border.all(
-                    color: transaction.transactionTypeId == 0
-                        ? Colors.red
-                        : Colors.green,
-                  )),
-              child: Center(
-                child: Text(
-                  'حبة ${transaction.quantity}',
-                  style: TextStyle(
-                    color: transaction.transactionTypeId == 0
-                        ? Colors.red
-                        : Colors.green,
+            trailing: SizedBox(
+              width: 140,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'عملية ${(transaction.transactionTypeId == 0 ? 'سحب' : 'اضافة')}',
+                    style: const TextStyle(fontSize: 12.0, color: Colors.grey),
                   ),
-                ),
+                  Container(
+                    width: 60,
+                    height: 30,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        shape: BoxShape.rectangle,
+                        color: Colors.white,
+                        border: Border.all(
+                          color: transaction.transactionTypeId == 0
+                              ? Colors.red
+                              : Colors.green,
+                        )),
+                    child: Center(
+                      child: Text(
+                        'حبة ${transaction.quantity}',
+                        style: TextStyle(
+                          color: transaction.transactionTypeId == 0
+                              ? Colors.red
+                              : Colors.green,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
