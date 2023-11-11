@@ -132,7 +132,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
   addTransaction() {
     if (formKey.currentState!.validate()) {
       Provider.of<TransactionController>(context, listen: false)
-          .addTransaction(product!.id, quantity!)
+          .addTransaction(product!.id, quantity!, 0)
           .then((value) => {Navigator.of(context).pop()});
     } else {
       log('adding transaction is not valid ');
