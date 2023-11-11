@@ -28,6 +28,7 @@ class TransactionController with ChangeNotifier {
 
   Future<List<TransactionModel>> getTransactions() async {
     final dbList = await SQLHelper.productTransactionViewModel();
+    log(dbList.toString());
     return dbList.map((e) => TransactionModel.fromSQL(e)).toList();
   }
 
@@ -68,17 +69,23 @@ class TransactionController with ChangeNotifier {
     return temp;
   }
 
-  Future<void> addTransaction(int productId, int subQuantity) async {
+  Future<void> addTransaction(int productId, int quantity, int type) async {
     log('Function: addTransaction');
     final product = await getProductById(productId);
     final productUnit = await getUnitById(product.unitId);
     final total = product.totalAmount;
-    if (total >= subQuantity) {
-      SQLHelper.createTransaction(productId, subQuantity);
-      final newTotal = total - subQuantity;
+    if (total >= quantity && type == 0) {
+      SQLHelper.createTransaction(0, productId, quantity);
+      final newTotal = total - quantity;
       final newTotalPerUnit = newTotal ~/ productUnit.unitPerPiece;
       log('$newTotalPerUnit');
-      SQLHelper.updateSubQuantity(productId, newTotal, newTotalPerUnit);
+      SQLHelper.updateQuantity(productId, newTotal, newTotalPerUnit);
+    } else if (type == 1) {
+      SQLHelper.createTransaction(1, productId, quantity);
+      final newTotal = total + quantity;
+      final newTotalPerUnit = newTotal ~/ productUnit.unitPerPiece;
+      log('$newTotalPerUnit');
+      SQLHelper.updateQuantity(productId, newTotal, newTotalPerUnit);
     }
     notifyListeners();
   }
