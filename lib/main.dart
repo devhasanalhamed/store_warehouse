@@ -86,7 +86,7 @@ class HomePageState extends State<HomePage> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        resizeToAvoidBottomInset: true,
+        resizeToAvoidBottomInset: false,
         drawer: Drawer(
           child: Container(
             color: const Color(0xFFFEFEFE),
