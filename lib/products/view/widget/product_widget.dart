@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_warehouse/products/controller/product_controller.dart';
+import 'package:store_warehouse/products/function/add_quantity_modal_bottom_sheet.dart';
 import 'package:store_warehouse/products/model/product_model.dart';
 
 class ProductWidget extends StatelessWidget {
@@ -126,87 +127,8 @@ class ProductWidget extends StatelessWidget {
                 children: [
                   ElevatedButton.icon(
                     icon: const Icon(Icons.add),
-                    onPressed: () {
-                      int quantity = 0;
-                      final value = Provider.of<ProductController>(context,
-                          listen: false);
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (context) => Directionality(
-                          textDirection: TextDirection.rtl,
-                          child: Container(
-                            width: 350,
-                            height: 350,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0,
-                              vertical: 16.0,
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Row(
-                                  children: [
-                                    const Text(
-                                      'نوع الوحدة',
-                                    ),
-                                    const SizedBox(width: 12.0),
-                                    Expanded(
-                                      child: DropdownButtonFormField(
-                                        value: null,
-                                        decoration: InputDecoration(
-                                          border: const OutlineInputBorder(),
-                                          hintText: product.unitId.toString(),
-                                          contentPadding:
-                                              const EdgeInsets.symmetric(
-                                            horizontal: 8.0,
-                                            vertical: 4.0,
-                                          ),
-                                        ),
-                                        padding: EdgeInsets.zero,
-                                        items: const [],
-                                        onChanged: null,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    const Text(
-                                      'الكمية',
-                                    ),
-                                    const SizedBox(width: 12.0),
-                                    Expanded(
-                                      child: TextFormField(
-                                        decoration: const InputDecoration(
-                                          border: OutlineInputBorder(),
-                                          hintText: 'أدخل الكمية بالحبة',
-                                          contentPadding: EdgeInsets.symmetric(
-                                            horizontal: 8.0,
-                                            vertical: 4.0,
-                                          ),
-                                        ),
-                                        onChanged: (value) =>
-                                            quantity = int.parse(value),
-                                        keyboardType: TextInputType.number,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                ElevatedButton(
-                                  onPressed: () => value
-                                      .updateAddQuantity(product.id, quantity)
-                                      .then((value) => Navigator.pop(context)),
-                                  child: const Text(
-                                    'إضافة كمية جديدة',
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    },
+                    onPressed: () =>
+                        addQuantityModalBottomSheet(context, product),
                     label: const Text('كمية جديدة'),
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
