@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:store_warehouse/products/controller/product_controller.dart';
+import 'package:store_warehouse/core/mvc/functions/confirm_delete_dialog.dart';
 import 'package:store_warehouse/products/function/add_quantity_modal_bottom_sheet.dart';
 import 'package:store_warehouse/products/model/product_model.dart';
 
@@ -73,8 +72,7 @@ class ProductWidget extends StatelessWidget {
                 icon: const Icon(Icons.delete),
                 color: const Color.fromARGB(255, 235, 102, 92),
                 onPressed: () {
-                  Provider.of<ProductController>(context, listen: false)
-                      .deleteProduct(product);
+                  confirmDeleteDialog(context, product);
                 },
               ),
             ),
