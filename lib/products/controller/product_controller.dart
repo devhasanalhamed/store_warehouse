@@ -12,7 +12,6 @@ import 'package:store_warehouse/products/model/product_model.dart';
 
 class ProductController extends ChangeNotifier {
   File? imagePicker;
-  bool showImageError = false;
 
   Future<List<ProductModel>> getProduct() async {
     log('Function: getProduct');
@@ -27,12 +26,20 @@ class ProductController extends ChangeNotifier {
     return unit.first;
   }
 
-  Future<void> addProduct(String title, String description, String imagePath,
-      int unitId, int quantity) async {
-    log('Function: addProduct');
+  Future<void> addProduct(
+      String title, String description, int unitId, int quantity) async {
     final unit = await getUnitById(unitId);
-    await SQLHelper.createItem(title, description, imagePath, unitId, quantity,
-        (quantity * unit.unitPerPiece));
+    if (imagePicker != null) {
+      log('image passed');
+      final imagePath = await saveImage();
+      await SQLHelper.createItem(title, description, imagePath.path, unitId,
+          quantity, (quantity * unit.unitPerPiece));
+    } else {
+      await SQLHelper.createItem(title, description, '', unitId, quantity,
+          (quantity * unit.unitPerPiece));
+    }
+
+    log('Function: addProduct');
     notifyListeners();
   }
 
@@ -72,7 +79,6 @@ class ProductController extends ChangeNotifier {
           await ImagePicker().pickImage(source: ImageSource.camera);
       if (pickedImage == null) return;
       imagePicker = File(pickedImage.path);
-      showImageError = false;
     } on PlatformException catch (e) {
       log('Failed to pick image: $e');
     }
@@ -104,13 +110,6 @@ class ProductController extends ChangeNotifier {
   void removeCurrentImage() {
     log('Function: removeCurrentImage');
     imagePicker = null;
-    showImageError = false;
-  }
-
-  void showImageErrorMessage() {
-    log('Function: showImageErrorMessage');
-    showImageError = true;
-    notifyListeners();
   }
 
   Future<void> editProduct(
