@@ -5,6 +5,7 @@ class TransactionModel {
   final String productImagePath;
   final DateTime createdAt;
   final int quantity;
+  final int transactionTypeId;
 
   TransactionModel({
     required this.transactionId,
@@ -13,6 +14,7 @@ class TransactionModel {
     required this.productImagePath,
     required this.createdAt,
     required this.quantity,
+    required this.transactionTypeId,
   });
 
   factory TransactionModel.fromSQL(Map<String, dynamic> record) =>
@@ -23,5 +25,6 @@ class TransactionModel {
         productImagePath: record['imagePath'],
         createdAt: DateTime.parse(record['createdAt']),
         quantity: record['quantity'],
+        transactionTypeId: record['transactionId'],
       );
 }
