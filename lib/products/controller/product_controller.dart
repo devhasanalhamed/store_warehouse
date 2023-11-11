@@ -57,7 +57,7 @@ class ProductController extends ChangeNotifier {
     final totalAmount = product.totalAmount + addQuantity;
     final newTotalPerUnit = totalAmount ~/ productUnit.unitPerPiece;
 
-    SQLHelper.updateSubQuantity(productId, totalAmount, newTotalPerUnit);
+    SQLHelper.updateQuantity(productId, totalAmount, newTotalPerUnit);
     notifyListeners();
   }
 
