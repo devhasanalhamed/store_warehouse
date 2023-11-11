@@ -3,22 +3,24 @@ import 'package:flutter/services.dart';
 
 class TextFormFieldComponent extends StatelessWidget {
   final TextEditingController? controller;
-  final TextInputType keyboardType;
+  final TextInputType? keyboardType;
   final ValueChanged<String>? onSubmit;
   final ValueChanged<String>? onChanged;
-  final FormFieldValidator<String> validator;
+  final FormFieldValidator<String>? validator;
   final String label;
   final int maxLines;
   final int? maxLength;
   final IconButton? prefixIcon;
   final Icon? suffixIcon;
   final List<TextInputFormatter>? inputFormatters;
+  final String? initialValue;
+  final bool readOnly;
   const TextFormFieldComponent({
     Key? key,
     this.controller,
-    required this.keyboardType,
+    this.keyboardType,
     this.onSubmit,
-    required this.validator,
+    this.validator,
     required this.label,
     this.maxLines = 1,
     this.prefixIcon,
@@ -26,6 +28,8 @@ class TextFormFieldComponent extends StatelessWidget {
     this.onChanged,
     this.maxLength,
     this.inputFormatters,
+    this.readOnly = false,
+    this.initialValue,
   }) : super(key: key);
 
   @override
@@ -49,6 +53,8 @@ class TextFormFieldComponent extends StatelessWidget {
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,
       ),
+      initialValue: initialValue,
+      readOnly: readOnly,
       inputFormatters: inputFormatters,
       maxLines: maxLines,
     );
