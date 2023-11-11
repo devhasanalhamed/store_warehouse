@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class TextFormFieldComponent extends StatelessWidget {
   final TextEditingController? controller;
@@ -11,6 +12,7 @@ class TextFormFieldComponent extends StatelessWidget {
   final int? maxLength;
   final IconButton? prefixIcon;
   final Icon? suffixIcon;
+  final List<TextInputFormatter>? inputFormatters;
   const TextFormFieldComponent({
     Key? key,
     this.controller,
@@ -23,6 +25,7 @@ class TextFormFieldComponent extends StatelessWidget {
     this.suffixIcon,
     this.onChanged,
     this.maxLength,
+    this.inputFormatters,
   }) : super(key: key);
 
   @override
@@ -46,6 +49,7 @@ class TextFormFieldComponent extends StatelessWidget {
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,
       ),
+      inputFormatters: inputFormatters,
       maxLines: maxLines,
     );
   }
