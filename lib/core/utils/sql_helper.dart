@@ -142,26 +142,6 @@ class SQLHelper {
     return result;
   }
 
-  // static Future<int> updateTransaction(int productId, int totalAmount) async {
-  //   final db = await SQLHelper.db();
-
-  //   final data = {"totalAmount": totalAmount};
-
-  //   final result =
-  //       await db.update('items', data, where: 'id = ?', whereArgs: [productId]);
-  //   return result;
-  // }
-
-  // static Future<int> updateAddQuantity(int productId, int totalAmount) async {
-  //   final db = await SQLHelper.db();
-
-  //   final data = {"totalAmount": totalAmount};
-
-  //   final result =
-  //       await db.update('items', data, where: 'id = ?', whereArgs: [productId]);
-  //   return result;
-  // }
-
   static Future<List<Map<String, dynamic>>> getUnits() async {
     final db = await SQLHelper.db();
     return db.query('units', orderBy: 'id');
@@ -210,8 +190,6 @@ class SQLHelper {
     ON t.productId = s.id  
     """);
   }
-
-  ///SELECT n.firstname, l.latitude, l.longitude FROM Names n JOIN Location l ON n.id = l.id WHERE n.id=12
 
   static Future<void> deleteProduct(int productId) async {
     final db = await SQLHelper.db();
