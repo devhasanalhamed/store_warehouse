@@ -12,6 +12,16 @@ class SQLHelper {
       """);
 
     await database.execute("""
+      CREATE TABLE transaction_type(
+      id INTEGER PRIMARY KEY NOT NULL,
+      title TEXT,
+      createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP);
+
+      INSERT INTO transaction_type(title)
+      VALUES ('0','سحب'), ('1','إضافة');
+      """);
+
+    await database.execute("""
 
     CREATE TABLE items(
       id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -28,10 +38,13 @@ class SQLHelper {
     await database.execute("""
       CREATE TABLE transactions(
       id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+      transactionId int,
       productId int,
       quantity int,
       createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY(productId) REFERENCES items(id))
+      FOREIGN KEY(productId) REFERENCES items(id),
+      FOREIGN KEY(transactionId) REFERENCES transaction_type(id)
+      )
       """);
   }
 
@@ -71,10 +84,17 @@ class SQLHelper {
     return id;
   }
 
-  static Future<int> createTransaction(int productId, int quantity) async {
+  static Future<List<Map<String, dynamic>>> getTransactionTypeId() async {
+    final db = await SQLHelper.db();
+    return db.query('transaction_type', orderBy: 'id');
+  }
+
+  static Future<int> createTransaction(
+      int transactionTypeId, int productId, int quantity) async {
     final db = await SQLHelper.db();
 
     final data = {
+      "transactionId": transactionTypeId,
       "productId": productId,
       "quantity": quantity,
     };
@@ -97,7 +117,7 @@ class SQLHelper {
     return id;
   }
 
-  static Future<int> updateSubQuantity(
+  static Future<int> updateQuantity(
       int productId, int totalAmount, int totalPerUnit) async {
     final db = await SQLHelper.db();
     final data = {"totalAmount": totalAmount, "quantity": totalPerUnit};
@@ -183,8 +203,8 @@ class SQLHelper {
       productTransactionViewModel() async {
     final db = await SQLHelper.db();
     return db.rawQuery("""
-    SELECT t.id, t.quantity, t.createdAt, 
-    s.title, s.id as productId, 
+    SELECT t.id, t.quantity, t.createdAt,  t.transactionId as transactionId,
+    s.title, s.id as productId,
     s.imagePath FROM transactions as t
     JOIN items as s
     ON t.productId = s.id  
