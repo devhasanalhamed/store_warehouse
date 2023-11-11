@@ -25,23 +25,18 @@ class AddProductScreen extends StatelessWidget {
 
     void validate() {
       final isValid = formKey.currentState!.validate();
-      if (isValid && provider.imagePicker != null) {
+      if (isValid) {
         log('Product information is valid, calling provider...');
-        provider.saveImage().then(
-            (value) => Provider.of<ProductController>(context, listen: false)
-                .addProduct(
-                  titleController.text,
-                  descriptionController.text,
-                  value.path,
-                  unitController!,
-                  int.parse(quantityController.text),
-                )
-                .then((value) => Navigator.pop(context)));
-      } else if (provider.imagePicker == null) {
-        log('image is null');
-        provider.showImageErrorMessage();
+        Provider.of<ProductController>(context, listen: false)
+            .addProduct(
+              titleController.text,
+              descriptionController.text,
+              unitController!,
+              int.parse(quantityController.text),
+            )
+            .then((value) => Navigator.pop(context));
       } else {
-        log('not valid');
+        log('not valid product information');
       }
     }
 
@@ -73,16 +68,6 @@ class AddProductScreen extends StatelessWidget {
                             onTap: value.pickImage,
                             photo: value.imagePicker,
                           ),
-                          if (value.showImageError)
-                            Padding(
-                              padding: const EdgeInsets.only(right: 8.0),
-                              child: Text(
-                                'الرجاء اختيار صورة',
-                                style: TextStyle(
-                                  color: Theme.of(context).colorScheme.error,
-                                ),
-                              ),
-                            ),
                         ],
                       );
                     }),
