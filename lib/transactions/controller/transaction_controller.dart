@@ -1,22 +1,24 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:store_warehouse/core/utils/sql_product.dart';
+import 'package:store_warehouse/core/utils/sql_transaction.dart';
+import 'package:store_warehouse/core/utils/sql_unit.dart';
 import 'package:store_warehouse/transactions/model/transaction_model.dart';
 import 'package:store_warehouse/core/mvc/models/unit.dart';
-import 'package:store_warehouse/core/utils/sql_helper.dart';
 import 'package:store_warehouse/products/model/product_model.dart';
 
 class TransactionController with ChangeNotifier {
   Future<Unit> getUnitById(int unitId) async {
     log('Function: getUnitById');
-    final dbList = await SQLHelper.getUnitById(unitId);
+    final dbList = await SQLUnitHelper.getUnitById(unitId);
     final unit = dbList.map((e) => Unit.fromSQL(e)).toList();
     return unit.first;
   }
 
   Future<ProductModel> getProductById(int id) async {
     log('Function: getProductById');
-    final dbList = await SQLHelper.getItemById(id);
+    final dbList = await SQLProductHelper.getItemById(id);
     return dbList.map((e) => ProductModel.fromSQL(e)).first;
   }
 
@@ -27,7 +29,7 @@ class TransactionController with ChangeNotifier {
   // }
 
   Future<List<TransactionModel>> getTransactions() async {
-    final dbList = await SQLHelper.productTransactionViewModel();
+    final dbList = await SQLTransactionHelper.productTransactionViewModel();
     log(dbList.toString());
     return dbList.map((e) => TransactionModel.fromSQL(e)).toList();
   }
@@ -69,23 +71,34 @@ class TransactionController with ChangeNotifier {
     return temp;
   }
 
-  Future<void> addTransaction(int productId, int quantity, int type) async {
+  Future<void> addTransaction(
+      int productId, int quantity, int type, String notes) async {
     log('Function: addTransaction');
     final product = await getProductById(productId);
     final productUnit = await getUnitById(product.unitId);
     final total = product.totalAmount;
     if (total >= quantity && type == 0) {
-      SQLHelper.createTransaction(0, productId, quantity);
+      SQLTransactionHelper.createTransaction(
+        0,
+        productId,
+        quantity,
+        notes,
+      );
       final newTotal = total - quantity;
       final newTotalPerUnit = newTotal ~/ productUnit.unitPerPiece;
       log('$newTotalPerUnit');
-      SQLHelper.updateQuantity(productId, newTotal, newTotalPerUnit);
+      SQLProductHelper.updateQuantityOld(productId, newTotal, newTotalPerUnit);
     } else if (type == 1) {
-      SQLHelper.createTransaction(1, productId, quantity);
+      SQLTransactionHelper.createTransaction(
+        1,
+        productId,
+        quantity,
+        notes,
+      );
       final newTotal = total + quantity;
       final newTotalPerUnit = newTotal ~/ productUnit.unitPerPiece;
       log('$newTotalPerUnit');
-      SQLHelper.updateQuantity(productId, newTotal, newTotalPerUnit);
+      SQLProductHelper.updateQuantityOld(productId, newTotal, newTotalPerUnit);
     }
     notifyListeners();
   }

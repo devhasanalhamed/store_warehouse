@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_warehouse/core/mvc/controller/unit_provider.dart';
 import 'package:store_warehouse/core/mvc/models/unit.dart';
-import 'package:store_warehouse/core/mvc/view/functions/add_unit_dialog.dart';
 import 'package:store_warehouse/core/mvc/view/widgets/drop_from_field_component.dart';
 import 'package:store_warehouse/core/mvc/view/widgets/elevated_button_component.dart';
 import 'package:store_warehouse/core/mvc/view/widgets/text_form_field_component.dart';
@@ -16,6 +15,7 @@ class AddProductScreen extends StatelessWidget {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController quantityController = TextEditingController();
+  final TextEditingController notesController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +33,7 @@ class AddProductScreen extends StatelessWidget {
               descriptionController.text,
               unitController!,
               int.parse(quantityController.text),
+              notesController.text,
             )
             .then((value) => Navigator.pop(context));
       } else {
@@ -96,6 +97,13 @@ class AddProductScreen extends StatelessWidget {
                       maxLines: 2,
                     ),
                     const SizedBox(height: 16.0),
+                    TextFormFieldComponent(
+                      controller: notesController,
+                      label: 'الملاحظات',
+                      keyboardType: TextInputType.text,
+                      onSubmit: (value) => {},
+                    ),
+                    const SizedBox(height: 16.0),
                     Consumer<UnitProvider>(builder: (context, value, child) {
                       log('build: unit consumer in add product screen has built');
                       return FutureBuilder<List<Unit>>(
@@ -130,24 +138,24 @@ class AddProductScreen extends StatelessWidget {
                             }
                           });
                     }),
-                    const SizedBox(height: 4.0),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TextButton(
-                            onPressed: () => addUnitDialog(context),
-                            child: const Text(
-                              'إضافة وحدة جديدة',
-                              style: TextStyle(
-                                decoration: TextDecoration.underline,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 4.0),
+                    const SizedBox(height: 16.0),
+                    // Row(
+                    //   children: [
+                    //     Expanded(
+                    //       child: TextButton(
+                    //         onPressed: () => addUnitDialog(context),
+                    //         child: const Text(
+                    //           'إضافة وحدة جديدة',
+                    //           style: TextStyle(
+                    //             decoration: TextDecoration.underline,
+                    //             fontWeight: FontWeight.bold,
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
+                    // const SizedBox(height: 4.0),
                     TextFormFieldComponent(
                       controller: quantityController,
                       keyboardType: TextInputType.number,

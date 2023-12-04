@@ -6,6 +6,7 @@ class TransactionModel {
   final DateTime createdAt;
   final int quantity;
   final int transactionTypeId;
+  final String notes;
 
   TransactionModel({
     required this.transactionId,
@@ -15,6 +16,7 @@ class TransactionModel {
     required this.createdAt,
     required this.quantity,
     required this.transactionTypeId,
+    required this.notes,
   });
 
   factory TransactionModel.fromSQL(Map<String, dynamic> record) =>
@@ -26,5 +28,6 @@ class TransactionModel {
         createdAt: DateTime.parse(record['createdAt']),
         quantity: record['quantity'],
         transactionTypeId: record['transactionId'],
+        notes: record['transactionNotes'],
       );
 }

@@ -104,7 +104,7 @@ addQuantityModalBottomSheet(BuildContext context, ProductModel product) {
                       //     .updateAddQuantity(product.id, quantity)
                       //     .then((value) => Navigator.pop(context));
                       provider
-                          .addTransaction(product.id, quantity, 1)
+                          .addTransaction(product.id, quantity, 1, 'كمية جديدة')
                           .then((value) => Navigator.pop(context));
                     }
                   },

@@ -45,6 +45,7 @@ class TransactionsScreenState extends State<TransactionsScreen> {
                       for (var i in snapshot.data!)
                         TransactionsWidget(
                           transaction: i,
+                          unitTitle: 'جرام',
                         ),
                       ElevatedButton.icon(
                         icon: const Icon(Icons.history),

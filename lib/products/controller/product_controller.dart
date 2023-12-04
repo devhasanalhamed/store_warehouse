@@ -7,7 +7,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:image/image.dart' as img;
 import 'package:store_warehouse/core/mvc/models/unit.dart';
-import 'package:store_warehouse/core/utils/sql_helper.dart';
+import 'package:store_warehouse/core/utils/sql_product.dart';
+import 'package:store_warehouse/core/utils/sql_unit.dart';
 import 'package:store_warehouse/products/model/product_model.dart';
 
 class ProductController extends ChangeNotifier {
@@ -15,28 +16,42 @@ class ProductController extends ChangeNotifier {
 
   Future<List<ProductModel>> getProduct() async {
     log('Function: getProduct');
-    final dbList = await SQLHelper.getItems();
+    final dbList = await SQLProductHelper.getItems();
     return dbList.map((e) => ProductModel.fromSQL(e)).toList();
   }
 
   Future<Unit> getUnitById(int unitId) async {
     log('Function: getUnitById');
-    final dbList = await SQLHelper.getUnitById(unitId);
+    final dbList = await SQLUnitHelper.getUnitById(unitId);
     final unit = dbList.map((e) => Unit.fromSQL(e)).toList();
     return unit.first;
   }
 
-  Future<void> addProduct(
-      String title, String description, int unitId, int quantity) async {
+  Future<void> addProduct(String title, String description, int unitId,
+      int quantity, String notes) async {
     final unit = await getUnitById(unitId);
     if (imagePicker != null) {
       log('image passed');
       final imagePath = await saveImage();
-      await SQLHelper.createItem(title, description, imagePath.path, unitId,
-          quantity, (quantity * unit.unitPerPiece));
+      await SQLProductHelper.createItem(
+        title,
+        description,
+        imagePath.path,
+        unitId,
+        quantity,
+        notes,
+        (quantity * unit.unitPerPiece),
+      );
     } else {
-      await SQLHelper.createItem(title, description, '', unitId, quantity,
-          (quantity * unit.unitPerPiece));
+      await SQLProductHelper.createItem(
+        title,
+        description,
+        '',
+        unitId,
+        quantity,
+        notes,
+        (quantity * unit.unitPerPiece),
+      );
     }
 
     log('Function: addProduct');
@@ -45,7 +60,7 @@ class ProductController extends ChangeNotifier {
 
   Future<ProductModel> getProductById(int id) async {
     log('Function: getProductById');
-    final dbList = await SQLHelper.getItemById(id);
+    final dbList = await SQLProductHelper.getItemById(id);
     return dbList.map((e) => ProductModel.fromSQL(e)).first;
   }
 
@@ -57,7 +72,7 @@ class ProductController extends ChangeNotifier {
     final totalAmount = product.totalAmount + addQuantity;
     final newTotalPerUnit = totalAmount ~/ productUnit.unitPerPiece;
 
-    SQLHelper.updateQuantity(productId, totalAmount, newTotalPerUnit);
+    SQLProductHelper.updateQuantityOld(productId, totalAmount, newTotalPerUnit);
     notifyListeners();
   }
 
@@ -118,12 +133,12 @@ class ProductController extends ChangeNotifier {
     String description,
     int unitId,
   ) async {
-    SQLHelper.editProduct(productId, title, description, unitId);
+    SQLProductHelper.editProduct(productId, title, description, unitId);
     notifyListeners();
   }
 
   Future<void> deleteProduct(ProductModel product) async {
-    SQLHelper.deleteProduct(product.id);
+    SQLProductHelper.deleteProduct(product.id);
     notifyListeners();
   }
 }

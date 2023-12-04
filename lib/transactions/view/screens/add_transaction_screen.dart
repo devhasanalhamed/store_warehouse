@@ -21,6 +21,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
   final GlobalKey<FormState> formKey = GlobalKey();
   ProductModel? product;
   int? quantity;
+  String? notes;
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -69,34 +70,44 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                             if (product != null)
                               Column(
                                 children: [
-                                  Row(
-                                    children: [
-                                      const Text('العدد المتبقي: '),
-                                      Text(product!.totalAmount.toString()),
-                                    ],
-                                  ),
                                   if (product!.totalAmount > 0)
                                     Column(
                                       children: [
                                         TextFormFieldComponent(
-                                            validator: (value) {
-                                              if (value!.isEmpty) {
-                                                return 'كمية غير صحيحة';
-                                              }
-                                              return null;
-                                            },
-                                            label: 'أدخل الكمية',
-                                            keyboardType: TextInputType.number,
-                                            inputFormatters: [
-                                              FilteringTextInputFormatter.allow(
-                                                RegExp(r'[0-9]'),
-                                              ),
-                                            ],
-                                            onChanged: (value) {
-                                              if (value.isNotEmpty) {
-                                                quantity = int.parse(value);
-                                              }
-                                            }),
+                                          label: 'ملاحظات',
+                                          keyboardType: TextInputType.text,
+                                          onChanged: (value) => notes = value,
+                                        ),
+                                        const SizedBox(height: 16.0),
+                                        Row(
+                                          children: [
+                                            const Text('الكمية المتبقية : '),
+                                            Text(product!.totalAmount
+                                                .toString()),
+                                            Text(product!.unitTitle),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 8.0),
+                                        TextFormFieldComponent(
+                                          validator: (value) {
+                                            if (value!.isEmpty) {
+                                              return 'كمية غير صحيحة';
+                                            }
+                                            return null;
+                                          },
+                                          label: 'أدخل الكمية',
+                                          keyboardType: TextInputType.number,
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter.allow(
+                                              RegExp(r'[0-9]'),
+                                            ),
+                                          ],
+                                          onChanged: (value) {
+                                            if (value.isNotEmpty) {
+                                              quantity = int.parse(value);
+                                            }
+                                          },
+                                        ),
                                         const SizedBox(height: 16.0),
                                         ElevatedButtonComponent(
                                           onPressed: () => addTransaction(),
@@ -131,8 +142,9 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
 
   addTransaction() {
     if (formKey.currentState!.validate()) {
+      print(notes);
       Provider.of<TransactionController>(context, listen: false)
-          .addTransaction(product!.id, quantity!, 0)
+          .addTransaction(product!.id, quantity!, 0, notes ?? '')
           .then((value) => {Navigator.of(context).pop()});
     } else {
       log('adding transaction is not valid ');
