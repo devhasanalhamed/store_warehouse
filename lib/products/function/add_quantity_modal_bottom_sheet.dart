@@ -9,7 +9,6 @@ import 'package:store_warehouse/transactions/controller/transaction_controller.d
 addQuantityModalBottomSheet(BuildContext context, ProductModel product) {
   int quantity = 0;
   final GlobalKey<FormState> formKey = GlobalKey();
-  final provider = Provider.of<TransactionController>(context, listen: false);
   showModalBottomSheet(
     isScrollControlled: true,
     context: context,
@@ -103,9 +102,6 @@ addQuantityModalBottomSheet(BuildContext context, ProductModel product) {
                       // provider
                       //     .updateAddQuantity(product.id, quantity)
                       //     .then((value) => Navigator.pop(context));
-                      provider
-                          .addTransaction(product.id, quantity, 1)
-                          .then((value) => Navigator.pop(context));
                     }
                   },
                 ),
