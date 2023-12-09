@@ -4,46 +4,45 @@ import 'package:sqflite/sqflite.dart';
 class SQLHelper {
   static Future<void> createTables(Database database) async {
     await database.execute("""
-      CREATE TABLE units(
-      id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-      title TEXT,
-      unitPerPiece int,
+     CREATE TABLE unit(
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
       createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)
       """);
 
     await database.execute("""
       CREATE TABLE transaction_type(
-      id INTEGER PRIMARY KEY NOT NULL,
-      title TEXT,
-      createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP);
-
-      INSERT INTO transaction_type(title)
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP);
+      INSERT INTO transaction_type(name)
       VALUES ('0','سحب'), ('1','إضافة');
       """);
 
     await database.execute("""
 
-    CREATE TABLE items(
-      id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-      title TEXT,
-      description TEXT,
-      imagePath TEXT,
-      unitId int,
-      quantity int,
-      totalAmount int,
-      createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY(unitId) REFERENCES units(id))
+    CREATE TABLE product(
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      description TEXT NOT NULL,
+      image_path TEXT NOT NULL,
+      note TEXT NOT NULL,
+      unit_id INTEGER NOT NULL,
+      created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY(unit_id) REFERENCES unit(id)
+      )
       """);
 
     await database.execute("""
       CREATE TABLE transactions(
-      id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-      transactionId int,
-      productId int,
-      quantity int,
-      createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY(productId) REFERENCES items(id),
-      FOREIGN KEY(transactionId) REFERENCES transaction_type(id)
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      product_id INTEGER NOT NULL,
+      amount INTEGER NOT NULL,
+      time_stamp INTEGER NOT NULL,
+      type INTEGER NOT NULL,
+      created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (product_id) REFERENCES product (id),
+      FOREIGN KEY(type) REFERENCES transaction_type(id)
       )
       """);
   }
@@ -60,140 +59,140 @@ class SQLHelper {
     deleteDatabase('inventory');
   }
 
-  static Future<int> createItem(
-    String title,
-    String description,
-    String imagePath,
-    int unitId,
-    int quantity,
-    int totalAmount,
-  ) async {
-    final db = await SQLHelper.db();
+  // static Future<int> createItem(
+  //   String title,
+  //   String description,
+  //   String imagePath,
+  //   int unitId,
+  //   int quantity,
+  //   int totalAmount,
+  // ) async {
+  //   final db = await SQLHelper.db();
 
-    final data = {
-      "title": title,
-      "description": description,
-      "imagePath": imagePath,
-      "unitId": unitId,
-      "quantity": quantity,
-      "totalAmount": totalAmount
-    };
+  //   final data = {
+  //     "title": title,
+  //     "description": description,
+  //     "imagePath": imagePath,
+  //     "unitId": unitId,
+  //     "quantity": quantity,
+  //     "totalAmount": totalAmount
+  //   };
 
-    final id = await db.insert('items', data,
-        conflictAlgorithm: ConflictAlgorithm.replace);
-    return id;
-  }
+  //   final id = await db.insert('items', data,
+  //       conflictAlgorithm: ConflictAlgorithm.replace);
+  //   return id;
+  // }
 
-  static Future<List<Map<String, dynamic>>> getTransactionTypeId() async {
-    final db = await SQLHelper.db();
-    return db.query('transaction_type', orderBy: 'id');
-  }
+  // static Future<List<Map<String, dynamic>>> getTransactionTypeId() async {
+  //   final db = await SQLHelper.db();
+  //   return db.query('transaction_type', orderBy: 'id');
+  // }
 
-  static Future<int> createTransaction(
-      int transactionTypeId, int productId, int quantity) async {
-    final db = await SQLHelper.db();
+  // static Future<int> createTransaction(
+  //     int transactionTypeId, int productId, int quantity) async {
+  //   final db = await SQLHelper.db();
 
-    final data = {
-      "transactionId": transactionTypeId,
-      "productId": productId,
-      "quantity": quantity,
-    };
+  //   final data = {
+  //     "transactionId": transactionTypeId,
+  //     "productId": productId,
+  //     "quantity": quantity,
+  //   };
 
-    final id = await db.insert('transactions', data,
-        conflictAlgorithm: ConflictAlgorithm.replace);
-    return id;
-  }
+  //   final id = await db.insert('transactions', data,
+  //       conflictAlgorithm: ConflictAlgorithm.replace);
+  //   return id;
+  // }
 
-  static Future<int> createUnit(String title, int unitPerPiece) async {
-    final db = await SQLHelper.db();
+  // static Future<int> createUnit(String title, int unitPerPiece) async {
+  //   final db = await SQLHelper.db();
 
-    final data = {
-      "title": title,
-      "unitPerPiece": unitPerPiece,
-    };
+  //   final data = {
+  //     "title": title,
+  //     "unitPerPiece": unitPerPiece,
+  //   };
 
-    final id = await db.insert('units', data,
-        conflictAlgorithm: ConflictAlgorithm.replace);
-    return id;
-  }
+  //   final id = await db.insert('units', data,
+  //       conflictAlgorithm: ConflictAlgorithm.replace);
+  //   return id;
+  // }
 
-  static Future<int> updateQuantity(
-      int productId, int totalAmount, int totalPerUnit) async {
-    final db = await SQLHelper.db();
-    final data = {"totalAmount": totalAmount, "quantity": totalPerUnit};
+  // static Future<int> updateQuantity(
+  //     int productId, int totalAmount, int totalPerUnit) async {
+  //   final db = await SQLHelper.db();
+  //   final data = {"totalAmount": totalAmount, "quantity": totalPerUnit};
 
-    final result =
-        await db.update('items', data, where: 'id = ?', whereArgs: [productId]);
-    return result;
-  }
+  //   final result =
+  //       await db.update('items', data, where: 'id = ?', whereArgs: [productId]);
+  //   return result;
+  // }
 
-  static Future<int> editProduct(
-    int productId,
-    String title,
-    String description,
-    int unitId,
-  ) async {
-    final db = await SQLHelper.db();
+  // static Future<int> editProduct(
+  //   int productId,
+  //   String title,
+  //   String description,
+  //   int unitId,
+  // ) async {
+  //   final db = await SQLHelper.db();
 
-    final data = {"title": title, "description": description, "unitId": unitId};
+  //   final data = {"title": title, "description": description, "unitId": unitId};
 
-    final result =
-        await db.update('items', data, where: 'id = ?', whereArgs: [productId]);
-    return result;
-  }
+  //   final result =
+  //       await db.update('items', data, where: 'id = ?', whereArgs: [productId]);
+  //   return result;
+  // }
 
-  static Future<List<Map<String, dynamic>>> getUnits() async {
-    final db = await SQLHelper.db();
-    return db.query('units', orderBy: 'id');
-  }
+  // static Future<List<Map<String, dynamic>>> getUnits() async {
+  //   final db = await SQLHelper.db();
+  //   return db.query('units', orderBy: 'id');
+  // }
 
-  static Future<List<Map<String, dynamic>>> getUnitById(int unitId) async {
-    final db = await SQLHelper.db();
-    return db.query('units',
-        orderBy: 'id', limit: 1, where: 'id = ?', whereArgs: [unitId]);
-  }
+  // static Future<List<Map<String, dynamic>>> getUnitById(int unitId) async {
+  //   final db = await SQLHelper.db();
+  //   return db.query('units',
+  //       orderBy: 'id', limit: 1, where: 'id = ?', whereArgs: [unitId]);
+  // }
 
-  static Future<List<Map<String, dynamic>>> getItems() async {
-    final db = await SQLHelper.db();
-    return db.rawQuery("""
-    SELECT p.id, p.title, p.description, 
-    p.imagePath, p.unitId, p.totalAmount, p.quantity,
-    u.title as unitTitle FROM items as p JOIN units as u
-    ON p.unitId = u.id
-    """);
-  }
+  // static Future<List<Map<String, dynamic>>> getItems() async {
+  //   final db = await SQLHelper.db();
+  //   return db.rawQuery("""
+  //   SELECT p.id, p.title, p.description,
+  //   p.imagePath, p.unitId, p.totalAmount, p.quantity,
+  //   u.title as unitTitle FROM items as p JOIN units as u
+  //   ON p.unitId = u.id
+  //   """);
+  // }
 
-  static Future<List<Map<String, dynamic>>> getItemById(int id) async {
-    final db = await SQLHelper.db();
-    return await db.rawQuery("""
-    SELECT p.id, p.title, p.description, 
-    p.imagePath, p.unitId, p.totalAmount, p.quantity,
-    u.title as unitTitle FROM items as p JOIN units as u
-    ON p.unitId = u.id
-    WHERE P.id = ?
-    """, [id]);
-  }
+  // static Future<List<Map<String, dynamic>>> getItemById(int id) async {
+  //   final db = await SQLHelper.db();
+  //   return await db.rawQuery("""
+  //   SELECT p.id, p.title, p.description,
+  //   p.imagePath, p.unitId, p.totalAmount, p.quantity,
+  //   u.title as unitTitle FROM items as p JOIN units as u
+  //   ON p.unitId = u.id
+  //   WHERE P.id = ?
+  //   """, [id]);
+  // }
 
-  static Future<List<Map<String, dynamic>>> getTransactions() async {
-    final db = await SQLHelper.db();
-    return db.query('transactions', orderBy: 'id');
-  }
+  // static Future<List<Map<String, dynamic>>> getTransactions() async {
+  //   final db = await SQLHelper.db();
+  //   return db.query('transactions', orderBy: 'id');
+  // }
 
-  static Future<List<Map<String, dynamic>>>
-      productTransactionViewModel() async {
-    final db = await SQLHelper.db();
-    return db.rawQuery("""
-    SELECT t.id, t.quantity, t.createdAt,  t.transactionId as transactionId,
-    s.title, s.id as productId,
-    s.imagePath FROM transactions as t
-    JOIN items as s
-    ON t.productId = s.id  
-    """);
-  }
+  // static Future<List<Map<String, dynamic>>>
+  //     productTransactionViewModel() async {
+  //   final db = await SQLHelper.db();
+  //   return db.rawQuery("""
+  //   SELECT t.id, t.quantity, t.createdAt,  t.transactionId as transactionId,
+  //   s.title, s.id as productId,
+  //   s.imagePath FROM transactions as t
+  //   JOIN items as s
+  //   ON t.productId = s.id
+  //   """);
+  // }
 
-  static Future<void> deleteProduct(int productId) async {
-    final db = await SQLHelper.db();
-    db.rawDelete('DELETE FROM transactions WHERE productId = ?', [productId]);
-    db.rawDelete('DELETE FROM items WHERE id = ?', [productId]);
-  }
+  // static Future<void> deleteProduct(int productId) async {
+  //   final db = await SQLHelper.db();
+  //   db.rawDelete('DELETE FROM transactions WHERE productId = ?', [productId]);
+  //   db.rawDelete('DELETE FROM items WHERE id = ?', [productId]);
+  // }
 }
