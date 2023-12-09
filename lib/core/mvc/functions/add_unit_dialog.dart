@@ -65,12 +65,7 @@ addUnitDialog(BuildContext context) {
                 const SizedBox(height: 16.0),
                 ElevatedButtonComponent(
                   title: 'إضافة وحدة جديد',
-                  onPressed: () =>
-                      Provider.of<UnitProvider>(context, listen: false)
-                          .addUnit(unitTitle, unitPerPiece)
-                          .then(
-                            (value) => {Navigator.of(context).pop()},
-                          ),
+                  onPressed: () {},
                 ),
               ],
             ),
