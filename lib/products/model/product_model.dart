@@ -7,6 +7,7 @@ class ProductModel {
   final String unitTitle;
   final int quantity;
   final int totalAmount;
+  final String notes;
 
   ProductModel({
     required this.id,
@@ -17,6 +18,7 @@ class ProductModel {
     required this.unitTitle,
     required this.quantity,
     required this.totalAmount,
+    required this.notes,
   });
 
   factory ProductModel.fromSQL(Map<String, dynamic> record) => ProductModel(
@@ -28,5 +30,6 @@ class ProductModel {
         unitTitle: record['unitTitle'],
         quantity: record['quantity'] as int,
         totalAmount: record['totalAmount'] as int,
+        notes: record['notes'],
       );
 }
