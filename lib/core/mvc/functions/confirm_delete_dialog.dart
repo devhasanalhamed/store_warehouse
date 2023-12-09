@@ -19,13 +19,6 @@ Future<dynamic> confirmDeleteDialog(
         actions: [
           ElevatedButtonComponent(
               onPressed: () => Navigator.pop(context), title: 'إلغاء'),
-          TextButton(
-            onPressed: () =>
-                Provider.of<ProductController>(context, listen: false)
-                    .deleteProduct(product)
-                    .then((value) => Navigator.pop(context)),
-            child: const Text('حذف'),
-          ),
         ],
       ),
     ),
