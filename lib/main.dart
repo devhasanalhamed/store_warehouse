@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
           fontFamily: 'Cairo',
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         ),
-        home: const HomeControllerScreen(),
+        home: HomeControllerScreen(),
       ),
     );
   }
