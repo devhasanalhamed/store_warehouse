@@ -4,6 +4,8 @@ import 'package:store_warehouse/core/mvc/controller/unit_provider.dart';
 import 'package:store_warehouse/products/controller/product_controller.dart';
 import 'package:store_warehouse/products/view/screen/add_product_screen.dart';
 import 'package:store_warehouse/products/view/screen/products_screen.dart';
+import 'package:store_warehouse/structured/home/logic/home_view_model.dart';
+import 'package:store_warehouse/structured/home/ui/screen/home_controller_screen.dart';
 import 'package:store_warehouse/transactions/controller/transaction_controller.dart';
 import 'package:store_warehouse/transactions/view/screens/add_transaction_screen.dart';
 import 'package:store_warehouse/transactions/view/screens/transactions_screen.dart';
@@ -22,7 +24,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => ProductController(),
+          create: (context) => HomeViewModel(),
         )
       ],
       child: MaterialApp(
@@ -31,7 +33,7 @@ class MyApp extends StatelessWidget {
           fontFamily: 'Cairo',
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         ),
-        home: const HomePage(),
+        home: const HomeControllerScreen(),
       ),
     );
   }
