@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_warehouse/core/mvc/controller/unit_provider.dart';
 import 'package:store_warehouse/core/mvc/models/unit.dart';
-import 'package:store_warehouse/core/mvc/view/functions/add_unit_dialog.dart';
+import 'package:store_warehouse/core/mvc/functions/add_unit_dialog.dart';
 import 'package:store_warehouse/core/mvc/view/widgets/drop_from_field_component.dart';
 import 'package:store_warehouse/core/mvc/view/widgets/elevated_button_component.dart';
 import 'package:store_warehouse/core/mvc/view/widgets/text_form_field_component.dart';
@@ -20,21 +20,11 @@ class AddProductScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int? unitController;
-    final provider = Provider.of<ProductController>(context, listen: false);
-    provider.removeCurrentImage();
 
     void validate() {
       final isValid = formKey.currentState!.validate();
       if (isValid) {
         log('Product information is valid, calling provider...');
-        Provider.of<ProductController>(context, listen: false)
-            .addProduct(
-              titleController.text,
-              descriptionController.text,
-              unitController!,
-              int.parse(quantityController.text),
-            )
-            .then((value) => Navigator.pop(context));
       } else {
         log('not valid product information');
       }
@@ -58,19 +48,6 @@ class AddProductScreen extends StatelessWidget {
                 key: formKey,
                 child: Column(
                   children: [
-                    Consumer<ProductController>(
-                        builder: (context, value, child) {
-                      log('build: product consumer in add product screen has built');
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ProductImagePicker(
-                            onTap: value.pickImage,
-                            photo: value.imagePicker,
-                          ),
-                        ],
-                      );
-                    }),
                     const SizedBox(height: 16.0),
                     TextFormFieldComponent(
                       controller: titleController,
@@ -96,40 +73,6 @@ class AddProductScreen extends StatelessWidget {
                       maxLines: 2,
                     ),
                     const SizedBox(height: 16.0),
-                    Consumer<UnitProvider>(builder: (context, value, child) {
-                      log('build: unit consumer in add product screen has built');
-                      return FutureBuilder<List<Unit>>(
-                          future: value.getUnits(),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              return DropDownButtonFormFieldComponent(
-                                label: 'أختر نوع الوحدة',
-                                onChanged: (value) =>
-                                    unitController = int.parse('$value'),
-                                validator: (value) {
-                                  if (unitController == null) {
-                                    return 'الرجاء اختيار الوحدة';
-                                  }
-                                  return null;
-                                },
-                                dropList: [
-                                  for (var unit in snapshot.data!)
-                                    DropdownMenuItem(
-                                      value: unit.id,
-                                      alignment: Alignment.centerRight,
-                                      child: Text(unit.title),
-                                    ),
-                                ],
-                              );
-                            } else {
-                              return DropDownButtonFormFieldComponent(
-                                label: 'جاري جلب قائمة الوحدات...',
-                                dropList: const [],
-                                onChanged: (_) {},
-                              );
-                            }
-                          });
-                    }),
                     const SizedBox(height: 4.0),
                     Row(
                       children: [
