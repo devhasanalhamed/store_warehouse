@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_warehouse/structured/home/logic/home_view_model.dart';
-import 'package:store_warehouse/structured/product/ui/products_page.dart';
+import 'package:store_warehouse/structured/home/ui/widget/custom_bottom_navigation_bar.dart';
+import 'package:store_warehouse/structured/product/ui/screen/products_page.dart';
 import 'package:store_warehouse/structured/transaction/ui/transactions_page.dart';
 
 class HomeControllerScreen extends StatelessWidget {
-  const HomeControllerScreen({Key? key}) : super(key: key);
+  HomeControllerScreen({Key? key}) : super(key: key);
+
+  final actionButtons = [
+    FloatingActionButton(
+      onPressed: () {},
+      child: Text('data'),
+    )
+  ];
 
   final pages = const [
     Center(child: Text('screen')),
@@ -22,33 +30,11 @@ class HomeControllerScreen extends StatelessWidget {
       builder: (_, currentIndex, __) => Scaffold(
         appBar: AppBar(),
         body: pages[currentIndex],
-        bottomNavigationBar: BottomNavigationBar(
+        floatingActionButton: actionButtons.firstOrNull,
+        bottomNavigationBar: CustomBottomNavigationBar(
           currentIndex: currentIndex,
           onTap: (index) =>
               context.read<HomeViewModel>().updateCurrentIndex(index),
-          type: BottomNavigationBarType.fixed,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'Settings',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.file_open),
-              label: 'Reports',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.compare_arrows),
-              label: 'Transactions',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_bag),
-              label: 'Products',
-            ),
-          ],
         ),
       ),
     );
