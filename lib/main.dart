@@ -22,14 +22,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => UnitProvider(),
-        ),
-        ChangeNotifierProvider(
           create: (context) => ProductController(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => TransactionController(),
-        ),
+        )
       ],
       child: MaterialApp(
         title: 'مستودعي',
@@ -139,14 +133,7 @@ class HomePageState extends State<HomePage> {
                                       unitPerPiece = int.parse(value),
                                 ),
                                 ElevatedButton(
-                                  onPressed: () => Provider.of<UnitProvider>(
-                                          context,
-                                          listen: false)
-                                      .addUnit(unitTitle, unitPerPiece)
-                                      .then(
-                                        (value) =>
-                                            {Navigator.of(context).pop()},
-                                      ),
+                                  onPressed: () {},
                                   child: const Text('إضافة وحدة جديد'),
                                 ),
                               ],
@@ -189,10 +176,7 @@ class HomePageState extends State<HomePage> {
                 ),
                 const Divider(color: Colors.deepPurple),
                 TextButton(
-                  onPressed: () {
-                    Provider.of<UnitProvider>(context, listen: false)
-                        .deleteDatabase();
-                  },
+                  onPressed: () {},
                   child: const Text(
                     'حذف قاعدة البيانات',
                     style: TextStyle(
