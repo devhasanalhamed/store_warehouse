@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_warehouse/structured/home/logic/home_view_model.dart';
 import 'package:store_warehouse/structured/home/ui/screen/home_controller_screen.dart';
+import 'package:store_warehouse/structured/product/logic/product_view_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,6 +20,12 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => HomeViewModel(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => ProductViewModel()
+            ..fetchProducts()
+            ..fetchProductsWithQuantitiesAndUnitTitles(),
+          lazy: false,
+        ),
       ],
       child: MaterialApp(
         title: 'مستودعي',
@@ -27,7 +34,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: HomeControllerScreen(),
+        home: const HomeControllerScreen(),
       ),
     );
   }
