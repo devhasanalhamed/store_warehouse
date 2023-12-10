@@ -1,4 +1,8 @@
 {
   "cSpell.language": "en,ar",
-  "cSpell.words": ["AUTOINCREMENT", "sqflite"]
+  "cSpell.words": [
+    "AUTOINCREMENT",
+    "sqflite",
+    "VARCHAR"
+  ]
 }
