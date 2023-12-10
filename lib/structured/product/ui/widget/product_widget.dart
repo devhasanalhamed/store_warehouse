@@ -1,9 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:store_warehouse/structured/product/data/product_model.dart';
 
 class ProductWidget extends StatelessWidget {
-  const ProductWidget({Key? key}) : super(key: key);
+  final ProductModel product;
+  const ProductWidget({Key? key, required this.product}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +61,7 @@ class ProductWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              title: Text('product.title'),
+              title: Text(product.title),
               subtitle: Text('product.description'),
               trailing: IconButton(
                 icon: const Icon(Icons.delete),
