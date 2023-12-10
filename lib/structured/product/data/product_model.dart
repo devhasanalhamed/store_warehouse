@@ -4,9 +4,6 @@ class ProductModel {
   final String description;
   final String imagePath;
   final int unitId;
-  final String unitTitle;
-  final int quantity;
-  final int totalAmount;
   final String notes;
 
   ProductModel({
@@ -15,9 +12,6 @@ class ProductModel {
     required this.imagePath,
     required this.description,
     required this.unitId,
-    required this.unitTitle,
-    required this.quantity,
-    required this.totalAmount,
     required this.notes,
   });
 
@@ -27,9 +21,6 @@ class ProductModel {
         description: record['description'],
         imagePath: record['imagePath'],
         unitId: record['unitId'] as int,
-        unitTitle: record['unitTitle'],
-        quantity: record['quantity'] as int,
-        totalAmount: record['totalAmount'] as int,
         notes: record['notes'],
       );
 }
