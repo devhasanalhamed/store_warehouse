@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:store_warehouse/core/utils/app_string.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
   final int currentIndex;
@@ -19,23 +20,23 @@ class CustomBottomNavigationBar extends StatelessWidget {
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.settings),
-          label: 'Settings',
+          label: AppString.settings,
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.file_open),
-          label: 'Reports',
+          label: AppString.reports,
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
-          label: 'Home',
+          label: AppString.home,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.compare_arrows),
-          label: 'Transactions',
+          icon: Icon(Icons.swap_horiz),
+          label: AppString.transactions,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.shopping_bag),
-          label: 'Products',
+          icon: Icon(Icons.shopping_cart),
+          label: AppString.products,
         ),
       ],
     );
