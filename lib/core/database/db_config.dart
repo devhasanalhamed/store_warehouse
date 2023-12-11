@@ -9,13 +9,12 @@ class DbConfig {
 
   static Future<Database> getInstance() async {
     _db ??= await openDatabase(
-      'inventory8',
+      'inventory',
       version: 1,
       onCreate: (db, version) async {
         await db.execute(UnitTable.create());
         await db.execute(UnitTable.insert());
         await db.execute(ProductTable.create());
-        await db.execute(ProductTable.insert());
         await db.execute(TransactionTypeTable.create());
         await db.execute(TransactionTypeTable.insert());
         await db.execute(TransactionTable.create());
@@ -27,5 +26,9 @@ class DbConfig {
 
   static close() async {
     await _db!.close();
+  }
+
+  static delete() async {
+    await deleteDatabase('inventory');
   }
 }
