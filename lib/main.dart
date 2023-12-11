@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:store_warehouse/structured/home/logic/home_view_model.dart';
-import 'package:store_warehouse/structured/home/ui/screen/home_controller_screen.dart';
-import 'package:store_warehouse/structured/product/logic/product_view_model.dart';
+import 'package:store_warehouse/home/logic/home_view_model.dart';
+import 'package:store_warehouse/home/ui/screen/home_controller_screen.dart';
+import 'package:store_warehouse/product/logic/product_view_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
