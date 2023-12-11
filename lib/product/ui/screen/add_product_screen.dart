@@ -7,7 +7,6 @@ class AddProductScreen extends StatelessWidget {
   AddProductScreen({Key? key}) : super(key: key);
 
   final GlobalKey<FormState> _formKey = GlobalKey();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,62 +14,100 @@ class AddProductScreen extends StatelessWidget {
         title: const Text('إضافة منتج'),
         centerTitle: true,
       ),
-      body: Form(
-        key: _formKey,
-        child: ListView(
-          children: [
-            const SizedBox(height: 16.0),
-            TextFormField(
-              decoration: const InputDecoration(
-                hintText: 'عنوان',
-                border: OutlineInputBorder(),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: Form(
+          key: context.read<ProductViewModel>().formKey,
+          child: ListView(
+            children: [
+              const SizedBox(height: 16.0),
+              TextFormField(
+                decoration: const InputDecoration(
+                  hintText: 'عنوان',
+                  border: OutlineInputBorder(),
+                ),
+                onSaved: (newValue) =>
+                    context.read<ProductViewModel>().title = newValue!,
+                validator: (value) {
+                  if (value!.isNotEmpty) {
+                    return null;
+                  }
+                  return 'f';
+                },
               ),
-            ),
-            const SizedBox(height: 16.0),
-            TextFormField(
-              decoration: const InputDecoration(
-                hintText: 'وصف',
-                border: OutlineInputBorder(),
+              const SizedBox(height: 16.0),
+              TextFormField(
+                decoration: const InputDecoration(
+                  hintText: 'وصف',
+                  border: OutlineInputBorder(),
+                ),
+                onSaved: (newValue) =>
+                    context.read<ProductViewModel>().description = newValue!,
+                validator: (value) {
+                  if (value!.isNotEmpty) {
+                    return null;
+                  }
+                  return 'f';
+                },
               ),
-            ),
-            const SizedBox(height: 16.0),
-            TextFormField(
-              decoration: const InputDecoration(
-                hintText: 'الملاحظات',
-                border: OutlineInputBorder(),
+              const SizedBox(height: 16.0),
+              TextFormField(
+                decoration: const InputDecoration(
+                  hintText: 'الملاحظات',
+                  border: OutlineInputBorder(),
+                ),
+                onSaved: (newValue) =>
+                    context.read<ProductViewModel>().notes = newValue!,
+                validator: (value) {
+                  if (value!.isNotEmpty) {
+                    return null;
+                  }
+                  return 'f';
+                },
               ),
-            ),
-            const SizedBox(height: 16.0),
-            TextFormField(
-              decoration: const InputDecoration(
-                hintText: 'عنوان الصورة',
-                border: OutlineInputBorder(),
+              const SizedBox(height: 16.0),
+              TextFormField(
+                decoration: const InputDecoration(
+                  hintText: 'عنوان الصورة',
+                  border: OutlineInputBorder(),
+                ),
+                onSaved: (newValue) =>
+                    context.read<ProductViewModel>().imagePath = newValue!,
+                validator: (value) {
+                  if (value!.isNotEmpty) {
+                    return null;
+                  }
+                  return 'f';
+                },
               ),
-            ),
-            const SizedBox(height: 16.0),
-            TextFormField(
-              decoration: const InputDecoration(
-                hintText: 'الوحدة',
-                border: OutlineInputBorder(),
+              const SizedBox(height: 16.0),
+              TextFormField(
+                decoration: const InputDecoration(
+                  hintText: 'الوحدة',
+                  border: OutlineInputBorder(),
+                ),
+                onSaved: (newValue) =>
+                    context.read<ProductViewModel>().unitId = newValue!,
+                validator: (value) {
+                  if (value!.isNotEmpty) {
+                    return null;
+                  }
+                  return 'f';
+                },
               ),
-            ),
-            const SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: () {
-                context.read<ProductViewModel>().addProduct(
-                      ProductModel(
-                        id: 0,
-                        title: 'title',
-                        imagePath: 'imagePath',
-                        description: 'description',
-                        unitId: 1,
-                        notes: 'notes',
-                      ),
-                    );
-              },
-              child: const Text('Add'),
-            ),
-          ],
+              const SizedBox(height: 16.0),
+              ElevatedButton(
+                onPressed: () {
+                  if (true) {
+                    print('valid');
+
+                    context.read<ProductViewModel>().x();
+                  }
+                },
+                child: const Text('Add'),
+              ),
+            ],
+          ),
         ),
       ),
     );
