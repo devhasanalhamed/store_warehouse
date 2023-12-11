@@ -35,6 +35,17 @@ class ProductViewModel extends ChangeNotifier {
 
   Future<void> addProduct(ProductModel product) async {
     final result = await db.addProduct(product);
+    fetchProducts();
     print(result);
+  }
+
+  final GlobalKey<FormState> formKey = GlobalKey();
+  late String title;
+  late String description;
+  late String notes;
+  late String imagePath;
+  late String unitId;
+  void x() {
+    formKey.currentState!.validate();
   }
 }
