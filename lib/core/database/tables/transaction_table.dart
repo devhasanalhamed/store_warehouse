@@ -1,5 +1,5 @@
 class TransactionTable {
-  static const String tableName = 'transaction';
+  static const String tableName = 'transactions';
 
   static String create() => """
   CREATE TABLE transactions(
@@ -7,6 +7,7 @@ class TransactionTable {
     product_id INT NOT NULL,
     type INT NOT NULL,
     amount INT NOT NULL,
+    notes TEXT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (product_id) REFERENCES product(id),
     FOREIGN KEY (type) REFERENCES transaction_type(id)
