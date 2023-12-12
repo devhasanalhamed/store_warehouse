@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:store_warehouse/core/database/db_config.dart';
 
 class SettingsPage extends StatelessWidget {
