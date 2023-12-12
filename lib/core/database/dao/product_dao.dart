@@ -4,15 +4,9 @@ import 'package:store_warehouse/core/database/tables/product_table.dart';
 import 'package:store_warehouse/product/data/product_model.dart';
 
 class ProductDAO {
-  late Database _db;
+  ProductDAO();
 
-  ProductDAO() {
-    _getDbInstance();
-  }
-
-  void _getDbInstance() async => _db = await DbConfig.getInstance();
-
-  Future<int> addProduct(ProductModel product) async {
+  Future<int> insert(ProductModel product) async {
     final db = await DbConfig.getInstance();
     final data = {
       "name": product.title,
@@ -30,7 +24,7 @@ class ProductDAO {
     return id;
   }
 
-  Future<List<ProductModel>> getProducts() async {
+  Future<List<ProductModel>> fetchProducts() async {
     final db = await DbConfig.getInstance();
 
     final List<Map<String, dynamic>> productsData =
@@ -45,5 +39,14 @@ class ProductDAO {
         unitId: data['unit_id'],
       );
     }).toList();
+  }
+
+  Future<int> delete(int id) async {
+    final db = await DbConfig.getInstance();
+    return await db.delete(
+      ProductTable.tableName,
+      where: 'id = ?',
+      whereArgs: [id],
+    );
   }
 }
