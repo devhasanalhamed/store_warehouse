@@ -1,7 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:store_warehouse/product/data/product_model.dart';
+import 'package:store_warehouse/product/logic/product_view_model.dart';
+import 'package:store_warehouse/unit/ui/widget/show_unit_name.dart';
 
 class ProductWidget extends StatelessWidget {
   final ProductModel product;
@@ -46,7 +49,7 @@ class ProductWidget extends StatelessWidget {
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       fit: BoxFit.fitWidth,
-                      image: FileImage(File('')),
+                      image: FileImage(File(product.imagePath)),
                       onError: (exception, stackTrace) => const Center(
                         child: Text(
                           'خطأ',
@@ -62,11 +65,12 @@ class ProductWidget extends StatelessWidget {
                 ),
               ),
               title: Text(product.title),
-              subtitle: Text('product.description'),
+              subtitle: Text(product.description),
               trailing: IconButton(
                 icon: const Icon(Icons.delete),
                 color: const Color.fromARGB(255, 235, 102, 92),
-                onPressed: () {},
+                onPressed: () =>
+                    context.read<ProductViewModel>().deleteProduct(product.id),
               ),
             ),
             Table(
@@ -83,27 +87,18 @@ class ProductWidget extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
                     Text(
-                      'الكمية بالوحدة',
-                      textAlign: TextAlign.center,
-                    ),
-                    Text(
-                      'الكمية بالحبة',
+                      'الكمية المتوفرة',
                       textAlign: TextAlign.center,
                     ),
                   ],
                 ),
                 TableRow(
                   children: [
-                    Text(
-                      'product.unitTitle',
-                      textAlign: TextAlign.center,
+                    ShowUnitName(
+                      unitId: product.unitId,
                     ),
                     Text(
                       6.toString(),
-                      textAlign: TextAlign.center,
-                    ),
-                    Text(
-                      (567).toString(),
                       textAlign: TextAlign.center,
                     ),
                   ],
@@ -116,7 +111,7 @@ class ProductWidget extends StatelessWidget {
               child: Row(
                 children: [
                   const Text('ملاحظة: '),
-                  Text('product.notes'),
+                  Text(product.notes),
                 ],
               ),
             ),
