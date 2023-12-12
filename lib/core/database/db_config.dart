@@ -18,7 +18,6 @@ class DbConfig {
         await db.execute(TransactionTypeTable.create());
         await db.execute(TransactionTypeTable.insert());
         await db.execute(TransactionTable.create());
-        await db.execute(TransactionTable.insert());
       },
     );
     return _db!;
