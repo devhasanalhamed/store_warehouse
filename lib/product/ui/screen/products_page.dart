@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:store_warehouse/product/data/product_model.dart';
 import 'package:store_warehouse/product/logic/product_view_model.dart';
 import 'package:store_warehouse/product/ui/widget/product_widget.dart';
 
@@ -8,10 +9,13 @@ class ProductsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: context.read<ProductViewModel>().productList.length,
-      itemBuilder: (context, index) => ProductWidget(
-          product: context.read<ProductViewModel>().productList[index]),
+    return Selector<ProductViewModel, List<ProductModel>>(
+      selector: (_, provider) => provider.productList,
+      builder: (_, productList, __) => ListView.builder(
+        itemCount: productList.length,
+        itemBuilder: (context, index) =>
+            ProductWidget(product: productList[index]),
+      ),
     );
   }
 }
