@@ -6,7 +6,8 @@ import 'package:store_warehouse/home/ui/screen/settings_page.dart';
 import 'package:store_warehouse/home/ui/widget/custom_bottom_navigation_bar.dart';
 import 'package:store_warehouse/product/ui/screen/add_product_screen.dart';
 import 'package:store_warehouse/product/ui/screen/products_page.dart';
-import 'package:store_warehouse/transaction/ui/transactions_page.dart';
+import 'package:store_warehouse/transaction/ui/screen/add_transaction_screen.dart';
+import 'package:store_warehouse/transaction/ui/screen/transactions_page.dart';
 
 class HomeControllerScreen extends StatelessWidget {
   const HomeControllerScreen({Key? key}) : super(key: key);
@@ -26,7 +27,11 @@ class HomeControllerScreen extends StatelessWidget {
       null,
       null,
       FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => const AddTransactionScreen(),
+          ));
+        },
         tooltip: AppString.transactions,
         child: const Icon(Icons.point_of_sale),
       ),
