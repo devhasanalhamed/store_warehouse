@@ -5,11 +5,13 @@ class TextFormFieldComponent extends StatelessWidget {
   final String? hintText;
   final FormFieldSetter<String>? onSaved;
   final FormFieldValidator<String>? validator;
+  final TextInputType? keyboardType;
   const TextFormFieldComponent({
     Key? key,
     this.hintText,
     this.onSaved,
     this.validator,
+    this.keyboardType,
   }) : super(key: key);
 
   @override
@@ -24,6 +26,7 @@ class TextFormFieldComponent extends StatelessWidget {
       ),
       onSaved: onSaved,
       validator: validator,
+      keyboardType: keyboardType,
     );
   }
 }
