@@ -6,6 +6,7 @@ class TransactionViewModel extends ChangeNotifier {
   List<TransactionModel> transactionList = [];
   Future<void> addTransaction(TransactionModel transaction) async {
     await TransactionDAO().insert(transaction);
+    getTransactions();
   }
 
   Future<void> getTransactions() async {
