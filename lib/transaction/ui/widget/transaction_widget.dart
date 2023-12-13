@@ -11,11 +11,6 @@ class TransactionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(transaction.productId);
-    print(transaction.transactionId);
-    print(transaction.amount);
-    print(transaction.createdAt);
-    print(transaction.notes);
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
