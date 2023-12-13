@@ -29,7 +29,7 @@ class HomeControllerScreen extends StatelessWidget {
       FloatingActionButton(
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => const AddTransactionScreen(),
+            builder: (context) => AddTransactionScreen(),
           ));
         },
         tooltip: AppString.transactions,
