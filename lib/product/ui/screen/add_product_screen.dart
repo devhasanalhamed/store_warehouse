@@ -14,8 +14,8 @@ class AddProductScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     late String title;
-    late String description;
-    late String notes;
+    String description = '';
+    String notes = '';
     String? imagePath;
     late int unitId;
 
@@ -51,23 +51,11 @@ class AddProductScreen extends StatelessWidget {
               TextFormFieldComponent(
                 hintText: 'وصف',
                 onSaved: (newValue) => description = newValue!,
-                validator: (value) {
-                  if (value!.isNotEmpty) {
-                    return null;
-                  }
-                  return 'f';
-                },
               ),
               const SizedBox(height: 16.0),
               TextFormFieldComponent(
                 hintText: 'الملاحظات',
                 onSaved: (newValue) => notes = newValue!,
-                validator: (value) {
-                  if (value!.isNotEmpty) {
-                    return null;
-                  }
-                  return 'f';
-                },
               ),
               const SizedBox(height: 16.0),
               SelectUnitComponent(
