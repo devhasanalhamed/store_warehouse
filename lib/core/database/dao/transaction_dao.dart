@@ -11,7 +11,7 @@ class TransactionDAO {
     final db = await DbConfig.getInstance();
     final data = {
       "product_id": transaction.productId,
-      "type": 0,
+      "type": 1,
       "amount": transaction.amount,
       "notes": transaction.notes,
     };
