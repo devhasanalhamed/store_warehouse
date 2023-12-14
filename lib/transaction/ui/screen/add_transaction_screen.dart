@@ -5,6 +5,7 @@ import 'package:store_warehouse/product/ui/widget/select_product_component.dart'
 import 'package:store_warehouse/shared/widget/text_form_field_component.dart';
 import 'package:store_warehouse/transaction/data/transaction_model.dart';
 import 'package:store_warehouse/transaction/logic/transaction_view_model.dart';
+import 'package:store_warehouse/transaction_type/ui/choose_transaction_type_widget.dart';
 
 class AddTransactionScreen extends StatelessWidget {
   AddTransactionScreen({Key? key}) : super(key: key);
@@ -13,7 +14,9 @@ class AddTransactionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int amount = 1;
+    int productId = 0;
+    int amount = 0;
+    int transactionType = 2;
     String notes = '';
 
     return Scaffold(
@@ -29,7 +32,7 @@ class AddTransactionScreen extends StatelessWidget {
             children: [
               const SizedBox(height: AppDesign.largePadding),
               SelectProductComponent(
-                onChanged: (value) {},
+                onChanged: (value) => productId = value,
               ),
               const SizedBox(height: AppDesign.largePadding),
               TextFormFieldComponent(
@@ -38,43 +41,10 @@ class AddTransactionScreen extends StatelessWidget {
                 onSaved: (newValue) => amount = int.parse(newValue!),
               ),
               const SizedBox(height: AppDesign.largePadding),
-              Container(
-                width: double.infinity,
-                height: 50,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.black,
-                  ),
-                  borderRadius: BorderRadius.circular(AppDesign.circularRadius),
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.black,
-                          ),
-                          borderRadius:
-                              BorderRadius.circular(AppDesign.circularRadius),
-                        ),
-                        child: Center(child: Text('اضافة')),
-                      ),
-                    ),
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.black,
-                          ),
-                          borderRadius:
-                              BorderRadius.circular(AppDesign.circularRadius),
-                        ),
-                        child: Center(child: Text('سحب')),
-                      ),
-                    ),
-                  ],
-                ),
+              ChooseTransactionTypeWidget(
+                onChanged: (value) {
+                  transactionType = int.parse(value);
+                },
               ),
               const SizedBox(height: AppDesign.largePadding),
               TextFormFieldComponent(
@@ -84,17 +54,20 @@ class AddTransactionScreen extends StatelessWidget {
               const SizedBox(height: AppDesign.largePadding),
               ElevatedButton(
                 onPressed: () {
-                  context
-                      .read<TransactionViewModel>()
-                      .addTransaction(TransactionModel(
-                        transactionId: 0,
-                        productId: 1,
-                        transactionTypeId: 1,
-                        amount: 20,
-                        notes: 'notes',
-                        createdAt: DateTime.now(),
-                      ))
-                      .then((value) => Navigator.pop(context));
+                  if (formKey.currentState!.validate()) {
+                    formKey.currentState!.save();
+                    context
+                        .read<TransactionViewModel>()
+                        .addTransaction(TransactionModel(
+                          transactionId: 0,
+                          productId: productId,
+                          transactionTypeId: transactionType,
+                          amount: amount,
+                          notes: notes,
+                          createdAt: DateTime.now(),
+                        ))
+                        .then((value) => Navigator.pop(context));
+                  }
                 },
                 child: const Text('add'),
               ),
