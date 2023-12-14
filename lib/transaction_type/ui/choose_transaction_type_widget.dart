@@ -43,10 +43,20 @@ class ChooseTransactionTypeWidgetState
                   },
                   child: Container(
                     color: state.transactionTypeList[0].id == currentType
-                        ? Colors.cyanAccent
+                        ? Colors.purple
                         : Colors.grey.shade300,
                     child: Center(
-                        child: Text(state.transactionTypeList.first.name)),
+                      child: Text(
+                        state.transactionTypeList.first.name,
+                        style: TextStyle(
+                          color: state.transactionTypeList[0].id == currentType
+                              ? Colors.white
+                              : Colors.black,
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -60,10 +70,20 @@ class ChooseTransactionTypeWidgetState
                   },
                   child: Container(
                     color: state.transactionTypeList[1].id == currentType
-                        ? Colors.cyanAccent
+                        ? Colors.purple
                         : Colors.grey.shade300,
                     child: Center(
-                        child: Text(state.transactionTypeList.last.name)),
+                      child: Text(
+                        state.transactionTypeList.last.name,
+                        style: TextStyle(
+                          color: state.transactionTypeList[1].id == currentType
+                              ? Colors.white
+                              : Colors.black,
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ),
