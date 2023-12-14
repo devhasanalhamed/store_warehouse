@@ -15,6 +15,28 @@ class TransactionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future<bool> showDeleteConfirmationDialog() async {
+      return await showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Delete Item"),
+            content: Text("Are you sure you want to delete this item?"),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: Text("Cancel"),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: Text("Delete"),
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     final TransactionTypeModel transactionType = context
         .read<TransactionTypeViewModel>()
         .getTransactionById(transaction.transactionTypeId);
@@ -24,26 +46,39 @@ class TransactionWidget extends StatelessWidget {
       ),
       child: Dismissible(
         key: UniqueKey(),
-        onDismissed: (direction) => context
-            .read<TransactionViewModel>()
-            .deleteTransaction(transaction.transactionId),
+        onDismissed: (direction) {
+          if (direction == DismissDirection.endToStart) {
+            // Edit
+            // Implement your edit logic here
+          } else if (direction == DismissDirection.startToEnd) {
+            // Delete
+            // Implement your delete logic here
+          }
+        },
+        confirmDismiss: (direction) async {
+          if (direction == DismissDirection.startToEnd) {
+            // Edit
+            // Implement your edit confirmation logic here
+            return true;
+          } else if (direction == DismissDirection.endToStart) {
+            // Delete
+            // Implement your delete confirmation logic here
+            final bool shouldDelete = await showDeleteConfirmationDialog();
+            return shouldDelete;
+          }
+          return false;
+        },
         background: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            border: Border.all(
-              color: const Color.fromARGB(255, 235, 232, 232),
-            ),
-          ),
-          child: const Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Icon(
-                Icons.delete,
-                color: Colors.red,
-              )
-            ],
-          ),
+          color: Colors.red,
+          child: Icon(Icons.delete, color: Colors.white),
+          alignment: Alignment.centerLeft,
+          padding: EdgeInsets.only(left: 16),
+        ),
+        secondaryBackground: Container(
+          color: Colors.blue,
+          child: Icon(Icons.edit, color: Colors.white),
+          alignment: Alignment.centerRight,
+          padding: EdgeInsets.only(right: 16),
         ),
         child: Container(
           decoration: BoxDecoration(
