@@ -49,4 +49,21 @@ class ProductDAO {
       whereArgs: [id],
     );
   }
+
+  Future<void> update(ProductModel product) async {
+    final db = await DbConfig.getInstance();
+    final data = {
+      "name": product.title,
+      "description": product.description,
+      "image_path": product.imagePath,
+      "note": product.notes,
+      "unit_id": product.unitId,
+    };
+    await db.update(
+      ProductTable.tableName,
+      data,
+      where: 'id = ?',
+      whereArgs: [product.id],
+    );
+  }
 }
