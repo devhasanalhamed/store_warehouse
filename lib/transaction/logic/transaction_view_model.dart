@@ -14,4 +14,15 @@ class TransactionViewModel extends ChangeNotifier {
     transactionList = result;
     notifyListeners();
   }
+
+  Future<void> deleteTransaction(int id) async {
+    await TransactionDAO().delete(id);
+    getTransactions();
+  }
+
+  Future<int> getProductTransaction(int productId) async {
+    final result = await TransactionDAO().calculateProductQuantity(productId);
+    print(result);
+    return result;
+  }
 }
