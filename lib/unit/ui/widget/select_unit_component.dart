@@ -5,10 +5,12 @@ import 'package:store_warehouse/unit/data/unit_model.dart';
 import 'package:store_warehouse/unit/logic/unit_view_model.dart';
 
 class SelectUnitComponent extends StatelessWidget {
+  final int? initial;
   final ValueChanged onChanged;
   const SelectUnitComponent({
     Key? key,
     required this.onChanged,
+    this.initial,
   }) : super(key: key);
 
   @override
@@ -16,6 +18,7 @@ class SelectUnitComponent extends StatelessWidget {
     return Selector<UnitViewModel, List<UnitModel>>(
       selector: (_, provider) => provider.unitList,
       builder: (_, unitList, __) => DropDownButtonFormFieldComponent(
+        initial: initial,
         hint: const Text('اختر وحدة القياس '),
         items: [
           for (int i = 0; i < unitList.length; i++)
