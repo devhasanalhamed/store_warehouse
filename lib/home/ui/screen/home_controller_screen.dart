@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_warehouse/core/utils/app_string.dart';
@@ -13,19 +14,16 @@ class HomeControllerScreen extends StatelessWidget {
   const HomeControllerScreen({Key? key}) : super(key: key);
 
   final pages = const [
-    SettingsPage(),
-    Center(child: Text('reports')),
-    Center(child: Text('home')),
-    TransactionsPage(),
     ProductsPage(),
+    TransactionsPage(),
+    Center(child: Text('home')),
+    Center(child: Text('reports')),
+    SettingsPage(),
   ];
 
   @override
   Widget build(BuildContext context) {
     final floatingActionButtons = [
-      null,
-      null,
-      null,
       FloatingActionButton(
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(
@@ -44,12 +42,15 @@ class HomeControllerScreen extends StatelessWidget {
         tooltip: AppString.products,
         child: const Icon(Icons.add),
       ),
+      null,
+      null,
+      null,
     ];
     return Selector<HomeViewModel, int>(
       selector: (_, provider) => provider.currentIndex,
       builder: (_, currentIndex, __) => Scaffold(
         appBar: AppBar(
-          title: const Text('معملي'),
+          title: Text('myLab'.tr()),
           centerTitle: true,
         ),
         body: pages[currentIndex],

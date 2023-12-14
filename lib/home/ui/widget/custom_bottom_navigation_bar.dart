@@ -19,24 +19,24 @@ class CustomBottomNavigationBar extends StatelessWidget {
       type: BottomNavigationBarType.fixed,
       items: const [
         BottomNavigationBarItem(
-          icon: Icon(Icons.settings),
-          label: AppString.settings,
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.file_open),
-          label: AppString.reports,
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: AppString.home,
+          icon: Icon(Icons.shopping_cart),
+          label: AppString.products,
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.swap_horiz),
           label: AppString.transactions,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.shopping_cart),
-          label: AppString.products,
+          icon: Icon(Icons.home),
+          label: AppString.home,
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.file_open),
+          label: AppString.reports,
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.settings),
+          label: AppString.settings,
         ),
       ],
     );
