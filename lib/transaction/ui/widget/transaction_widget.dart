@@ -1,8 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:store_warehouse/product/ui/widget/show_product.component.dart';
 import 'package:store_warehouse/transaction/data/transaction_model.dart';
+import 'package:store_warehouse/transaction/logic/transaction_view_model.dart';
+import 'package:store_warehouse/transaction_type/data/transaction_type_model.dart';
+import 'package:store_warehouse/transaction_type/logic/transaction_type_view_model.dart';
 
 class TransactionWidget extends StatelessWidget {
   final TransactionModel transaction;
@@ -11,12 +15,18 @@ class TransactionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TransactionTypeModel transactionType = context
+        .read<TransactionTypeViewModel>()
+        .getTransactionById(transaction.transactionTypeId);
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
       ),
       child: Dismissible(
         key: UniqueKey(),
+        onDismissed: (direction) => context
+            .read<TransactionViewModel>()
+            .deleteTransaction(transaction.transactionId),
         background: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
           decoration: BoxDecoration(
@@ -59,7 +69,7 @@ class TransactionWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'عملية ${(transaction.transactionTypeId == 0 ? 'سحب' : 'اضافة')}',
+                        'عملية ${(transactionType.name)}',
                         style:
                             const TextStyle(fontSize: 12.0, color: Colors.grey),
                       ),
@@ -73,7 +83,7 @@ class TransactionWidget extends StatelessWidget {
                                 shape: BoxShape.rectangle,
                                 color: Colors.white,
                                 border: Border.all(
-                                  color: transaction.transactionTypeId == 0
+                                  color: transaction.transactionTypeId == 2
                                       ? Colors.red
                                       : Colors.green,
                                 )),
@@ -81,7 +91,7 @@ class TransactionWidget extends StatelessWidget {
                               child: Text(
                                 '${transaction.amount}',
                                 style: TextStyle(
-                                  color: transaction.transactionTypeId == 0
+                                  color: transaction.transactionTypeId == 2
                                       ? Colors.red
                                       : Colors.green,
                                 ),
@@ -91,7 +101,7 @@ class TransactionWidget extends StatelessWidget {
                           Text(
                             transaction.notes,
                             style: TextStyle(
-                              color: transaction.transactionTypeId == 0
+                              color: transaction.transactionTypeId == 2
                                   ? Colors.red
                                   : Colors.green,
                             ),
@@ -102,7 +112,7 @@ class TransactionWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              if (transaction.notes.isNotEmpty)
+              if (transaction.notes.trim().isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.only(
                     left: 16.0,
