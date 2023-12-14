@@ -38,7 +38,7 @@ class AddProductScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16.0),
               TextFormFieldComponent(
-                hintText: 'عنوان',
+                labelText: 'عنوان',
                 onSaved: (newValue) => title = newValue!,
                 validator: (value) {
                   if (value!.isNotEmpty) {
@@ -49,12 +49,12 @@ class AddProductScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16.0),
               TextFormFieldComponent(
-                hintText: 'وصف',
+                labelText: 'وصف',
                 onSaved: (newValue) => description = newValue!,
               ),
               const SizedBox(height: 16.0),
               TextFormFieldComponent(
-                hintText: 'الملاحظات',
+                labelText: 'الملاحظات',
                 onSaved: (newValue) => notes = newValue!,
               ),
               const SizedBox(height: 16.0),
