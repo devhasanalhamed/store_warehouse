@@ -40,6 +40,21 @@ class TransactionDAO {
     }).toList();
   }
 
+  Future<void> update(TransactionModel transaction) async {
+    final db = await DbConfig.getInstance();
+    final data = {
+      "amount": transaction.amount,
+      "notes": transaction.notes,
+    };
+
+    await db.update(
+      TransactionTable.tableName,
+      data,
+      where: 'id = ?',
+      whereArgs: [transaction.transactionId],
+    );
+  }
+
   Future<int> delete(int id) async {
     final db = await DbConfig.getInstance();
     return await db.delete(
