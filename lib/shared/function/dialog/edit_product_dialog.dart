@@ -11,7 +11,7 @@ editProduct(BuildContext context, ProductModel product) {
   String title = product.title;
   String description = product.description;
   String notes = product.notes;
-  String image_path = product.imagePath;
+  String imagePath = product.imagePath;
   int unitId = product.unitId;
   return showModalBottomSheet(
     context: context,
@@ -26,19 +26,19 @@ editProduct(BuildContext context, ProductModel product) {
             const SizedBox(height: 32.0),
             TextFormFieldComponent(
               initialValue: title,
-              hintText: 'اسم المنتج',
+              labelText: 'اسم المنتج',
               onSaved: (newValue) => title = newValue!,
             ),
             const SizedBox(height: 16.0),
             TextFormFieldComponent(
               initialValue: description,
-              hintText: 'الوصف',
+              labelText: 'الوصف',
               onSaved: (newValue) => description = newValue!,
             ),
             const SizedBox(height: 16.0),
             TextFormFieldComponent(
               initialValue: notes,
-              hintText: 'الملاحظات',
+              labelText: 'الملاحظات',
               onSaved: (newValue) => notes = newValue!,
             ),
             const SizedBox(height: 16.0),
