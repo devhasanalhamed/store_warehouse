@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:store_warehouse/core/utils/app_design.dart';
 
 class TextFormFieldComponent extends StatelessWidget {
-  final String? hintText;
+  final String? labelText;
   final String? initialValue;
   final FormFieldSetter<String>? onSaved;
   final FormFieldValidator<String>? validator;
   final TextInputType? keyboardType;
   const TextFormFieldComponent({
     Key? key,
-    this.hintText,
+    this.labelText,
     this.onSaved,
     this.validator,
     this.keyboardType,
@@ -21,7 +21,7 @@ class TextFormFieldComponent extends StatelessWidget {
     return TextFormField(
       initialValue: initialValue,
       decoration: InputDecoration(
-        hintText: hintText,
+        labelText: labelText,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppDesign.circularRadius),
         ),
