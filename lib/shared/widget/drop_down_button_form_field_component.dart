@@ -5,6 +5,7 @@ class DropDownButtonFormFieldComponent extends StatelessWidget {
   final List<DropdownMenuItem>? items;
   final ValueChanged? onChanged;
   final Widget? hint;
+  final int? initial;
   final FormFieldValidator<dynamic>? validator;
   const DropDownButtonFormFieldComponent({
     Key? key,
@@ -12,11 +13,13 @@ class DropDownButtonFormFieldComponent extends StatelessWidget {
     this.onChanged,
     this.hint,
     this.validator,
+    this.initial,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField(
+      value: initial,
       items: items,
       hint: hint,
       onChanged: onChanged,
