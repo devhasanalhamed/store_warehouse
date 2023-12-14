@@ -5,7 +5,7 @@ import 'package:store_warehouse/product/data/product_model.dart';
 class ProductViewModel extends ChangeNotifier {
   final db = ProductDAO();
   List<ProductModel> productList = [];
-  Future<void> fetchProducts() async {
+  Future<void> getProducts() async {
     final x = await db.fetchProducts();
     productList = x;
     notifyListeners();
@@ -34,12 +34,12 @@ class ProductViewModel extends ChangeNotifier {
 
   Future<void> addProduct(ProductModel product) async {
     await db.insert(product);
-    fetchProducts();
+    getProducts();
   }
 
   Future<void> deleteProduct(int id) async {
     await db.delete(id);
-    fetchProducts();
+    getProducts();
   }
 
   ProductModel getProductById(int id) {
