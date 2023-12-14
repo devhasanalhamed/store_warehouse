@@ -5,6 +5,7 @@ class TextFormFieldComponent extends StatelessWidget {
   final String? labelText;
   final String? initialValue;
   final FormFieldSetter<String>? onSaved;
+  final ValueChanged<String>? onChanged;
   final FormFieldValidator<String>? validator;
   final TextInputType? keyboardType;
   const TextFormFieldComponent({
@@ -14,6 +15,7 @@ class TextFormFieldComponent extends StatelessWidget {
     this.validator,
     this.keyboardType,
     this.initialValue,
+    this.onChanged,
   }) : super(key: key);
 
   @override
@@ -28,6 +30,7 @@ class TextFormFieldComponent extends StatelessWidget {
         contentPadding: const EdgeInsets.all(AppDesign.largePadding),
       ),
       onSaved: onSaved,
+      onChanged: onChanged,
       validator: validator,
       keyboardType: keyboardType,
     );
