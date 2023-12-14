@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:store_warehouse/core/utils/app_design.dart';
 import 'package:store_warehouse/product/data/product_model.dart';
 import 'package:store_warehouse/product/logic/product_view_model.dart';
+import 'package:store_warehouse/shared/function/dialog/edit_product_dialog.dart';
 import 'package:store_warehouse/transaction/logic/transaction_view_model.dart';
 import 'package:store_warehouse/unit/ui/widget/show_unit_name.dart';
 
@@ -98,20 +100,29 @@ class ProductWidget extends StatelessWidget {
                     ShowUnitName(
                       unitId: product.unitId,
                     ),
-                    FutureBuilder<int>(
-                      future: context
-                          .read<TransactionViewModel>()
-                          .getProductTransaction(product.id),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          return Text(
-                            '${snapshot.data}',
-                            textAlign: TextAlign.center,
-                          );
-                        } else {
-                          return const Text('جاري الحساب');
-                        }
-                      },
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        FutureBuilder<int>(
+                          future: context
+                              .read<TransactionViewModel>()
+                              .getProductTransaction(product.id),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return Text(
+                                '${snapshot.data}',
+                                textAlign: TextAlign.center,
+                              );
+                            } else {
+                              return const Text('جاري الحساب');
+                            }
+                          },
+                        ),
+                        const SizedBox(width: AppDesign.smallPadding),
+                        ShowUnitName(
+                          unitId: product.unitId,
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -131,130 +142,10 @@ class ProductWidget extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ElevatedButton.icon(
-                    icon: const Icon(Icons.add),
-                    onPressed: () {},
-                    label: const Text('كمية جديدة'),
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                    ),
-                  ),
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (context) => const Column(
-                          children: [
-                            Text('soon'),
-                          ],
-                        ),
-                      );
-                      // String title = product.title;
-                      // String description = product.description;
-                      // int unitId = product.unitId;
-                      // final provider =
-                      //     Provider.of<ProductsTransactionsProvider>(context,
-                      //         listen: false);
-                      // final unitList =
-                      //     Provider.of<UnitProvider>(context, listen: false)
-                      //         .list;
-                      // log(unitList.length.toString());
-                      // showModalBottomSheet(
-                      //   context: context,
-                      //   builder: (context) => Directionality(
-                      //     textDirection: TextDirection.rtl,
-                      //     child: Container(
-                      //       width: 350,
-                      //       height: 350,
-                      //       padding: const EdgeInsets.symmetric(
-                      //         horizontal: 8.0,
-                      //         vertical: 16.0,
-                      //       ),
-                      //       child: Column(
-                      //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //         crossAxisAlignment: CrossAxisAlignment.center,
-                      //         children: [
-                      //           TextFormField(
-                      //             initialValue: product.title,
-                      //             decoration: const InputDecoration(
-                      //               border: OutlineInputBorder(),
-                      //               contentPadding: EdgeInsets.symmetric(
-                      //                 horizontal: 8.0,
-                      //                 vertical: 4.0,
-                      //               ),
-                      //             ),
-                      //             onChanged: (value) => title = value,
-                      //           ),
-                      //           TextFormField(
-                      //             initialValue: product.description,
-                      //             decoration: const InputDecoration(
-                      //               border: OutlineInputBorder(),
-                      //               contentPadding: EdgeInsets.symmetric(
-                      //                 horizontal: 8.0,
-                      //                 vertical: 4.0,
-                      //               ),
-                      //             ),
-                      //             onChanged: (value) => description = value,
-                      //           ),
-                      //           Row(
-                      //             children: [
-                      //               const Text(
-                      //                 'نوع الوحدة',
-                      //               ),
-                      //               const SizedBox(width: 12.0),
-                      //               Expanded(
-                      //                 child: DropdownButtonFormField(
-                      //                   value: product.unitId,
-                      //                   decoration: const InputDecoration(
-                      //                     border: OutlineInputBorder(),
-                      //                     contentPadding: EdgeInsets.symmetric(
-                      //                       horizontal: 8.0,
-                      //                       vertical: 4.0,
-                      //                     ),
-                      //                   ),
-                      //                   padding: EdgeInsets.zero,
-                      //                   items: [
-                      //                     for (var item in unitList)
-                      //                       DropdownMenuItem(
-                      //                         value: item.id,
-                      //                         alignment: Alignment.centerRight,
-                      //                         child: Text(item.title),
-                      //                       ),
-                      //                   ],
-                      //                   onChanged: (value) => unitId = value!,
-                      //                 ),
-                      //               ),
-                      //             ],
-                      //           ),
-                      //           const Text(
-                      //             'سيتم تعديل المعلومات على جميع العمليات السابقة',
-                      //             style: TextStyle(
-                      //               fontWeight: FontWeight.bold,
-                      //             ),
-                      //           ),
-                      //           ElevatedButton(
-                      //             onPressed: () => provider
-                      //                 .editProduct(
-                      //                   product.id,
-                      //                   title,
-                      //                   description,
-                      //                   unitId,
-                      //                 )
-                      //                 .then((value) => Navigator.pop(context)),
-                      //             child: const Text(
-                      //               'تعديل معلومات المنتج',
-                      //             ),
-                      //           ),
-                      //         ],
-                      //       ),
-                      //     ),
-                      //   ),
-                      // );
-                    },
+                    onPressed: () => editProduct(context, product),
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.green,
                       backgroundColor: Colors.white,
@@ -267,16 +158,7 @@ class ProductWidget extends StatelessWidget {
                     label: const Text('تعديل'),
                   ),
                   ElevatedButton.icon(
-                    onPressed: () {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (context) => const Column(
-                          children: [
-                            Text('soon'),
-                          ],
-                        ),
-                      );
-                    },
+                    onPressed: () => editProduct(context, product),
                     icon: const Icon(Icons.history),
                     label: const Text('العمليات'),
                     style: ElevatedButton.styleFrom(
