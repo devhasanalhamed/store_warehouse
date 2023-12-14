@@ -1,7 +1,6 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:store_warehouse/core/database/db_config.dart';
 import 'package:store_warehouse/core/database/tables/transaction_table.dart';
-import 'package:store_warehouse/core/utils/sql_helper.dart';
 import 'package:store_warehouse/transaction/data/transaction_model.dart';
 
 class TransactionDAO {
@@ -11,7 +10,7 @@ class TransactionDAO {
     final db = await DbConfig.getInstance();
     final data = {
       "product_id": transaction.productId,
-      "type": 1,
+      "type": transaction.transactionTypeId,
       "amount": transaction.amount,
       "notes": transaction.notes,
     };
@@ -49,46 +48,16 @@ class TransactionDAO {
       whereArgs: [id],
     );
   }
-}
 
-class SQLTransactionHelper {
-  static Future<List<Map<String, dynamic>>> getTransactionTypeId() async {
-    final db = await SQLHelper.db();
-    return db.query('transaction_type', orderBy: 'id');
-  }
+  Future<int> calculateProductQuantity(int productId) async {
+    final db = await DbConfig.getInstance();
+    var result = await db.rawQuery('''
+    SELECT COALESCE(SUM(CASE WHEN type = '1' THEN amount ELSE -amount END), 0) as totalQuantity
+    FROM ${TransactionTable.tableName}
+    WHERE product_id = ?
+  ''', [productId]);
 
-  static Future<int> createTransaction(
-      int transactionTypeId, int productId, int quantity, String notes) async {
-    final db = await SQLHelper.db();
-
-    final data = {
-      "transactionId": transactionTypeId,
-      "productId": productId,
-      "quantity": quantity,
-      "notes": notes,
-    };
-
-    final id = await db.insert('transactions', data,
-        conflictAlgorithm: ConflictAlgorithm.replace);
-    return id;
-  }
-
-  static Future<List<Map<String, dynamic>>> getTransactions() async {
-    final db = await SQLHelper.db();
-    return db.query('transactions', orderBy: 'id');
-  }
-
-  static Future<List<Map<String, dynamic>>>
-      productTransactionViewModel() async {
-    final db = await SQLHelper.db();
-    return db.rawQuery("""
-    SELECT t.id, t.quantity, t.createdAt, t.notes as transactionNotes,
-    t.transactionId as transactionId,
-    s.title, s.id as productId, s.notes as productNotes,
-    s.unitId,
-    s.imagePath FROM transactions as t
-    JOIN items as s
-    ON t.productId = s.id  
-    """);
+    int totalQuantity = (result.first['totalQuantity'] as int?) ?? 0;
+    return totalQuantity;
   }
 }
