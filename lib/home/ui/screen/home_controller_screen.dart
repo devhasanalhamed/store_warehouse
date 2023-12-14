@@ -27,20 +27,20 @@ class HomeControllerScreen extends StatelessWidget {
       FloatingActionButton(
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => AddTransactionScreen(),
-          ));
-        },
-        tooltip: AppString.transactions,
-        child: const Icon(Icons.point_of_sale),
-      ),
-      FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => AddProductScreen(),
           ));
         },
         tooltip: AppString.products,
         child: const Icon(Icons.add),
+      ),
+      FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => AddTransactionScreen(),
+          ));
+        },
+        tooltip: AppString.transactions,
+        child: const Icon(Icons.point_of_sale),
       ),
       null,
       null,
