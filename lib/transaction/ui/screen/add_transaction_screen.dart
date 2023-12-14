@@ -36,7 +36,7 @@ class AddTransactionScreen extends StatelessWidget {
               ),
               const SizedBox(height: AppDesign.largePadding),
               TextFormFieldComponent(
-                hintText: 'الكمية',
+                labelText: 'الكمية',
                 keyboardType: TextInputType.number,
                 onSaved: (newValue) => amount = int.parse(newValue!),
               ),
@@ -48,7 +48,7 @@ class AddTransactionScreen extends StatelessWidget {
               ),
               const SizedBox(height: AppDesign.largePadding),
               TextFormFieldComponent(
-                hintText: 'الملاحظات',
+                labelText: 'الملاحظات',
                 onSaved: (newValue) => notes = newValue!,
               ),
               const SizedBox(height: AppDesign.largePadding),
