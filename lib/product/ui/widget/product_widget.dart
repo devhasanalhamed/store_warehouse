@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_warehouse/product/data/product_model.dart';
 import 'package:store_warehouse/product/logic/product_view_model.dart';
+import 'package:store_warehouse/transaction/logic/transaction_view_model.dart';
 import 'package:store_warehouse/unit/ui/widget/show_unit_name.dart';
 
 class ProductWidget extends StatelessWidget {
@@ -97,9 +98,20 @@ class ProductWidget extends StatelessWidget {
                     ShowUnitName(
                       unitId: product.unitId,
                     ),
-                    Text(
-                      6.toString(),
-                      textAlign: TextAlign.center,
+                    FutureBuilder<int>(
+                      future: context
+                          .read<TransactionViewModel>()
+                          .getProductTransaction(product.id),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return Text(
+                            '${snapshot.data}',
+                            textAlign: TextAlign.center,
+                          );
+                        } else {
+                          return const Text('جاري الحساب');
+                        }
+                      },
                     ),
                   ],
                 ),
