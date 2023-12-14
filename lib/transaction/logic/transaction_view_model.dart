@@ -9,6 +9,11 @@ class TransactionViewModel extends ChangeNotifier {
     getTransactions();
   }
 
+  Future<void> updateTransaction(TransactionModel transaction) async {
+    await TransactionDAO().update(transaction);
+    getTransactions();
+  }
+
   Future<void> getTransactions() async {
     final result = await TransactionDAO().fetch();
     transactionList = result;
