@@ -3,6 +3,7 @@ import 'package:store_warehouse/core/utils/app_design.dart';
 
 class TextFormFieldComponent extends StatelessWidget {
   final String? hintText;
+  final String? initialValue;
   final FormFieldSetter<String>? onSaved;
   final FormFieldValidator<String>? validator;
   final TextInputType? keyboardType;
@@ -12,11 +13,13 @@ class TextFormFieldComponent extends StatelessWidget {
     this.onSaved,
     this.validator,
     this.keyboardType,
+    this.initialValue,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      initialValue: initialValue,
       decoration: InputDecoration(
         hintText: hintText,
         border: OutlineInputBorder(
