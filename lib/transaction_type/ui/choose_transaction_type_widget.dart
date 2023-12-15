@@ -19,76 +19,83 @@ class ChooseTransactionTypeWidgetState
   @override
   Widget build(BuildContext context) {
     return Consumer<TransactionTypeViewModel>(
-      builder: (_, state, __) => ClipRRect(
-        borderRadius: BorderRadius.circular(AppDesign.circularRadius),
-        child: Container(
-          width: double.infinity,
-          height: 50,
-          decoration: BoxDecoration(
-            border: Border.all(
-              width: 1,
-              color: Colors.black,
+      builder: (_, state, __) => Container(
+        width: double.infinity,
+        height: 50,
+        decoration: BoxDecoration(
+          border: Border.all(
+            width: 1,
+            color: Colors.black,
+          ),
+          borderRadius: BorderRadius.circular(AppDesign.circularRadius),
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: InkWell(
+                onTap: () {
+                  setState(() {
+                    currentType = state.transactionTypeList[0].id;
+                    widget.onChanged!.call('$currentType');
+                  });
+                },
+                child: Container(
+                  child: Center(
+                    child: Text(
+                      state.transactionTypeList.first.name,
+                      style: TextStyle(
+                        color: state.transactionTypeList[0].id == currentType
+                            ? Colors.white
+                            : Colors.black,
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  decoration: BoxDecoration(
+                      color: state.transactionTypeList[0].id == currentType
+                          ? Colors.purple
+                          : Colors.grey.shade300,
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(AppDesign.circularRadius),
+                        bottomRight: Radius.circular(AppDesign.circularRadius),
+                      )),
+                ),
+              ),
             ),
-            borderRadius: BorderRadius.circular(AppDesign.circularRadius),
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                child: InkWell(
-                  onTap: () {
-                    setState(() {
-                      currentType = state.transactionTypeList[0].id;
-                      widget.onChanged!.call('$currentType');
-                    });
-                  },
-                  child: Container(
-                    color: state.transactionTypeList[0].id == currentType
-                        ? Colors.purple
-                        : Colors.grey.shade300,
-                    child: Center(
-                      child: Text(
-                        state.transactionTypeList.first.name,
-                        style: TextStyle(
-                          color: state.transactionTypeList[0].id == currentType
-                              ? Colors.white
-                              : Colors.black,
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.bold,
-                        ),
+            Expanded(
+              child: InkWell(
+                onTap: () {
+                  setState(() {
+                    currentType = state.transactionTypeList[1].id;
+                    widget.onChanged!.call('$currentType');
+                  });
+                },
+                child: Container(
+                  child: Center(
+                    child: Text(
+                      state.transactionTypeList.last.name,
+                      style: TextStyle(
+                        color: state.transactionTypeList[1].id == currentType
+                            ? Colors.white
+                            : Colors.black,
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
+                  decoration: BoxDecoration(
+                      color: state.transactionTypeList[1].id == currentType
+                          ? Colors.purple
+                          : Colors.grey.shade300,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(AppDesign.circularRadius),
+                        bottomLeft: Radius.circular(AppDesign.circularRadius),
+                      )),
                 ),
               ),
-              Expanded(
-                child: InkWell(
-                  onTap: () {
-                    setState(() {
-                      currentType = state.transactionTypeList[1].id;
-                      widget.onChanged!.call('$currentType');
-                    });
-                  },
-                  child: Container(
-                    color: state.transactionTypeList[1].id == currentType
-                        ? Colors.purple
-                        : Colors.grey.shade300,
-                    child: Center(
-                      child: Text(
-                        state.transactionTypeList.last.name,
-                        style: TextStyle(
-                          color: state.transactionTypeList[1].id == currentType
-                              ? Colors.white
-                              : Colors.black,
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
