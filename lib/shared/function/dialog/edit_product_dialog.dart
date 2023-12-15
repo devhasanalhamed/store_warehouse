@@ -11,7 +11,6 @@ editProduct(BuildContext context, ProductModel product) {
   String title = product.title;
   String description = product.description;
   String notes = product.notes;
-  String imagePath = product.imagePath;
   int unitId = product.unitId;
   return showModalBottomSheet(
     context: context,
@@ -46,9 +45,6 @@ editProduct(BuildContext context, ProductModel product) {
               initial: unitId,
               onChanged: (value) => unitId = value,
             ),
-            const SizedBox(height: 16.0),
-            Text(product.imagePath),
-            Text(product.unitId.toString()),
             const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
