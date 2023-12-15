@@ -6,6 +6,7 @@ import 'package:store_warehouse/core/utils/app_design.dart';
 import 'package:store_warehouse/product/data/product_model.dart';
 import 'package:store_warehouse/product/logic/product_view_model.dart';
 import 'package:store_warehouse/shared/function/dialog/edit_product_dialog.dart';
+import 'package:store_warehouse/shared/function/dialog/show_image_dialog.dart';
 import 'package:store_warehouse/transaction/logic/transaction_view_model.dart';
 import 'package:store_warehouse/unit/ui/widget/show_unit_name.dart';
 
@@ -31,22 +32,7 @@ class ProductWidget extends StatelessWidget {
           children: [
             ListTile(
               leading: InkWell(
-                onTap: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) => Dialog(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15)),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(15),
-                              child: Image.file(
-                                File(''),
-                                errorBuilder: (context, error, stackTrace) =>
-                                    const Text('خطأ'),
-                              ),
-                            ),
-                          ));
-                },
+                onTap: () => showImageDialog(context, product.imagePath),
                 child: Container(
                   width: 56,
                   decoration: BoxDecoration(
