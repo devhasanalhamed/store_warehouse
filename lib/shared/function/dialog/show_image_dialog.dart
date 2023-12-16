@@ -2,10 +2,15 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as path;
+import 'package:provider/provider.dart';
 import 'package:store_warehouse/core/utils/app_design.dart';
+import 'package:store_warehouse/product/data/product_model.dart';
+import 'package:store_warehouse/product/logic/product_view_model.dart';
 
-showImageDialog(BuildContext context, String imagePath) => showDialog(
+showImageDialog(BuildContext context, ProductModel product) => showDialog(
     context: context,
     builder: (context) => Dialog(
           shape: RoundedRectangleBorder(
@@ -17,10 +22,11 @@ showImageDialog(BuildContext context, String imagePath) => showDialog(
               mainAxisSize: MainAxisSize.min,
               children: [
                 SizedBox(
-                  width: 200,
-                  height: 200,
+                  width: double.infinity,
+                  height: 400,
                   child: Image.file(
-                    File(imagePath),
+                    File(product.imagePath),
+                    fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) =>
                         const Text('خطأ'),
                   ),
@@ -28,11 +34,33 @@ showImageDialog(BuildContext context, String imagePath) => showDialog(
                 const SizedBox(height: AppDesign.largePadding),
                 ElevatedButton(
                   onPressed: () async {
-                    final result = await ImagePicker()
+                    final pickedFile = await ImagePicker()
                         .pickImage(source: ImageSource.camera);
-                    if (result == null) {
-                      return;
-                    }
+                    if (pickedFile == null) return;
+                    final pickedImage = File(pickedFile.path);
+                    final appDocumentPath =
+                        await getApplicationDocumentsDirectory();
+                    final fileName = path.basename(pickedImage.path);
+                    final newPath = '${appDocumentPath.path}/$fileName';
+                    final result = await pickedImage.copy(newPath);
+                    print(result.path);
+                    OpenFile.open(result.path);
+
+                    context
+                        .read<ProductViewModel>()
+                        .updateProduct(
+                          ProductModel(
+                            id: product.id,
+                            title: product.title,
+                            imagePath: result.path,
+                            description: product.description,
+                            unitId: product.unitId,
+                            notes: product.notes,
+                          ),
+                        )
+                        .then(
+                          (value) => Navigator.pop(context),
+                        );
                   },
                   child: const Text('تعديل الصورة'),
                 )
