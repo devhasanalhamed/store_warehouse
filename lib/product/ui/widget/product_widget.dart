@@ -33,7 +33,7 @@ class ProductWidget extends StatelessWidget {
           children: [
             ListTile(
               leading: InkWell(
-                onTap: () => OpenFile.open(product.imagePath),
+                onTap: () => showImageDialog(context, product),
                 child: Container(
                   width: 56,
                   decoration: BoxDecoration(
