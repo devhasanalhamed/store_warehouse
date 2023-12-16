@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:open_file/open_file.dart';
 import 'package:provider/provider.dart';
 import 'package:store_warehouse/core/utils/app_design.dart';
 import 'package:store_warehouse/product/data/product_model.dart';
