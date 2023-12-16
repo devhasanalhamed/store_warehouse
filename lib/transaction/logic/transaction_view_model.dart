@@ -27,7 +27,13 @@ class TransactionViewModel extends ChangeNotifier {
 
   Future<int> getProductTransaction(int productId) async {
     final result = await TransactionDAO().calculateProductQuantity(productId);
-    print(result);
+    return result;
+  }
+
+  Future<List<TransactionModel>> getReport() async {
+    final result = await TransactionDAO()
+        .report(DateTime.now(), DateTime.now().subtract(Duration(days: 2)));
+    print('report: $result');
     return result;
   }
 }
