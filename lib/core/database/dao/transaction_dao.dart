@@ -75,4 +75,24 @@ class TransactionDAO {
     int totalQuantity = (result.first['totalQuantity'] as int?) ?? 0;
     return totalQuantity;
   }
+
+  Future<List<TransactionModel>> report(DateTime from, DateTime to) async {
+    final db = await DbConfig.getInstance();
+    List<Map<String, dynamic>> report = await db.rawQuery("""
+    SELECT * FROM ${TransactionTable.tableName} WHERE created_at BETWEEN ? AND ?
+    """, [from.toUtc().toIso8601String(), to.toUtc().toIso8601String()]);
+
+    return report
+        .map(
+          (record) => TransactionModel(
+            transactionId: record['id'],
+            productId: record['product_id'],
+            transactionTypeId: record['type'],
+            amount: record['amount'],
+            notes: record['notes'] ?? '',
+            createdAt: DateTime.parse(record['created_at']),
+          ),
+        )
+        .toList();
+  }
 }
