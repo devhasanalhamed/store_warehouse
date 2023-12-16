@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:open_file/open_file.dart';
 import 'package:provider/provider.dart';
 import 'package:store_warehouse/core/utils/app_design.dart';
 import 'package:store_warehouse/product/data/product_model.dart';
@@ -32,7 +33,7 @@ class ProductWidget extends StatelessWidget {
           children: [
             ListTile(
               leading: InkWell(
-                onTap: () => showImageDialog(context, product.imagePath),
+                onTap: () => OpenFile.open(product.imagePath),
                 child: Container(
                   width: 56,
                   decoration: BoxDecoration(
