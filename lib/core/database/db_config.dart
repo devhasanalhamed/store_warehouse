@@ -1,5 +1,6 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:store_warehouse/core/database/tables/product_table.dart';
+import 'package:store_warehouse/core/database/tables/report_table.dart';
 import 'package:store_warehouse/core/database/tables/transaction_table.dart';
 import 'package:store_warehouse/core/database/tables/transaction_type_table.dart';
 import 'package:store_warehouse/core/database/tables/unit_table.dart';
@@ -18,6 +19,7 @@ class DbConfig {
         await db.execute(TransactionTypeTable.create());
         await db.execute(TransactionTypeTable.insert());
         await db.execute(TransactionTable.create());
+        await db.execute(ReportTable.create());
       },
     );
     return _db!;
