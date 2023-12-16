@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:store_warehouse/core/utils/app_design.dart';
+import 'package:path/path.dart' as path;
 
 class UploadImage extends StatefulWidget {
   final Function(String? photoPath)? onTakePhoto;
@@ -16,16 +18,19 @@ class _UploadImageState extends State<UploadImage> {
   File? _imageFile;
 
   Future<void> _capturePhoto() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.camera);
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.camera);
+    if (pickedFile == null) return;
+    final pickedImage = File(pickedFile.path);
+    final appDocumentPath = await getApplicationDocumentsDirectory();
+    final fileName = path.basename(pickedImage.path);
+    final newPath = '${appDocumentPath.path}/$fileName';
+    final result = await pickedImage.copy(newPath);
 
-    if (pickedFile != null) {
-      final photoPath = pickedFile.path;
-      widget.onTakePhoto?.call(photoPath); // Use the callback
-      setState(() {
-        _imageFile = File(photoPath);
-      });
-    }
+    widget.onTakePhoto?.call(result.path); // Use the callback
+    setState(() {
+      _imageFile = File(result.path);
+    });
   }
 
   Widget _buildImagePreview() {
