@@ -33,19 +33,21 @@ class MyApp extends StatelessWidget {
           create: (context) => HomeViewModel(),
         ),
         ChangeNotifierProvider(
-          create: (context) => ProductViewModel()..getProducts(),
-          lazy: false,
-        ),
-        ChangeNotifierProvider(
           create: (context) => UnitViewModel()..getUnits(),
           lazy: false,
         ),
         ChangeNotifierProvider(
-          create: (context) => TransactionViewModel()..getTransactions(),
+          create: (context) => TransactionTypeViewModel()..getTransactionType(),
           lazy: false,
         ),
         ChangeNotifierProvider(
-          create: (context) => TransactionTypeViewModel()..getTransactionType(),
+          create: (context) => TransactionViewModel()
+            ..getTransactions()
+            ..getReport(),
+          lazy: false,
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ProductViewModel()..getProducts(),
           lazy: false,
         ),
       ],
