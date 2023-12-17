@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:store_warehouse/core/database/dao/transaction_dao.dart';
+import 'package:store_warehouse/core/utils/enum/report_type.dart';
 import 'package:store_warehouse/transaction/data/transaction_model.dart';
 
 class ReportViewModel extends ChangeNotifier {
@@ -8,6 +9,8 @@ class ReportViewModel extends ChangeNotifier {
   List<TransactionModel> weekReport = [];
   List<TransactionModel> monthReport = [];
   List<TransactionModel> customReport = [];
+
+  ReportType reportType = ReportType.day;
 
   Future<void> getTodayReport() async {
     final DateTime now = DateTime.now();
