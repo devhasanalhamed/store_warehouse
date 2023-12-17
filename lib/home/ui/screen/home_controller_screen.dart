@@ -7,6 +7,7 @@ import 'package:store_warehouse/home/ui/screen/settings_page.dart';
 import 'package:store_warehouse/home/ui/widget/custom_bottom_navigation_bar.dart';
 import 'package:store_warehouse/product/ui/screen/add_product_screen.dart';
 import 'package:store_warehouse/product/ui/screen/products_page.dart';
+import 'package:store_warehouse/report/ui/screen/report_page.dart';
 import 'package:store_warehouse/transaction/ui/screen/add_transaction_screen.dart';
 import 'package:store_warehouse/transaction/ui/screen/transactions_page.dart';
 
@@ -17,7 +18,7 @@ class HomeControllerScreen extends StatelessWidget {
     ProductsPage(),
     TransactionsPage(),
     Center(child: Text('home')),
-    Center(child: Text('reports')),
+    ReportPage(),
     SettingsPage(),
   ];
 
