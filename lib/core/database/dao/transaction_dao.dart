@@ -80,7 +80,10 @@ class TransactionDAO {
     final db = await DbConfig.getInstance();
     List<Map<String, dynamic>> report = await db.rawQuery("""
     SELECT * FROM ${TransactionTable.tableName} WHERE created_at BETWEEN ? AND ?
-    """, [from.toUtc().toIso8601String(), to.toUtc().toIso8601String()]);
+    """, [
+      DateTime.now().subtract(Duration(days: 2)).toUtc().toString(),
+      DateTime.now().toUtc().toString()
+    ]);
 
     return report
         .map(
