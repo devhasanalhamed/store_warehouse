@@ -15,13 +15,12 @@ class TransactionTable {
   """;
 
   static String insert() => """
-  INSERT INTO transactions (product_id, amount, type)
-    VALUES
-    (1, 35, 1), -- Purchase of 5 units of Ice Cream A
-    (1, -5, 1), -- Purchase of 5 units of Ice Cream A
-    (1, -5, 1), -- Purchase of 5 units of Ice Cream A
-    (1, 10, 1), -- Purchase of 5 units of Ice Cream A
-    (2, 3, 2), -- Sale of 3 units of Ice Cream B
-    (3, 2, 2); -- Return of 2 units of Ice Cream C
-""";
+INSERT INTO transactions (product_id, type, amount, notes)
+    SELECT
+      CAST(RANDOM() * 3 + 1 AS INT), -- Random product_id between 1 and 3
+      CAST(RANDOM() * 2 + 1 AS INT), -- Random type between 1 and 2
+      CAST(RANDOM() * 100 AS INT),   -- Random amount between 0 and 100
+      'Random notes'                 -- Default notes value
+    FROM generate_series(1, 100);     -- Generate 100 rows
+    """;
 }
