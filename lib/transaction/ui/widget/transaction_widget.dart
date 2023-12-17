@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:store_warehouse/core/utils/app_design.dart';
 import 'package:store_warehouse/product/logic/product_view_model.dart';
-import 'package:store_warehouse/product/ui/widget/show_product.component.dart';
 import 'package:store_warehouse/shared/function/dialog/delete_confirm.dart';
 import 'package:store_warehouse/shared/function/dialog/edit_transaction_dialog.dart';
 import 'package:store_warehouse/transaction/data/transaction_model.dart';
@@ -45,15 +45,15 @@ class TransactionWidget extends StatelessWidget {
         },
         background: Container(
           color: Colors.red,
-          child: Icon(Icons.delete, color: Colors.white),
           alignment: Alignment.centerLeft,
-          padding: EdgeInsets.only(left: 16),
+          padding: const EdgeInsets.only(left: 16),
+          child: const Icon(Icons.delete, color: Colors.white),
         ),
         secondaryBackground: Container(
           color: Colors.blue,
-          child: Icon(Icons.edit, color: Colors.white),
           alignment: Alignment.centerRight,
-          padding: EdgeInsets.only(right: 16),
+          padding: const EdgeInsets.only(right: 16),
+          child: const Icon(Icons.edit, color: Colors.white),
         ),
         child: Container(
           decoration: BoxDecoration(
@@ -63,6 +63,7 @@ class TransactionWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(15),
           ),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ListTile(
                 leading: CircleAvatar(
@@ -70,9 +71,10 @@ class TransactionWidget extends StatelessWidget {
                     File(product.imagePath),
                   ),
                 ),
-                title: ShowProductName(productId: transaction.productId),
-                subtitle: Text(
-                    '${transaction.createdAt.toString().substring(0, 10)} | ${TimeOfDay.fromDateTime(transaction.createdAt).format(context)}'),
+                title: Text(
+                  product.title,
+                  textAlign: TextAlign.start,
+                ),
                 trailing: SizedBox(
                   width: 140,
                   child: Row(
@@ -83,40 +85,32 @@ class TransactionWidget extends StatelessWidget {
                         style:
                             const TextStyle(fontSize: 12.0, color: Colors.grey),
                       ),
-                      Column(
-                        children: [
-                          Container(
-                            width: 60,
-                            height: 30,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                                shape: BoxShape.rectangle,
-                                color: Colors.white,
-                                border: Border.all(
-                                  color: transaction.transactionTypeId == 2
-                                      ? Colors.red
-                                      : Colors.green,
-                                )),
-                            child: Center(
-                              child: Text(
-                                '${transaction.amount}',
-                                style: TextStyle(
-                                  color: transaction.transactionTypeId == 2
-                                      ? Colors.red
-                                      : Colors.green,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Text(
-                            transaction.notes,
+                      Container(
+                        width: 60,
+                        height: 30,
+                        decoration: BoxDecoration(
+                            borderRadius:
+                                BorderRadius.circular(AppDesign.circularRadius),
+                            shape: BoxShape.rectangle,
+                            color: Colors.white,
+                            border: Border.all(
+                              color: transaction.transactionTypeId == 2
+                                  ? Colors.red
+                                  : Colors.green,
+                            )),
+                        child: Center(
+                          child: Text(
+                            '${transaction.amount}',
+                            softWrap: false,
+                            overflow: TextOverflow.ellipsis,
                             style: TextStyle(
+                              fontSize: 14.0,
                               color: transaction.transactionTypeId == 2
                                   ? Colors.red
                                   : Colors.green,
                             ),
                           ),
-                        ],
+                        ),
                       ),
                     ],
                   ),
@@ -129,13 +123,25 @@ class TransactionWidget extends StatelessWidget {
                     right: 16.0,
                     bottom: 8.0,
                   ),
-                  child: Row(
-                    children: [
-                      const Text('ملاحظة: '),
-                      Text(transaction.notes),
-                    ],
+                  child: FittedBox(
+                    child: Row(
+                      children: [
+                        const Text('ملاحظة: '),
+                        Text(transaction.notes),
+                      ],
+                    ),
                   ),
                 ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  right: 16.0,
+                  bottom: 2.0,
+                ),
+                child: Text(
+                  '${transaction.createdAt.toString().substring(0, 10)} | ${TimeOfDay.fromDateTime(transaction.createdAt).format(context)}',
+                  style: const TextStyle(fontSize: 12.0),
+                ),
+              )
             ],
           ),
         ),
