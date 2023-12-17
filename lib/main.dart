@@ -5,6 +5,7 @@ import 'package:store_warehouse/home/logic/home_view_model.dart';
 import 'package:store_warehouse/home/ui/screen/home_controller_screen.dart';
 import 'package:store_warehouse/product/logic/product_view_model.dart';
 import 'package:store_warehouse/transaction/logic/transaction_view_model.dart';
+import 'package:store_warehouse/transaction/ui/screen/all_transactions_screen.dart';
 import 'package:store_warehouse/transaction_type/logic/transaction_type_view_model.dart';
 import 'package:store_warehouse/unit/logic/unit_view_model.dart';
 
@@ -62,6 +63,10 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         home: const HomeControllerScreen(),
+        routes: {
+          AllTransactionsScreen.routeName: (context) =>
+              const AllTransactionsScreen(),
+        },
       ),
     );
   }
