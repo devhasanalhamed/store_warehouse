@@ -11,7 +11,7 @@ class ShowProductName extends StatelessWidget {
     final product = context.read<ProductViewModel>().getProductById(productId);
     return Text(
       product.title,
-      textAlign: TextAlign.center,
+      textAlign: TextAlign.start,
     );
   }
 }
