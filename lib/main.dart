@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:store_warehouse/home/logic/home_view_model.dart';
 import 'package:store_warehouse/home/ui/screen/home_controller_screen.dart';
 import 'package:store_warehouse/product/logic/product_view_model.dart';
+import 'package:store_warehouse/report/logic/report_view_model.dart';
 import 'package:store_warehouse/transaction/logic/transaction_view_model.dart';
 import 'package:store_warehouse/transaction/ui/screen/all_transactions_screen.dart';
 import 'package:store_warehouse/transaction_type/logic/transaction_type_view_model.dart';
@@ -34,6 +35,10 @@ class MyApp extends StatelessWidget {
           create: (context) => HomeViewModel(),
         ),
         ChangeNotifierProvider(
+          create: (context) => ReportViewModel()..getTodayReport(),
+          lazy: false,
+        ),
+        ChangeNotifierProvider(
           create: (context) => UnitViewModel()..getUnits(),
           lazy: false,
         ),
@@ -42,9 +47,7 @@ class MyApp extends StatelessWidget {
           lazy: false,
         ),
         ChangeNotifierProvider(
-          create: (context) => TransactionViewModel()
-            ..getTransactions()
-            ..getReport(),
+          create: (context) => TransactionViewModel()..getTransactions(),
           lazy: false,
         ),
         ChangeNotifierProvider(
