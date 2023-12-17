@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:store_warehouse/product/logic/product_view_model.dart';
 import 'package:store_warehouse/product/ui/widget/show_product.component.dart';
 import 'package:store_warehouse/shared/function/dialog/delete_confirm.dart';
 import 'package:store_warehouse/shared/function/dialog/edit_transaction_dialog.dart';
@@ -17,6 +18,8 @@ class TransactionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final product =
+        context.read<ProductViewModel>().getProductById(transaction.productId);
     final TransactionTypeModel transactionType = context
         .read<TransactionTypeViewModel>()
         .getTransactionById(transaction.transactionTypeId);
@@ -64,7 +67,7 @@ class TransactionWidget extends StatelessWidget {
               ListTile(
                 leading: CircleAvatar(
                   backgroundImage: FileImage(
-                    File('transaction.productImagePath'),
+                    File(product.imagePath),
                   ),
                 ),
                 title: ShowProductName(productId: transaction.productId),
