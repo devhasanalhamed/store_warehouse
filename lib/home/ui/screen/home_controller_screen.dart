@@ -7,6 +7,7 @@ import 'package:store_warehouse/home/ui/screen/settings_page.dart';
 import 'package:store_warehouse/home/ui/widget/custom_bottom_navigation_bar.dart';
 import 'package:store_warehouse/product/ui/screen/add_product_screen.dart';
 import 'package:store_warehouse/product/ui/screen/products_page.dart';
+import 'package:store_warehouse/report/logic/report_view_model.dart';
 import 'package:store_warehouse/report/ui/screen/report_page.dart';
 import 'package:store_warehouse/transaction/ui/screen/add_transaction_screen.dart';
 import 'package:store_warehouse/transaction/ui/screen/transactions_page.dart';
@@ -44,7 +45,11 @@ class HomeControllerScreen extends StatelessWidget {
         child: const Icon(Icons.point_of_sale),
       ),
       null,
-      null,
+      FloatingActionButton(
+        onPressed: () => context.read<ReportViewModel>().exportReport(),
+        tooltip: 'تصدير التقرير',
+        child: const Text('تصدير'),
+      ),
       null,
     ];
     return Selector<HomeViewModel, int>(
