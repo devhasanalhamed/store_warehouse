@@ -36,9 +36,8 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => ReportViewModel()
-            ..getTodayReport()
-            ..getWeekReport()
-            ..getMonthReport(),
+            ..getReportFiles()
+            ..getTodayReport(),
           lazy: false,
         ),
         ChangeNotifierProvider(
