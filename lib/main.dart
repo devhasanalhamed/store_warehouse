@@ -35,12 +35,6 @@ class MyApp extends StatelessWidget {
           create: (context) => HomeViewModel(),
         ),
         ChangeNotifierProvider(
-          create: (context) => ReportViewModel()
-            ..getReportFiles()
-            ..getTodayReport(),
-          lazy: false,
-        ),
-        ChangeNotifierProvider(
           create: (context) => UnitViewModel()..getUnits(),
           lazy: false,
         ),
@@ -54,6 +48,13 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => ProductViewModel()..getProducts(),
+          lazy: false,
+        ),
+        ChangeNotifierProxyProvider<ProductViewModel, ReportViewModel>(
+          create: (context) => ReportViewModel(productList: []),
+          update: (context, productState, previous) =>
+              ReportViewModel(productList: productState.productList)
+                ..getReportFiles(),
           lazy: false,
         ),
       ],
