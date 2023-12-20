@@ -6,10 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:store_warehouse/core/database/dao/transaction_dao.dart';
 import 'package:store_warehouse/core/utils/enum/report_type.dart';
+import 'package:store_warehouse/product/data/product_model.dart';
 import 'package:store_warehouse/transaction/data/transaction_model.dart';
 import 'package:path/path.dart' as path;
 
 class ReportViewModel extends ChangeNotifier {
+  final List<ProductModel> productList;
+  ReportViewModel({
+    required this.productList,
+  });
+
   final TransactionDAO transactionDAO = TransactionDAO();
   List<TransactionModel> todayReport = [];
   List<TransactionModel> weekReport = [];
@@ -26,18 +32,19 @@ class ReportViewModel extends ChangeNotifier {
       case 0:
         reportType = ReportType.day;
         toggleBoolean = [true, false, false, false];
+        break;
       case 1:
         reportType = ReportType.week;
         toggleBoolean = [false, true, false, false];
-
+        break;
       case 2:
         reportType = ReportType.month;
         toggleBoolean = [false, false, true, false];
-
+        break;
       case 3:
         reportType = ReportType.custom;
         toggleBoolean = [false, false, false, true];
-
+        break;
       default:
         reportType = ReportType.day;
         toggleBoolean = [true, false, false, false];
@@ -46,7 +53,7 @@ class ReportViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> get getReportFunction {
+  Future<void>? get getReportFunction {
     switch (reportType) {
       case ReportType.day:
         return getTodayReport();
@@ -55,7 +62,7 @@ class ReportViewModel extends ChangeNotifier {
       case ReportType.month:
         return getMonthReport();
       case ReportType.custom:
-        return getTodayReport();
+        return null;
     }
   }
 
@@ -78,7 +85,7 @@ class ReportViewModel extends ChangeNotifier {
       final excel = Excel.createExcel();
 
       // Add a sheet to the workbook
-      final sheet = excel['Sheet1']..isRTL;
+      final sheet = excel['Sheet1'];
 
       // Add headers to the sheet
       sheet.appendRow([
@@ -92,8 +99,10 @@ class ReportViewModel extends ChangeNotifier {
       // Add transaction data to the sheet
       for (var transaction in getReportList) {
         sheet.appendRow([
-          TextCellValue(transaction.productId.toString()),
-          TextCellValue(transaction.transactionTypeId.toString()),
+          TextCellValue(productList
+              .firstWhere((element) => element.id == transaction.productId)
+              .title),
+          TextCellValue(transaction.transactionTypeId == 1 ? 'اضافة' : 'سحب'),
           TextCellValue(transaction.amount.toString()),
           TextCellValue(transaction.notes.toString()),
           TextCellValue(transaction.createdAt.toUtc().toString()),
@@ -123,6 +132,7 @@ class ReportViewModel extends ChangeNotifier {
     final endOfToday = DateTime(now.year, now.month, now.day, 23, 59, 59);
     final result = await transactionDAO.report(startOfToday, endOfToday);
     todayReport = result;
+    print('todayReport');
     notifyListeners();
   }
 
@@ -155,6 +165,12 @@ class ReportViewModel extends ChangeNotifier {
     DateTime endOfMonth = DateTime(now.year, now.month + 1, 0, 23, 59, 59);
     final result = await transactionDAO.report(startOfMonth, endOfMonth);
     monthReport = result;
+    notifyListeners();
+  }
+
+  Future<void> getCustomReport(DateTime startDate, DateTime endDate) async {
+    final result = await transactionDAO.report(startDate, endDate);
+    customReport = result;
     notifyListeners();
   }
 
