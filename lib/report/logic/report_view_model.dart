@@ -87,6 +87,12 @@ class ReportViewModel extends ChangeNotifier {
       // Add a sheet to the workbook
       final sheet = excel['Sheet1'];
 
+      sheet.isRTL = true;
+
+      CellStyle cellStyle = CellStyle(
+          backgroundColorHex: '#1AFF1A',
+          fontFamily: getFontFamily(FontFamily.Calibri));
+
       // Add headers to the sheet
       sheet.appendRow([
         const TextCellValue('المنتج'),
