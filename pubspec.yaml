@@ -47,6 +47,7 @@ dependencies:
   easy_localization: ^3.0.3
   open_file: ^3.3.2
   excel: ^4.0.0
+  syncfusion_flutter_datagrid_export: ^24.1.41
 
 dev_dependencies:
   flutter_test:
