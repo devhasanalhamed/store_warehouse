@@ -33,32 +33,64 @@ class ReportPage extends StatelessWidget {
               child: ListView(
                 children: [
                   Table(
+                    border: TableBorder.all(
+                      color: Colors.green,
+                    ),
+                    defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                     children: [
                       const TableRow(
                         children: [
-                          Text('المنتج'),
-                          Text('نوع العملية'),
-                          Text('الكمية'),
-                          Text('التاريخ'),
-                          Text('الملاحظات'),
+                          Text(
+                            'المنتج',
+                            textAlign: TextAlign.center,
+                          ),
+                          Text(
+                            'نوع العملية',
+                            textAlign: TextAlign.center,
+                          ),
+                          Text(
+                            'الكمية',
+                            textAlign: TextAlign.center,
+                          ),
+                          Text(
+                            'التاريخ',
+                            textAlign: TextAlign.center,
+                          ),
+                          Text(
+                            'الملاحظات',
+                            textAlign: TextAlign.center,
+                          ),
                         ],
                       ),
                       for (var transaction in getReportList)
                         TableRow(
                           children: [
-                            Text(productList
-                                .firstWhere((element) =>
-                                    element.id == transaction.productId)
-                                .title),
-                            Text(transaction.transactionTypeId == 1
-                                ? 'إضافة'
-                                : 'سحب'),
-                            Text(transaction.amount.toString()),
+                            Text(
+                              productList
+                                  .firstWhere((element) =>
+                                      element.id == transaction.productId)
+                                  .title,
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(
+                              transaction.transactionTypeId == 1
+                                  ? 'إضافة'
+                                  : 'سحب',
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(
+                              transaction.amount.toString(),
+                              textAlign: TextAlign.center,
+                            ),
                             Text(
                               DateFormat('y-M-d | HH:MM')
                                   .format(transaction.createdAt),
+                              textAlign: TextAlign.center,
                             ),
-                            Text(transaction.notes.toString()),
+                            Text(
+                              transaction.notes.toString(),
+                              textAlign: TextAlign.center,
+                            ),
                           ],
                         ),
                     ],
