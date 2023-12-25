@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:excel/excel.dart';
+import 'package:excel/excel.dart' as ex;
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:store_warehouse/core/database/dao/transaction_dao.dart';
@@ -82,49 +82,74 @@ class ReportViewModel extends ChangeNotifier {
   Future<void> exportReport() async {
     try {
       // Create an Excel workbook
-      final excel = Excel.createExcel();
+      final excel = ex.Excel.createExcel();
 
       // Add a sheet to the workbook
       final sheet = excel['Sheet1'];
 
       sheet.isRTL = true;
 
-      CellStyle cellStyle = CellStyle(
-          backgroundColorHex: '#1AFF1A',
-          fontFamily: getFontFamily(FontFamily.Calibri));
+      // Define a cell style with borders
+      ex.CellStyle cellStyle = ex.CellStyle(
+        bottomBorder: ex.Border(
+          borderStyle: ex.BorderStyle.Thin,
+          borderColorHex: 'FF000000',
+        ),
+        rightBorder: ex.Border(
+          borderStyle: ex.BorderStyle.Thin,
+          borderColorHex: 'FF000000',
+        ),
+        horizontalAlign: ex.HorizontalAlign.Center,
+      );
 
-      // Add headers to the sheet
+      // Add headers to the sheet with borders
       sheet.appendRow([
-        const TextCellValue('المنتج'),
-        const TextCellValue('نوع العملية'),
-        const TextCellValue('الكمية'),
-        const TextCellValue('ملاحظات'),
-        const TextCellValue('التاريخ')
+        const ex.TextCellValue('المنتج'),
+        const ex.TextCellValue('نوع العملية'),
+        const ex.TextCellValue('الكمية'),
+        const ex.TextCellValue('ملاحظات'),
+        const ex.TextCellValue('التاريخ')
       ]);
 
-      // Add transaction data to the sheet
+      // Auto-fit columns to fit content
+      for (int colIndex = 0; colIndex < sheet.maxColumns; colIndex++) {
+        sheet.setColumnAutoFit(colIndex);
+      }
+
+      // Add transaction data to the sheet with borders
       for (var transaction in getReportList) {
         sheet.appendRow([
-          TextCellValue(productList
-              .firstWhere((element) => element.id == transaction.productId)
-              .title),
-          TextCellValue(transaction.transactionTypeId == 1 ? 'اضافة' : 'سحب'),
-          TextCellValue(transaction.amount.toString()),
-          TextCellValue(transaction.notes.toString()),
-          TextCellValue(transaction.createdAt.toUtc().toString()),
+          ex.TextCellValue(
+            productList
+                .firstWhere((element) => element.id == transaction.productId)
+                .title,
+          ),
+          ex.TextCellValue(
+              transaction.transactionTypeId == 1 ? 'اضافة' : 'سحب'),
+          ex.TextCellValue(transaction.amount.toString()),
+          ex.TextCellValue(transaction.notes.toString()),
+          ex.TextCellValue(transaction.createdAt.toUtc().toString()),
         ]);
+      }
+
+      // Apply cell style with borders to all cells in the sheet
+      for (var row in sheet.rows) {
+        for (var cell in row) {
+          cell!.cellStyle = cellStyle;
+          print('1');
+        }
       }
 
       // Get the app's documents directory
       final Directory? appDocDir = await getExternalStorageDirectory();
       final today = DateTime.now();
+
       // Define the Excel file path
       String excelPath =
           '${appDocDir!.path}/report_${reportType.name}_${today.year}_${today.month}_${today.day}.xlsx';
 
       // Save the Excel file
       final List<int>? bytes = excel.encode();
-
       File(excelPath).writeAsBytesSync(Uint8List.fromList(bytes!));
     } catch (e) {
       // Handle exceptions (e.g., log, show an error message, etc.)
