@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
@@ -35,18 +36,50 @@ class _UploadImageState extends State<UploadImage> {
 
   Widget _buildImagePreview() {
     return _imageFile != null
-        ? ClipRRect(
-            borderRadius: BorderRadius.circular(AppDesign.circularRadius),
-            child: Image.file(
-              _imageFile!,
-              width: double.infinity,
-              height: 200,
-              fit: BoxFit.cover,
-            ),
+        ? Stack(
+            alignment: Alignment.topLeft,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(AppDesign.circularRadius),
+                child: Image.file(
+                  _imageFile!,
+                  width: double.infinity,
+                  height: 200,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    _imageFile = null;
+                    widget.onTakePhoto?.call('');
+                  });
+                },
+                style: const ButtonStyle(
+                  backgroundColor: MaterialStatePropertyAll(Colors.white54),
+                ),
+                icon: const Icon(
+                  Icons.close,
+                  color: Colors.red,
+                ),
+              ),
+            ],
           )
-        : const Placeholder(
-            fallbackWidth: double.infinity,
-            fallbackHeight: 200,
+        : Container(
+            width: double.infinity,
+            height: 200,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.amber,
+                  Colors.yellow,
+                ],
+              ),
+              borderRadius: BorderRadius.all(
+                Radius.circular(AppDesign.circularRadius),
+              ),
+            ),
+            child: const Center(child: Text('تظهر الصورة هنا بعد التقاطها')),
           );
   }
 
@@ -59,7 +92,7 @@ class _UploadImageState extends State<UploadImage> {
         const SizedBox(height: 20),
         ElevatedButton(
           onPressed: _capturePhoto,
-          child: const Text('Take Photo'),
+          child: Text('takePhoto'.tr()),
         ),
       ],
     );
