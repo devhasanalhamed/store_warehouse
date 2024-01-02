@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_warehouse/product/data/product_model.dart';
@@ -44,7 +45,7 @@ class AddProductScreen extends StatelessWidget {
                   if (value!.isNotEmpty) {
                     return null;
                   }
-                  return 'f';
+                  return 'أختر عنوان مناسب';
                 },
               ),
               const SizedBox(height: 16.0),
@@ -81,7 +82,7 @@ class AddProductScreen extends StatelessWidget {
                         .then((value) => Navigator.pop(context));
                   }
                 },
-                child: const Text('Add'),
+                child: Text('add'.tr()),
               ),
             ],
           ),
