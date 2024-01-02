@@ -121,6 +121,7 @@ class ReportPage extends StatelessWidget {
               ],
             ),
           ),
+          const SizedBox(height: 64),
         ],
       ),
     );
