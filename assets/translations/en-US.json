@@ -1,5 +1,6 @@
 {
     "myLab": "My Lab",
-    "empty": "There is no data"
-
+    "empty": "There is no data",
+    "takePhoto": "Take a photo",
+    "add": "Add"
 }
