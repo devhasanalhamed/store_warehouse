@@ -31,7 +31,7 @@ class SelectUnitComponent extends StatelessWidget {
         onChanged: onChanged,
         validator: (value) {
           if (value == null) {
-            return 'wrong';
+            return 'أختر وحدة قبل المتابعة';
           }
           return null;
         },
