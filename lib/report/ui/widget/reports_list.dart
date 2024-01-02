@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:open_file/open_file.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:store_warehouse/core/utils/app_design.dart';
 import 'package:store_warehouse/report/logic/report_view_model.dart';
 import 'package:store_warehouse/shared/function/dialog/delete_confirm.dart';
@@ -86,7 +87,10 @@ class ReportsList extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Share.shareXFiles(
+                                    [XFile(reportFiles[index]['path'])]);
+                              },
                               icon: const Icon(Icons.share),
                             ),
                             IconButton(
