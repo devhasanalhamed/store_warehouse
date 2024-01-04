@@ -66,4 +66,21 @@ class ProductDAO {
       whereArgs: [product.id],
     );
   }
+
+  Future<int> fetchProductsCount() async {
+    final db = await DbConfig.getInstance();
+    List<Map<String, Object?>> count =
+        await db.rawQuery('SELECT COUNT(*) FROM ${ProductTable.tableName}');
+    return count.first.values.first as int;
+  }
+
+  Future<Map<String, dynamic>> fetchProductById(int id) async {
+    final db = await DbConfig.getInstance();
+    final product = await db.query(
+      ProductTable.tableName,
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+    return product.first;
+  }
 }
