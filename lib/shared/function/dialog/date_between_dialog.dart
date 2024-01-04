@@ -47,7 +47,7 @@ dateBetweenDialog(BuildContext context) => showDialog(
                       startDateController.text =
                           '${value.day}-${value.month}-${value.year}';
                     }),
-                const SizedBox(height: AppDesign.largePadding),
+                const SizedBox(height: AppDesign.mediumPadding),
                 TextFormField(
                     controller: endDateController,
                     decoration: const InputDecoration(
