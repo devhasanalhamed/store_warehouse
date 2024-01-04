@@ -31,7 +31,7 @@ showImageDialog(BuildContext context, ProductModel product) => showDialog(
                         const Text('خطأ'),
                   ),
                 ),
-                const SizedBox(height: AppDesign.largePadding),
+                const SizedBox(height: AppDesign.mediumPadding),
                 ElevatedButton(
                   onPressed: () async {
                     final pickedFile = await ImagePicker()
