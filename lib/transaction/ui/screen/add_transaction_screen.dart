@@ -25,33 +25,34 @@ class AddTransactionScreen extends StatelessWidget {
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppDesign.largePadding),
+        padding:
+            const EdgeInsets.symmetric(horizontal: AppDesign.mediumPadding),
         child: Form(
           key: formKey,
           child: ListView(
             children: [
-              const SizedBox(height: AppDesign.largePadding),
+              const SizedBox(height: AppDesign.mediumPadding),
               SelectProductComponent(
                 onChanged: (value) => productId = value,
               ),
-              const SizedBox(height: AppDesign.largePadding),
+              const SizedBox(height: AppDesign.mediumPadding),
               TextFormFieldComponent(
                 labelText: 'الكمية',
                 keyboardType: TextInputType.number,
                 onSaved: (newValue) => amount = int.parse(newValue!),
               ),
-              const SizedBox(height: AppDesign.largePadding),
+              const SizedBox(height: AppDesign.mediumPadding),
               ChooseTransactionTypeWidget(
                 onChanged: (value) {
                   transactionType = int.parse(value);
                 },
               ),
-              const SizedBox(height: AppDesign.largePadding),
+              const SizedBox(height: AppDesign.mediumPadding),
               TextFormFieldComponent(
                 labelText: 'الملاحظات',
                 onSaved: (newValue) => notes = newValue!,
               ),
-              const SizedBox(height: AppDesign.largePadding),
+              const SizedBox(height: AppDesign.mediumPadding),
               ElevatedButton(
                 onPressed: () {
                   if (formKey.currentState!.validate()) {
