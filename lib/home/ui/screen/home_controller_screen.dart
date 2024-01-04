@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:store_warehouse/core/utils/app_string.dart';
 import 'package:store_warehouse/home/logic/home_view_model.dart';
+import 'package:store_warehouse/home/ui/screen/homepage.dart';
 import 'package:store_warehouse/home/ui/screen/settings_page.dart';
 import 'package:store_warehouse/home/ui/widget/custom_bottom_navigation_bar.dart';
 import 'package:store_warehouse/product/ui/screen/add_product_screen.dart';
@@ -17,8 +18,8 @@ class HomeControllerScreen extends StatelessWidget {
 
   final pages = const [
     ProductsPage(),
-    TransactionsPage(),
-    Center(child: Text('home')),
+    TransactionsPage(), 
+    Homepage(),
     ReportPage(),
     SettingsPage(),
   ];
