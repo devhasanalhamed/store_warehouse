@@ -16,8 +16,9 @@ void main() async {
 
   runApp(
     EasyLocalization(
-      supportedLocales: const [Locale('ar', 'SA'), Locale('en', 'US')],
+      supportedLocales: const [Locale('en', 'US'), Locale('ar', 'SA')],
       path: 'assets/translations',
+      startLocale: const Locale('ar', 'SA'),
       fallbackLocale: const Locale('ar', 'SA'),
       child: const MyApp(),
     ),
@@ -62,7 +63,7 @@ class MyApp extends StatelessWidget {
         title: 'مستودعي',
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
-        locale: const Locale('ar', 'SA'),
+        locale: context.locale,
         theme: ThemeData(
           fontFamily: 'Cairo',
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
