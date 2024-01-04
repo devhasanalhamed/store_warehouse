@@ -27,7 +27,7 @@ class TextFormFieldComponent extends StatelessWidget {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppDesign.circularRadius),
         ),
-        contentPadding: const EdgeInsets.all(AppDesign.largePadding),
+        contentPadding: const EdgeInsets.all(AppDesign.mediumPadding),
       ),
       onSaved: onSaved,
       onChanged: onChanged,
