@@ -50,6 +50,8 @@ dependencies:
   syncfusion_flutter_datagrid_export: ^24.1.41
   pdf: ^3.10.7
   share_plus: ^7.2.1
+  pie_chart: ^5.4.0
+  flutter_svg: ^2.0.9
 
 dev_dependencies:
   flutter_test:
@@ -76,6 +78,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
+    - assets/svg/
     - assets/translations/
   #   - images/a_dot_ham.jpeg
 
