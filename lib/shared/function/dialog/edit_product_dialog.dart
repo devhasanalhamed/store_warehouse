@@ -18,7 +18,7 @@ editProduct(BuildContext context, ProductModel product) {
       key: formKey,
       child: Padding(
         padding: const EdgeInsets.symmetric(
-          horizontal: AppDesign.largePadding,
+          horizontal: AppDesign.mediumPadding,
         ),
         child: ListView(
           children: [
