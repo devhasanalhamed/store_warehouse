@@ -7,10 +7,11 @@ import 'package:store_warehouse/core/database/tables/unit_table.dart';
 
 class DbConfig {
   static Database? _db;
+  static const String databaseName = 'inventory';
 
   static Future<Database> getInstance() async {
     _db ??= await openDatabase(
-      'inventory',
+      databaseName,
       version: 1,
       onCreate: (db, version) async {
         await db.execute(UnitTable.create());
