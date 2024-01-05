@@ -7,7 +7,7 @@ import 'package:pie_chart/pie_chart.dart';
 import 'package:store_warehouse/core/database/dao/product_dao.dart';
 import 'package:store_warehouse/core/database/dao/transaction_dao.dart';
 import 'package:store_warehouse/core/constants/app_design.dart';
-import 'package:store_warehouse/core/utils/storage/permission_handler.dart';
+import 'package:store_warehouse/core/database/sql_helper.dart';
 
 class Homepage extends StatelessWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -23,7 +23,7 @@ class Homepage extends StatelessWidget {
         children: [
           TextButton(
             onPressed: () {
-              requestStoragePermission();
+              SQLHelper().getLastBackup();
             },
             child: const Text('data'),
           ),
@@ -305,9 +305,9 @@ class Homepage extends StatelessWidget {
                           }
                         },
                       ),
-                      const Text(
-                        'last transaction',
-                        style: TextStyle(
+                      Text(
+                        'lastTransaction'.tr(),
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -335,7 +335,7 @@ class Homepage extends StatelessWidget {
                     children: [
                       const SizedBox(),
                       FutureBuilder(
-                        future: ProductDAO().fetchProductsCount(),
+                        future: SQLHelper().getLastBackup(),
                         builder: (context, snapshot) {
                           {
                             if (snapshot.hasData) {
@@ -360,9 +360,9 @@ class Homepage extends StatelessWidget {
                           }
                         },
                       ),
-                      const Text(
-                        'last backup',
-                        style: TextStyle(
+                      Text(
+                        'lastBackup'.tr(),
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
