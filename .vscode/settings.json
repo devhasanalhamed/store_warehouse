@@ -4,6 +4,7 @@
     "AUTOINCREMENT",
     "sqflite",
     "VARCHAR",
+    "إحتياطي",
     "إستخدام"
   ]
 }
