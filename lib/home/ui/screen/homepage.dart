@@ -181,17 +181,17 @@ class Homepage extends StatelessWidget {
                           ),
                         ),
                       ),
-                      FutureBuilder<Map<String, dynamic>>(
-                        future: TransactionDAO().fetchMostUsedProduct(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return ClipRRect(
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(
-                                  AppDesign.circularRadius,
-                                ),
-                              ),
-                              child: Stack(
+                      ClipRRect(
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(
+                            AppDesign.circularRadius,
+                          ),
+                        ),
+                        child: FutureBuilder<Map<String, dynamic>>(
+                          future: TransactionDAO().fetchMostUsedProduct(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return Stack(
                                 alignment: Alignment.center,
                                 children: [
                                   Image.file(
@@ -211,17 +211,17 @@ class Homepage extends StatelessWidget {
                                     ),
                                   ),
                                 ],
-                              ),
-                            );
-                          } else {
-                            return SvgPicture.asset(
-                              'assets/svg/productPlaceHolder.svg',
-                              width: double.infinity,
-                              height: double.infinity,
-                              fit: BoxFit.cover,
-                            );
-                          }
-                        },
+                              );
+                            } else {
+                              return SvgPicture.asset(
+                                'assets/svg/productPlaceHolder.svg',
+                                width: double.infinity,
+                                height: double.infinity,
+                                fit: BoxFit.cover,
+                              );
+                            }
+                          },
+                        ),
                       ),
                       Container(
                         width: double.infinity,
