@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:store_warehouse/core/utils/app_design.dart';
+import 'package:store_warehouse/core/constants/app_design.dart';
 
 class DropDownButtonFormFieldComponent extends StatelessWidget {
   final List<DropdownMenuItem>? items;
