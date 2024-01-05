@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:store_warehouse/core/utils/app_design.dart';
+import 'package:store_warehouse/core/constants/app_design.dart';
 import 'package:store_warehouse/report/logic/report_view_model.dart';
 
 dateBetweenDialog(BuildContext context) => showDialog(
