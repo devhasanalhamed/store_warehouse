@@ -6,7 +6,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:store_warehouse/core/database/dao/product_dao.dart';
 import 'package:store_warehouse/core/database/dao/transaction_dao.dart';
-import 'package:store_warehouse/core/utils/app_design.dart';
+import 'package:store_warehouse/core/constants/app_design.dart';
+import 'package:store_warehouse/core/utils/storage/permission_handler.dart';
 
 class Homepage extends StatelessWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -22,7 +23,7 @@ class Homepage extends StatelessWidget {
         children: [
           TextButton(
             onPressed: () {
-              TransactionDAO().fetchMostUsedProduct();
+              requestStoragePermission();
             },
             child: const Text('data'),
           ),
@@ -70,12 +71,12 @@ class Homepage extends StatelessWidget {
                   flex: 4,
                   child: PieChart(
                     dataMap: {
-                      "add".tr(): 255,
-                      "consume".tr(): 100,
+                      "add".tr(): 0,
+                      "consume".tr(): 0,
                     },
                     colorList: const [
-                      Color.fromARGB(255, 93, 236, 93),
-                      Color.fromARGB(255, 243, 115, 115),
+                      Color(0xFF81F986),
+                      Color(0xFFE85158),
                     ],
                     chartLegendSpacing: 32,
                     chartRadius: MediaQuery.of(context).size.width / 3.2,
@@ -157,15 +158,23 @@ class Homepage extends StatelessWidget {
               ),
               const SizedBox(width: AppDesign.smallPadding),
               Expanded(
-                child: SizedBox(
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    borderRadius: BorderRadius.circular(
+                      AppDesign.circularRadius,
+                    ),
+                  ),
                   height: 190,
                   child: Stack(
                     alignment: Alignment.bottomCenter,
                     children: [
                       Container(
-                        decoration: const BoxDecoration(
-                          color: Colors.blueGrey,
-                          borderRadius: BorderRadius.all(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.primary,
+                          borderRadius: const BorderRadius.all(
                             Radius.circular(
                               AppDesign.circularRadius,
                             ),
@@ -243,6 +252,120 @@ class Homepage extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: AppDesign.smallPadding),
+          Row(
+            children: [
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.all(AppDesign.mediumPadding),
+                  height: 190,
+                  decoration: const BoxDecoration(
+                    color: Color(0xFF0099CD),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(
+                        AppDesign.circularRadius,
+                      ),
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const SizedBox(),
+                      FutureBuilder(
+                        future: ProductDAO().fetchProductsCount(),
+                        builder: (context, snapshot) {
+                          {
+                            if (snapshot.hasData) {
+                              return Text(
+                                snapshot.data.toString(),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              );
+                            } else {
+                              return const Text(
+                                '.',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              );
+                            }
+                          }
+                        },
+                      ),
+                      const Text(
+                        'last transaction',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(width: AppDesign.smallPadding),
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.all(AppDesign.mediumPadding),
+                  height: 190,
+                  decoration: const BoxDecoration(
+                    color: Color(0xFFFFA726),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(
+                        AppDesign.circularRadius,
+                      ),
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const SizedBox(),
+                      FutureBuilder(
+                        future: ProductDAO().fetchProductsCount(),
+                        builder: (context, snapshot) {
+                          {
+                            if (snapshot.hasData) {
+                              return Text(
+                                snapshot.data.toString(),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              );
+                            } else {
+                              return const Text(
+                                '.',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              );
+                            }
+                          }
+                        },
+                      ),
+                      const Text(
+                        'last backup',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],
