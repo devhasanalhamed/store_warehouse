@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:store_warehouse/core/utils/app_design.dart';
+import 'package:store_warehouse/core/constants/app_design.dart';
 import 'package:store_warehouse/product/ui/widget/select_product_component.dart';
 import 'package:store_warehouse/shared/widget/text_form_field_component.dart';
 import 'package:store_warehouse/transaction/data/transaction_model.dart';
