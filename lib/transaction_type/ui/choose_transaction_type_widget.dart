@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:store_warehouse/core/utils/app_design.dart';
+import 'package:store_warehouse/core/constants/app_design.dart';
 import 'package:store_warehouse/transaction_type/logic/transaction_type_view_model.dart';
 
 class ChooseTransactionTypeWidget extends StatefulWidget {
