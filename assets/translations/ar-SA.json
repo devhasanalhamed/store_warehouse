@@ -12,5 +12,7 @@
     "5": "الجمعة",
     "6": "السبت",
     "totalProducts": "عدد المنتجات",
-    "mostUsedProduct":"الأكثر إستخدام"
+    "mostUsedProduct":"الأكثر إستخدام",
+    "lastBackup": "آخر نسخ إحتياطي",
+    "lastTransaction": "آخر عملية"
 }
