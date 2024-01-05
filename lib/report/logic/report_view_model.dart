@@ -217,4 +217,9 @@ class ReportViewModel extends ChangeNotifier {
     reportFiles = [...listOfReports.reversed];
     notifyListeners();
   }
+
+  Future<String> getLastBackup() async {
+    
+    return '';
+  }
 }
