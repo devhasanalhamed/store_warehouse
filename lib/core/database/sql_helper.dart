@@ -1,64 +1,56 @@
 import 'dart:io';
-
-import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:store_warehouse/core/database/db_config.dart';
+import 'package:store_warehouse/core/utils/storage/backup_path.dart';
+import 'package:store_warehouse/core/utils/storage/permission_handler.dart';
 
 class SQLHelper {
   Future<void> restoreDB() async {
-    var status = await Permission.manageExternalStorage.status;
-    if (!status.isGranted) {
-      await Permission.manageExternalStorage.request();
-    }
-    var status1 = await Permission.storage.status;
-    if (!status1.isGranted) {
-      await Permission.storage.request();
-    }
-
-    try {
-      File savedDBFile = File('/storage/emulated/0/InventoryBackup/inventory');
-      await savedDBFile
-          .copy('/data/user/0/com.example.store_warehouse/databases/inventory');
-      print('restore success');
-    } catch (error) {
-      print('restore error');
+    final permission = await requestStoragePermission();
+    final databasePath = await getDatabasesPath();
+    const databaseName = DbConfig.databaseName;
+    if (permission) {
+      try {
+        File savedDBFile =
+            File('/storage/emulated/0/InventoryBackup/$databaseName');
+        await savedDBFile.copy('$databasePath/$databaseName');
+      } catch (error) {
+        print('restore error: $error');
+      }
     }
   }
 
   Future<void> backupDB() async {
-    var status = await Permission.manageExternalStorage.status;
-    if (!status.isGranted) {
-      await Permission.manageExternalStorage.request();
-    }
-    var status1 = await Permission.storage.status;
-    if (!status1.isGranted) {
-      await Permission.storage.request();
-    }
+    final permission = await requestStoragePermission();
+    final databasePath = await getDatabasesPath();
+    const databaseName = DbConfig.databaseName;
+    final backupDir = await getBackupPath();
+    final historyDir = await getBackupHistoryPath();
 
-    try {
-      File ourDBFile =
-          File('/data/user/0/com.example.store_warehouse/databases/inventory');
-      Directory? folderPathForDBFile =
-          Directory('/storage/emulated/0/InventoryBackup/');
-      await folderPathForDBFile.create();
-      Directory? folderPathForHistoryDBFile =
-          Directory('/storage/emulated/0/InventoryBackup/history');
-      await folderPathForHistoryDBFile.create();
-      await ourDBFile.copy('/storage/emulated/0/InventoryBackup/inventory');
-      await ourDBFile.copy(
-          '/storage/emulated/0/InventoryBackup/history/inventory_${DateTime.now().month}_${DateTime.now().day}_${DateTime.now().minute}_${DateTime.now().second}');
-      print('backup success');
-    } catch (error) {
-      print('backup error');
+    if (permission) {
+      try {
+        File ourDBFile = File('$databasePath/$databaseName');
+        await ourDBFile.copy('$backupDir/$databaseName');
+        await ourDBFile.copy(
+            '$historyDir/inventory_${DateTime.now().month}_${DateTime.now().day}_${DateTime.now().minute}_${DateTime.now().second}');
+        print('backup success');
+      } catch (error) {
+        print('backup error: $error');
+      }
     }
   }
 
-  Future<void> getDbPath() async {
-    final String getDatabasePath = await getDatabasesPath();
-    print('==================== Db Path: $getDatabasePath');
-    print(
-        '==================== Databases: ${Directory(getDatabasePath).listSync()}');
-    Directory? getExternalPath = await getExternalStorageDirectory();
-    print('==================== External Path: $getExternalPath');
+  Future<String> getLastBackup() async {
+    final permission = await requestStoragePermission();
+    final backupDir = await getBackupPath();
+
+    if (permission) {
+      final dir = Directory(backupDir);
+
+      return DateFormat.yMd()
+          .format(File(dir.listSync().last.path).lastModifiedSync());
+    }
+    return 'none';
   }
 }
