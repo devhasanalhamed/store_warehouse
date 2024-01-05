@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:store_warehouse/core/utils/app_string.dart';
+import 'package:store_warehouse/core/constants/app_string.dart';
 import 'package:store_warehouse/home/logic/home_view_model.dart';
 import 'package:store_warehouse/home/ui/screen/homepage.dart';
 import 'package:store_warehouse/home/ui/screen/settings_page.dart';
