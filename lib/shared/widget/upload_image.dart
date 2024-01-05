@@ -3,7 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:store_warehouse/core/utils/app_design.dart';
+import 'package:store_warehouse/core/constants/app_design.dart';
 import 'package:path/path.dart' as path;
 
 class UploadImage extends StatefulWidget {
