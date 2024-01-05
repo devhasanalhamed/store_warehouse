@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:store_warehouse/core/utils/app_design.dart';
+import 'package:store_warehouse/core/constants/app_design.dart';
 import 'package:store_warehouse/product/logic/product_view_model.dart';
 import 'package:store_warehouse/report/logic/report_view_model.dart';
 import 'package:store_warehouse/report/ui/widget/reports_list.dart';
