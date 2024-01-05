@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:store_warehouse/core/utils/app_design.dart';
+import 'package:store_warehouse/core/constants/app_design.dart';
 import 'package:store_warehouse/transaction/data/transaction_model.dart';
 import 'package:store_warehouse/transaction/logic/transaction_view_model.dart';
 import 'package:store_warehouse/transaction/ui/screen/all_transactions_screen.dart';
