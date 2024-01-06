@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:store_warehouse/core/database/db_config.dart';
 import 'package:store_warehouse/core/utils/storage/backup_path.dart';
@@ -34,9 +35,8 @@ class SQLHelper {
         await ourDBFile.copy('$backupDir/$databaseName');
         await ourDBFile.copy(
             '$historyDir/inventory_${DateTime.now().month}_${DateTime.now().day}_${DateTime.now().minute}_${DateTime.now().second}');
-        print('backup success');
       } catch (error) {
-        print('backup error: $error');
+        debugPrint('backup error: $error');
       }
     }
   }
@@ -44,13 +44,14 @@ class SQLHelper {
   Future<String> getLastBackup() async {
     final permission = await requestStoragePermission();
     final backupDir = await getBackupPath();
+    const databaseName = DbConfig.databaseName;
 
     if (permission) {
-      final dir = Directory(backupDir);
-
-      return DateFormat.yMd()
-          .format(File(dir.listSync().last.path).lastModifiedSync());
+      if (File('$backupDir/$databaseName').existsSync()) {
+        return DateFormat.yMd()
+            .format(File('$backupDir/$databaseName').lastModifiedSync());
+      }
     }
-    return 'none';
+    return 'doesNotExists'.tr();
   }
 }
