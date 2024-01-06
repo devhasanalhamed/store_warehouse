@@ -14,6 +14,6 @@
     "totalProducts": "Products Count",
     "mostUsedProduct":"Most used",
     "lastBackup": "Last Backup",
-    "lastTransaction": "Last Transition"
-
+    "lastTransaction": "Last Transition",
+    "doesNotExists": "Does Not Exists"
 }

@@ -14,5 +14,6 @@
     "totalProducts": "عدد المنتجات",
     "mostUsedProduct":"الأكثر إستخدام",
     "lastBackup": "آخر نسخ إحتياطي",
-    "lastTransaction": "آخر عملية"
+    "lastTransaction": "آخر عملية",
+    "doesNotExists": "لا يوجد"
 }
