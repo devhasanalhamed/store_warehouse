@@ -8,6 +8,7 @@ import 'package:store_warehouse/core/database/dao/product_dao.dart';
 import 'package:store_warehouse/core/database/dao/transaction_dao.dart';
 import 'package:store_warehouse/core/constants/app_design.dart';
 import 'package:store_warehouse/core/database/sql_helper.dart';
+import 'package:store_warehouse/home/ui/widget/grid_element.dart';
 
 class Homepage extends StatelessWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -102,59 +103,10 @@ class Homepage extends StatelessWidget {
           const SizedBox(height: AppDesign.smallPadding),
           Row(
             children: [
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.all(AppDesign.mediumPadding),
-                  height: 190,
-                  decoration: const BoxDecoration(
-                    color: Colors.green,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(
-                        AppDesign.circularRadius,
-                      ),
-                    ),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const SizedBox(),
-                      FutureBuilder(
-                        future: ProductDAO().fetchProductsCount(),
-                        builder: (context, snapshot) {
-                          {
-                            if (snapshot.hasData) {
-                              return Text(
-                                snapshot.data.toString(),
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 32,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              );
-                            } else {
-                              return const Text(
-                                '.',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 32,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              );
-                            }
-                          }
-                        },
-                      ),
-                      Text(
-                        'totalProducts'.tr(),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+              GridElement(
+                title: 'totalProducts',
+                futureFunction: ProductDAO().fetchProductsCount(),
+                backgroundColor: Colors.green,
               ),
               const SizedBox(width: AppDesign.smallPadding),
               Expanded(
@@ -194,20 +146,41 @@ class Homepage extends StatelessWidget {
                               return Stack(
                                 alignment: Alignment.center,
                                 children: [
-                                  Image.file(
-                                    File(
-                                      snapshot.data!['image_path'],
+                                  if (File(
+                                    snapshot.data!['image_path'],
+                                  ).existsSync())
+                                    Image.file(
+                                      File(
+                                        snapshot.data!['image_path'],
+                                      ),
+                                      height: double.infinity,
+                                      width: double.infinity,
+                                      fit: BoxFit.cover,
                                     ),
-                                    height: double.infinity,
-                                    width: double.infinity,
-                                    fit: BoxFit.cover,
-                                  ),
-                                  Text(
-                                    snapshot.data!['name'],
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.bold,
+                                  FittedBox(
+                                    child: Center(
+                                      child: Container(
+                                        padding: const EdgeInsets.all(
+                                            AppDesign.smallPadding),
+                                        decoration: const ShapeDecoration(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(
+                                                AppDesign.circularRadius,
+                                              ),
+                                            ),
+                                          ),
+                                          color: Colors.white54,
+                                        ),
+                                        child: Text(
+                                          snapshot.data!['name'],
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 24.0,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -263,114 +236,16 @@ class Homepage extends StatelessWidget {
           const SizedBox(height: AppDesign.smallPadding),
           Row(
             children: [
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.all(AppDesign.mediumPadding),
-                  height: 190,
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF0099CD),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(
-                        AppDesign.circularRadius,
-                      ),
-                    ),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const SizedBox(),
-                      FutureBuilder(
-                        future: ProductDAO().fetchProductsCount(),
-                        builder: (context, snapshot) {
-                          {
-                            if (snapshot.hasData) {
-                              return Text(
-                                snapshot.data.toString(),
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 32,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              );
-                            } else {
-                              return const Text(
-                                '.',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 32,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              );
-                            }
-                          }
-                        },
-                      ),
-                      Text(
-                        'lastTransaction'.tr(),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+              GridElement(
+                title: 'lastTransaction',
+                futureFunction: ProductDAO().fetchProductsCount(),
+                backgroundColor: const Color(0xFF0099CD),
               ),
               const SizedBox(width: AppDesign.smallPadding),
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.all(AppDesign.mediumPadding),
-                  height: 190,
-                  decoration: const BoxDecoration(
-                    color: Color(0xFFFFA726),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(
-                        AppDesign.circularRadius,
-                      ),
-                    ),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const SizedBox(),
-                      FutureBuilder(
-                        future: SQLHelper().getLastBackup(),
-                        builder: (context, snapshot) {
-                          {
-                            if (snapshot.hasData) {
-                              return Text(
-                                snapshot.data.toString(),
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 32,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              );
-                            } else {
-                              return const Text(
-                                '.',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 32,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              );
-                            }
-                          }
-                        },
-                      ),
-                      Text(
-                        'lastBackup'.tr(),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+              GridElement(
+                title: 'lastBackup',
+                futureFunction: SQLHelper().getLastBackup(),
+                backgroundColor: const Color(0xFFFFA726),
               ),
             ],
           )
