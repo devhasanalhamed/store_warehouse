@@ -18,8 +18,10 @@ class TransactionsPage extends StatelessWidget {
       builder: (_, transactionList, __) => ListView(
         children: [
           Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: AppDesign.smallPadding),
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppDesign.mediumPadding,
+              vertical: AppDesign.smallPadding,
+            ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
