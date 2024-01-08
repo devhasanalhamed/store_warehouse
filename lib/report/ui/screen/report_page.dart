@@ -17,12 +17,10 @@ class ReportPage extends StatelessWidget {
         Provider.of<ProductViewModel>(context, listen: false).productList;
     return Padding(
       padding: const EdgeInsets.symmetric(
-        horizontal: AppDesign.smallPadding,
+        horizontal: AppDesign.mediumPadding,
         vertical: AppDesign.smallPadding,
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
+      child: ListView(
         children: [
           const ReportsList(),
           const SizedBox(height: 8.0),
