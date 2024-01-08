@@ -18,7 +18,7 @@ class HomeControllerScreen extends StatelessWidget {
 
   final pages = const [
     ProductsPage(),
-    TransactionsPage(), 
+    TransactionsPage(),
     Homepage(),
     ReportPage(),
     SettingsPage(),
@@ -59,7 +59,9 @@ class HomeControllerScreen extends StatelessWidget {
         appBar: AppBar(
           title: Text('myLab'.tr()),
           centerTitle: true,
+          backgroundColor: Colors.transparent,
         ),
+        extendBodyBehindAppBar: true,
         body: pages[currentIndex],
         floatingActionButton: floatingActionButtons[currentIndex],
         bottomNavigationBar: CustomBottomNavigationBar(
