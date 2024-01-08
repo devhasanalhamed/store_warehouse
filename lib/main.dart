@@ -66,7 +66,31 @@ class MyApp extends StatelessWidget {
         locale: context.locale,
         theme: ThemeData(
           fontFamily: 'Cairo',
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          colorScheme: ColorScheme.fromSeed(
+            primary: const Color(0xFF2E4CE5),
+            seedColor: const Color(0xFF2E4CE5),
+            background: const Color(0xFFFEFEFE),
+          ),
+          cardTheme: CardTheme(
+            color: const Color(0xFF4C4C4C).withOpacity(0.1),
+          ),
+          textTheme: const TextTheme(
+            titleLarge: TextStyle(
+              color: Color(0xFF4C4C4C),
+            ),
+            headlineSmall: TextStyle(
+              color: Color(0xFF4C4C4C),
+              fontWeight: FontWeight.bold,
+            ),
+            headlineMedium: TextStyle(
+              color: Color(0xFF4C4C4C),
+              fontWeight: FontWeight.bold,
+            ),
+            headlineLarge: TextStyle(
+              color: Color(0xFF4C4C4C),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           useMaterial3: true,
         ),
         home: const HomeControllerScreen(),
