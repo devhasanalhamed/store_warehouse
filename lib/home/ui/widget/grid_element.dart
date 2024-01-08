@@ -5,12 +5,12 @@ import 'package:store_warehouse/core/constants/app_design.dart';
 class GridElement extends StatelessWidget {
   final String title;
   final Future<String> futureFunction;
-  final Color? backgroundColor;
+  final Color? extendedColor;
   const GridElement({
     Key? key,
     required this.title,
     required this.futureFunction,
-    this.backgroundColor,
+    this.extendedColor,
   }) : super(key: key);
 
   @override
@@ -20,7 +20,7 @@ class GridElement extends StatelessWidget {
         padding: const EdgeInsets.all(AppDesign.mediumPadding),
         height: 190,
         decoration: BoxDecoration(
-          color: backgroundColor ?? const Color(0xFFC23C2A),
+          color: Theme.of(context).cardTheme.color,
           borderRadius: const BorderRadius.all(
             Radius.circular(
               AppDesign.circularRadius,
@@ -38,20 +38,12 @@ class GridElement extends StatelessWidget {
                   if (snapshot.hasData) {
                     return Text(
                       snapshot.data.toString(),
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: Theme.of(context).textTheme.headlineMedium,
                     );
                   } else {
-                    return const Text(
+                    return Text(
                       '.',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: Theme.of(context).textTheme.headlineMedium,
                     );
                   }
                 }
@@ -59,11 +51,9 @@ class GridElement extends StatelessWidget {
             ),
             Text(
               title.tr(),
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: extendedColor ?? const Color(0xFF4C4C4C),
+                  ),
             ),
           ],
         ),
