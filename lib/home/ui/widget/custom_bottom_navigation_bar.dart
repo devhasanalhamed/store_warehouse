@@ -15,6 +15,8 @@ class CustomBottomNavigationBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       currentIndex: currentIndex,
+      backgroundColor: Colors.white60,
+      elevation: 0.0,
       onTap: onTap,
       type: BottomNavigationBarType.fixed,
       items: const [
