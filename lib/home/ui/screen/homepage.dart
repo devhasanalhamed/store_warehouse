@@ -1,10 +1,8 @@
 import 'dart:io';
-import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:pie_chart/pie_chart.dart';
 import 'package:store_warehouse/core/database/dao/product_dao.dart';
 import 'package:store_warehouse/core/database/dao/transaction_dao.dart';
 import 'package:store_warehouse/core/constants/app_design.dart';
@@ -36,56 +34,26 @@ class Homepage extends StatelessWidget {
               ),
             ),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Expanded(
-                  flex: 3,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        '${DateTime.now().weekday}'.tr(),
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                      ),
-                      const SizedBox(height: AppDesign.smallPadding),
-                      Text(
-                        DateFormat.yMd().format(DateTime.now()),
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                    ],
-                  ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      '${DateTime.now().weekday}'.tr(),
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            color: Theme.of(context).colorScheme.primary,
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                    const SizedBox(height: AppDesign.smallPadding),
+                    Text(
+                      DateFormat.yMd().format(DateTime.now()),
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                  ],
                 ),
-                Expanded(
-                  flex: 4,
-                  child: PieChart(
-                    dataMap: {
-                      "add".tr(): 0,
-                      "consume".tr(): 0,
-                    },
-                    colorList: const [
-                      Color(0xFF81F986),
-                      Color(0xFFE85158),
-                    ],
-                    chartLegendSpacing: 32,
-                    chartRadius: MediaQuery.of(context).size.width / 3.2,
-                    initialAngleInDegree: 90,
-                    chartType: ChartType.disc,
-                    legendOptions: const LegendOptions(
-                      showLegendsInRow: true,
-                      legendPosition: LegendPosition.bottom,
-                      showLegends: true,
-                      legendTextStyle: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    chartValuesOptions: const ChartValuesOptions(
-                      decimalPlaces: 0,
-                    ),
-                    animationDuration: const Duration(milliseconds: 0),
-                  ),
-                )
               ],
             ),
           ),
