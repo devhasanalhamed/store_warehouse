@@ -20,12 +20,10 @@ class ProductWidget extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
       ),
+      color: Theme.of(context).cardTheme.color?.withOpacity(0.1),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         decoration: BoxDecoration(
-          border: Border.all(
-            color: Colors.grey,
-          ),
           borderRadius: BorderRadius.circular(15),
         ),
         child: Column(
