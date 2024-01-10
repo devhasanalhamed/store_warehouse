@@ -49,11 +49,14 @@ class GridElement extends StatelessWidget {
                 }
               },
             ),
-            Text(
-              title.tr(),
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: extendedColor ?? const Color(0xFF4C4C4C),
-                  ),
+            FittedBox(
+              child: Text(
+                title.tr(),
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: extendedColor ?? const Color(0xFF4C4C4C),
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
             ),
           ],
         ),
