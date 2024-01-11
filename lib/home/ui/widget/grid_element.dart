@@ -6,16 +6,19 @@ class GridElement extends StatelessWidget {
   final String title;
   final Future<String> futureFunction;
   final Color? extendedColor;
+  final int flex;
   const GridElement({
     Key? key,
     required this.title,
     required this.futureFunction,
     this.extendedColor,
+    this.flex = 1,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
+      flex: flex,
       child: Container(
         padding: const EdgeInsets.all(AppDesign.mediumPadding),
         height: 190,
