@@ -112,4 +112,19 @@ class TransactionDAO {
         await ProductDAO().fetchProductById(id.first['product_id'] as int);
     return product;
   }
+
+  Future<Map<String, dynamic>> fetchLastTransaction() async {
+    final db = await DbConfig.getInstance();
+    List<Map<String, Object?>> id = await db.rawQuery("""
+    SELECT product_id, COUNT(*) as transaction_count
+    FROM ${TransactionTable.tableName}
+    GROUP BY product_id
+    ORDER BY transaction_count DESC
+    LIMIT 1;
+    """);
+
+    final product =
+        await ProductDAO().fetchProductById(id.first['product_id'] as int);
+    return product;
+  }
 }
