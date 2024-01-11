@@ -6,5 +6,6 @@
     "VARCHAR",
     "إحتياطي",
     "إستخدام"
-  ]
+  ],
+  "java.compile.nullAnalysis.mode": "automatic"
 }
