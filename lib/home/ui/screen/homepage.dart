@@ -1,13 +1,11 @@
-import 'dart:io';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:store_warehouse/core/database/dao/product_dao.dart';
 import 'package:store_warehouse/core/database/dao/transaction_dao.dart';
 import 'package:store_warehouse/core/constants/app_design.dart';
 import 'package:store_warehouse/core/database/sql_helper.dart';
 import 'package:store_warehouse/home/ui/widget/grid_element.dart';
+import 'package:store_warehouse/home/ui/widget/photo_grid_element.dart';
 
 class Homepage extends StatelessWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -66,114 +64,10 @@ class Homepage extends StatelessWidget {
                 futureFunction: ProductDAO().fetchProductsCount(),
               ),
               const SizedBox(width: AppDesign.smallPadding),
-              Expanded(
-                flex: 4,
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: const Color(0xFF4C4C4C).withOpacity(0.1),
-                    ),
-                    borderRadius: BorderRadius.circular(
-                      AppDesign.circularRadius,
-                    ),
-                  ),
-                  height: 190,
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(
-                        AppDesign.circularRadius,
-                      ),
-                    ),
-                    child: Stack(
-                      alignment: Alignment.bottomCenter,
-                      children: [
-                        FutureBuilder<Map<String, dynamic>>(
-                          future: TransactionDAO().fetchMostUsedProduct(),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              return Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  if (File(
-                                    snapshot.data!['image_path'],
-                                  ).existsSync())
-                                    Image.file(
-                                      File(
-                                        snapshot.data!['image_path'],
-                                      ),
-                                      height: double.infinity,
-                                      width: double.infinity,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  FittedBox(
-                                    child: Center(
-                                      child: Container(
-                                        padding: const EdgeInsets.all(
-                                            AppDesign.smallPadding),
-                                        decoration: const ShapeDecoration(
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(
-                                                AppDesign.circularRadius,
-                                              ),
-                                            ),
-                                          ),
-                                          color: Colors.white54,
-                                        ),
-                                        child: Text(
-                                          snapshot.data!['name'],
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 24.0,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              );
-                            } else {
-                              return SvgPicture.asset(
-                                'assets/svg/productPlaceHolder.svg',
-                                width: double.infinity,
-                                height: double.infinity,
-                                fit: BoxFit.cover,
-                              );
-                            }
-                          },
-                        ),
-                        Container(
-                          width: double.infinity,
-                          height: double.infinity,
-                          padding:
-                              const EdgeInsets.all(AppDesign.mediumPadding),
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                const Color(0xFF4C4C4C),
-                                Colors.white.withOpacity(0.1),
-                              ],
-                              begin: Alignment.bottomCenter,
-                              end: Alignment.topCenter,
-                            ),
-                          ),
-                          child: Align(
-                            alignment: Alignment.bottomCenter,
-                            child: Text(
-                              'mostUsedProduct'.tr(),
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+              PhotoGridElement(
+                title: 'mostUsedProduct',
+                futureFunction: TransactionDAO().fetchMostUsedProduct(),
+                flex: 5,
               ),
             ],
           ),
@@ -187,10 +81,10 @@ class Homepage extends StatelessWidget {
                 extendedColor: Theme.of(context).colorScheme.primary,
               ),
               const SizedBox(width: AppDesign.smallPadding),
-              GridElement(
+              PhotoGridElement(
                 title: 'lastTransaction',
+                futureFunction: TransactionDAO().fetchMostUsedProduct(),
                 flex: 3,
-                futureFunction: ProductDAO().fetchProductsCount(),
               ),
             ],
           ),
