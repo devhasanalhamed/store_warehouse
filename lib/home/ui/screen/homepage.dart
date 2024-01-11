@@ -61,11 +61,13 @@ class Homepage extends StatelessWidget {
           Row(
             children: [
               GridElement(
+                flex: 3,
                 title: 'totalProducts',
                 futureFunction: ProductDAO().fetchProductsCount(),
               ),
               const SizedBox(width: AppDesign.smallPadding),
               Expanded(
+                flex: 4,
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border.all(
@@ -180,16 +182,18 @@ class Homepage extends StatelessWidget {
             children: [
               GridElement(
                 title: 'lastBackup',
+                flex: 4,
                 futureFunction: SQLHelper().getLastBackup(),
                 extendedColor: Theme.of(context).colorScheme.primary,
               ),
               const SizedBox(width: AppDesign.smallPadding),
               GridElement(
                 title: 'lastTransaction',
+                flex: 3,
                 futureFunction: ProductDAO().fetchProductsCount(),
               ),
             ],
-          )
+          ),
         ],
       ),
     );
