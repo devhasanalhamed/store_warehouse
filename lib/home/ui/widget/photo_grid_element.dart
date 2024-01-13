@@ -1,21 +1,23 @@
-import 'dart:io';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:store_warehouse/core/constants/app_design.dart';
+import 'package:store_warehouse/home/ui/widget/last_transaction.dart';
+import 'package:store_warehouse/home/ui/widget/most_used_product.dart';
 
 class PhotoGridElement extends StatelessWidget {
   final String title;
   final Future<Map<String, dynamic>> futureFunction;
   final Color? extendedColor;
   final int flex;
+  final bool child;
   const PhotoGridElement({
     Key? key,
     required this.title,
     required this.futureFunction,
     this.extendedColor,
     this.flex = 1,
+    required this.child,
   }) : super(key: key);
 
   @override
@@ -45,48 +47,9 @@ class PhotoGridElement extends StatelessWidget {
                 future: futureFunction,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    return Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        if (File(
-                          snapshot.data!['image_path'],
-                        ).existsSync())
-                          Image.file(
-                            File(
-                              snapshot.data!['image_path'],
-                            ),
-                            height: double.infinity,
-                            width: double.infinity,
-                            fit: BoxFit.cover,
-                          ),
-                        FittedBox(
-                          child: Center(
-                            child: Container(
-                              padding:
-                                  const EdgeInsets.all(AppDesign.smallPadding),
-                              decoration: const ShapeDecoration(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(
-                                      AppDesign.circularRadius,
-                                    ),
-                                  ),
-                                ),
-                                color: Colors.white54,
-                              ),
-                              child: Text(
-                                snapshot.data!['name'],
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 24.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
+                    return child
+                        ? mostUsedProduct(snapshot.data!)
+                        : lastTransaction(snapshot.data!);
                   } else {
                     return SvgPicture.asset(
                       'assets/svg/productPlaceHolder.svg',
