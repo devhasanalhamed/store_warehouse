@@ -119,9 +119,6 @@ class TransactionDAO {
     SELECT * FROM ${TransactionTable.tableName}
     ORDER BY id DESC LIMIT 1;
     """);
-
-    print(lastTransaction);
-
-    return lastTransaction[1];
+    return lastTransaction[0];
   }
 }
