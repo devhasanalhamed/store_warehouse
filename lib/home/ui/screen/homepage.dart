@@ -83,7 +83,7 @@ class Homepage extends StatelessWidget {
               const SizedBox(width: AppDesign.smallPadding),
               PhotoGridElement(
                 title: 'lastTransaction',
-                futureFunction: TransactionDAO().fetchMostUsedProduct(),
+                futureFunction: TransactionDAO().fetchLastTransaction(),
                 flex: 3,
               ),
             ],
